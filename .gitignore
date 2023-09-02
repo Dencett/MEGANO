@@ -159,4 +159,6 @@ cython_debug/
 # directory with media files
 
 media/
-static/
+market/static/
+market/templates/elmir_trash/
+.gitignore
