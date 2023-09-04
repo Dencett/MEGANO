@@ -5,6 +5,10 @@ from django.utils.translation import gettext_lazy as _
 class Product(models.Model):
     """Продукт"""
 
+    class Meta:
+        verbose_name = "Продукт"
+        verbose_name_plural = "Продукты"
+
     name = models.CharField(max_length=512, verbose_name=_("наименование"))
     details = models.ManyToManyField("Detail", through="ProductDetail", verbose_name=_("характеристики"))
 
@@ -12,11 +16,19 @@ class Product(models.Model):
 class Detail(models.Model):
     """Свойство продукта"""
 
+    class Meta:
+        verbose_name = "Свойство продуктов"
+        verbose_name_plural = "Свойства продуктов"
+
     name = models.CharField(max_length=512, verbose_name=_("наименование"))
 
 
 class ProductDetail(models.Model):
     """Значение свойства продукта"""
+
+    class Meta:
+        verbose_name = "Значение свойства продуктов"
+        verbose_name_plural = "Значения свойства продуктов"
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     detail = models.ForeignKey(Detail, on_delete=models.CASCADE)
