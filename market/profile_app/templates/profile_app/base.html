@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <style>
+    html {
+      box-sizing: border-box;
+    }
+    * {
+      font-family: sans-serif;
+    }
+
+    p {
+      font-size: 16px;
+    }
+    a {
+      margin-bottom: 40px;
+      padding: 10px 15px;
+      border: 1px solid #000;
+      border-radius: 10px;
+      background-color: #416b8f;
+      font-size: 20px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #fff;
+      background-color: #070217;
+    }
+  </style>
+  <meta charset="UTF-8">
+  <title>
+    {% block title %}
+    base title
+    {% endblock %}</title>
+</head>
+<body>
+<div class="container">
+  {% block body %}
+  base body
+  {% endblock %}
+</div>
+
+</body>
+</html>

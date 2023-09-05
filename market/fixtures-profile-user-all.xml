@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+    <object model="auth.user" pk="1">
+        <field name="password" type="CharField">pbkdf2_sha256$600000$F7ijzzcs3sMeI8L5UQGUOl$DHVJYgnCLJA1q+U8i8iZdj84F2sOjPpRDmzXf+fvzZY=</field>
+        <field name="last_login" type="DateTimeField"><None></None></field>
+        <field name="is_superuser" type="BooleanField">True</field>
+        <field name="username" type="CharField">admin</field>
+        <field name="first_name" type="CharField"></field>
+        <field name="last_name" type="CharField"></field>
+        <field name="email" type="CharField">admin@admin.com</field>
+        <field name="is_staff" type="BooleanField">True</field>
+        <field name="is_active" type="BooleanField">True</field>
+        <field name="date_joined" type="DateTimeField">2023-09-05T14:16:50.112092+00:00</field>
+        <field name="groups" rel="ManyToManyRel" to="auth.group"></field>
+        <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"></field>
+    </object>
+    <object model="auth.user" pk="2">
+        <field name="password" type="CharField">pbkdf2_sha256$600000$4xsNeQnE8Q18j32IIFQylR$36mo5PCC1E/zMKX9LLkHQivUnEsAd0QuRDlUjZiFRGs=</field>
+        <field name="last_login" type="DateTimeField">2023-09-05T14:18:32.689114+00:00</field>
+        <field name="is_superuser" type="BooleanField">False</field>
+        <field name="username" type="CharField">retailer1</field>
+        <field name="first_name" type="CharField">retailer1</field>
+        <field name="last_name" type="CharField">retailer1</field>
+        <field name="email" type="CharField">apple-retailer@not-apple.com</field>
+        <field name="is_staff" type="BooleanField">True</field>
+        <field name="is_active" type="BooleanField">True</field>
+        <field name="date_joined" type="DateTimeField">2023-09-05T14:18:31.959167+00:00</field>
+        <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="1"></object></field>
+        <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"></field>
+    </object>
+    <object model="auth.user" pk="3">
+        <field name="password" type="CharField">pbkdf2_sha256$600000$zqFffxgcwcVlE8Wp7G3euw$5GFfMP/6s+rs/SsCUQnHXOxE0RyG+bu0o2EfAp+dzio=</field>
+        <field name="last_login" type="DateTimeField">2023-09-05T14:19:36.201221+00:00</field>
+        <field name="is_superuser" type="BooleanField">False</field>
+        <field name="username" type="CharField">Dog5</field>
+        <field name="first_name" type="CharField">dog</field>
+        <field name="last_name" type="CharField">dog</field>
+        <field name="email" type="CharField">dog@dog.io</field>
+        <field name="is_staff" type="BooleanField">False</field>
+        <field name="is_active" type="BooleanField">True</field>
+        <field name="date_joined" type="DateTimeField">2023-09-05T14:19:35.496359+00:00</field>
+        <field name="groups" rel="ManyToManyRel" to="auth.group"></field>
+        <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"></field>
+    </object>
+    <object model="auth.user" pk="4">
+        <field name="password" type="CharField">pbkdf2_sha256$600000$m0YM93YTEVYOvyRIo8Ux1B$bU8zEZKkYOoDByIqz6JbuiLvNMCc0coah0vSzmeDpp0=</field>
+        <field name="last_login" type="DateTimeField">2023-09-05T14:20:49.689477+00:00</field>
+        <field name="is_superuser" type="BooleanField">False</field>
+        <field name="username" type="CharField">Cat55</field>
+        <field name="first_name" type="CharField">Котофей</field>
+        <field name="last_name" type="CharField">Котофеевич</field>
+        <field name="email" type="CharField">cat55@mail.com</field>
+        <field name="is_staff" type="BooleanField">False</field>
+        <field name="is_active" type="BooleanField">True</field>
+        <field name="date_joined" type="DateTimeField">2023-09-05T14:20:48.977064+00:00</field>
+        <field name="groups" rel="ManyToManyRel" to="auth.group"></field>
+        <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"></field>
+    </object>
+    <object model="profile_app.profile" pk="1">
+        <field name="user" rel="OneToOneRel" to="auth.user">2</field>
+        <field name="phone_number" type="CharField">88002006246</field>
+        <field name="residence" type="CharField">California</field>
+        <field name="address" type="TextField">One Apple Park Way Cupertino, CA 95014</field>
+        <field name="avatar" type="FileField"></field>
+    </object>
+    <object model="profile_app.profile" pk="2">
+        <field name="user" rel="OneToOneRel" to="auth.user">3</field>
+        <field name="phone_number" type="CharField">89008887766</field>
+        <field name="residence" type="CharField">Москва</field>
+        <field name="address" type="TextField">Волгоградский проспект, 42 будка 15</field>
+        <field name="avatar" type="FileField"></field>
+    </object>
+    <object model="profile_app.profile" pk="3">
+        <field name="user" rel="OneToOneRel" to="auth.user">4</field>
+        <field name="phone_number" type="CharField">89008887766</field>
+        <field name="residence" type="CharField">Москва</field>
+        <field name="address" type="TextField">Волгоградский проспект, 42 будка 15</field>
+        <field name="avatar" type="FileField"></field>
+    </object>
+</django-objects>

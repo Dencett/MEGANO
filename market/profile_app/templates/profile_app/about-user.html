@@ -1,0 +1,43 @@
+{% extends 'profile_app/base.html' %}
+
+{% block title %}
+  About me
+{% endblock %}
+
+
+{% block body %}
+  <h1>Личный кабинет пользователя</h1>
+  {% if user.is_authenticated %}
+    <h2>Детали</h2>
+    {% if user.profile.user_avatar  %}
+      <p>
+        <img src="{{ user.profile.user_avatar.url }}" alt="{{ user.profile.user_avatar.name }}">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ update_avatar.as_p }}
+            <button type="submit">Update avatar</button>
+        </form>
+      </p>
+
+    {% else %}
+    <h3>У пользователя нет "Аватара"</h3>
+      <p>
+        <img src="{{ user.profile.user_avatar.url }}" alt="{{ user.profile.user_avatar.name }}">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ update_avatar.as_p }}
+            <button type="submit">Update avatar</button>
+        </form>
+      </p>
+    {% endif %}
+    <p>Username: {{ user.username }}</p>
+    <p>First name: {{ user.first_name }}</p>
+    <p>Last name: {{ user.last_name }}</p>
+    <p>City residence: {{ user.profile.residence }}</p>
+    <p>Address: {{ user.profile.address }}</p>
+    <p>Phone number: {{ user.profile.phone_number }}</p>
+    <p>Email: {{ user.email }}</p>
+  {% else %}
+    <h2>User is anonymous</h2>
+  {% endif %}
+{% endblock %}

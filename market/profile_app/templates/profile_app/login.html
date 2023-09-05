@@ -1,0 +1,15 @@
+{% extends 'profile_app/base.html' %}
+
+{% block title %}
+  Login
+{% endblock %}
+
+{% block body %}
+<h1>Страница авторизации</h1>
+  <form method="post">
+    {% csrf_token %}
+    <p>Имя пользователя: {{ form.username }}</p>
+    <p>Пароль: {{ form.password }}</p>
+    <button type="submit">Login</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'profile_app/base.html' %}
+
+{% block title %}
+  Registration page
+{% endblock %}
+
+{% block body %}
+  <h1>Registration page</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Registration">
+  </form>
+{% endblock %}

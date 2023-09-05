@@ -1,0 +1,85 @@
+-   model: auth.user
+    pk: 1
+    fields:
+        password: pbkdf2_sha256$600000$F7ijzzcs3sMeI8L5UQGUOl$DHVJYgnCLJA1q+U8i8iZdj84F2sOjPpRDmzXf+fvzZY=
+        last_login: null
+        is_superuser: true
+        username: admin
+        first_name: ''
+        last_name: ''
+        email: admin@admin.com
+        is_staff: true
+        is_active: true
+        date_joined: 2023-09-05 14:16:50.112092+00:00
+        groups: []
+        user_permissions: []
+-   model: auth.user
+    pk: 2
+    fields:
+        password: pbkdf2_sha256$600000$4xsNeQnE8Q18j32IIFQylR$36mo5PCC1E/zMKX9LLkHQivUnEsAd0QuRDlUjZiFRGs=
+        last_login: 2023-09-05 14:18:32.689114+00:00
+        is_superuser: false
+        username: retailer1
+        first_name: retailer1
+        last_name: retailer1
+        email: apple-retailer@not-apple.com
+        is_staff: true
+        is_active: true
+        date_joined: 2023-09-05 14:18:31.959167+00:00
+        groups:
+        - 1
+        user_permissions: []
+-   model: auth.user
+    pk: 3
+    fields:
+        password: pbkdf2_sha256$600000$zqFffxgcwcVlE8Wp7G3euw$5GFfMP/6s+rs/SsCUQnHXOxE0RyG+bu0o2EfAp+dzio=
+        last_login: 2023-09-05 14:19:36.201221+00:00
+        is_superuser: false
+        username: Dog5
+        first_name: dog
+        last_name: dog
+        email: dog@dog.io
+        is_staff: false
+        is_active: true
+        date_joined: 2023-09-05 14:19:35.496359+00:00
+        groups: []
+        user_permissions: []
+-   model: auth.user
+    pk: 4
+    fields:
+        password: pbkdf2_sha256$600000$m0YM93YTEVYOvyRIo8Ux1B$bU8zEZKkYOoDByIqz6JbuiLvNMCc0coah0vSzmeDpp0=
+        last_login: 2023-09-05 14:20:49.689477+00:00
+        is_superuser: false
+        username: Cat55
+        first_name: Котофей
+        last_name: Котофеевич
+        email: cat55@mail.com
+        is_staff: false
+        is_active: true
+        date_joined: 2023-09-05 14:20:48.977064+00:00
+        groups: []
+        user_permissions: []
+-   model: profile_app.profile
+    pk: 1
+    fields:
+        user: 2
+        phone_number: '88002006246'
+        residence: California
+        address: One Apple Park Way Cupertino, CA 95014
+        avatar: ''
+-   model: profile_app.profile
+    pk: 2
+    fields:
+        user: 3
+        phone_number: '89008887766'
+        residence: Москва
+        address: Волгоградский проспект, 42 будка 15
+        avatar: ''
+-   model: profile_app.profile
+    pk: 3
+    fields:
+        user: 4
+        phone_number: '89008887766'
+        residence: Москва
+        address: Волгоградский проспект, 42 будка 15
+        avatar: ''
