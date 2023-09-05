@@ -6,8 +6,8 @@ class Product(models.Model):
     """Продукт"""
 
     class Meta:
-        verbose_name = "Продукт"
-        verbose_name_plural = "Продукты"
+        verbose_name = _("продукт")
+        verbose_name_plural = _("продукты")
 
     name = models.CharField(max_length=512, verbose_name=_("наименование"))
     details = models.ManyToManyField("Detail", through="ProductDetail", verbose_name=_("характеристики"))
@@ -17,8 +17,8 @@ class Detail(models.Model):
     """Свойство продукта"""
 
     class Meta:
-        verbose_name = "Свойство продуктов"
-        verbose_name_plural = "Свойства продуктов"
+        verbose_name = _("свойство продуктов")
+        verbose_name_plural = _("свойства продуктов")
 
     name = models.CharField(max_length=512, verbose_name=_("наименование"))
 
@@ -27,8 +27,8 @@ class ProductDetail(models.Model):
     """Значение свойства продукта"""
 
     class Meta:
-        verbose_name = "Значение свойства продуктов"
-        verbose_name_plural = "Значения свойства продуктов"
+        verbose_name = _("значение свойства продуктов")
+        verbose_name_plural = _("значения свойства продуктов")
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     detail = models.ForeignKey(Detail, on_delete=models.CASCADE)
@@ -39,8 +39,8 @@ class Category(models.Model):
     """Категория продукта"""
 
     class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
+        verbose_name = _("категория")
+        verbose_name_plural = _("категории")
 
     name = models.CharField(max_length=128, unique=True, verbose_name=_("наименование"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
