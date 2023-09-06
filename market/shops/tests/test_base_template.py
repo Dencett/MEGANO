@@ -5,7 +5,7 @@ from django.http.request import HttpRequest
 
 class BaseTemplateTest(TestCase):
     def test_template_render(self):
-        template = "base.jinja"
+        template = "base.jinja2"
         request = HttpRequest()
         context = {}
         response = render(request, template, context=context)
