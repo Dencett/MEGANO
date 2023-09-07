@@ -74,7 +74,7 @@ TEMPLATES = [
                 "django_jinja.builtins.extensions.DebugExtension",
                 "django_jinja.builtins.extensions.UrlsExtension",
             },
-            "match_extension": ".jinja",
+            "match_extension": ".jinja2",
             "match_regex": None,
             "app_dirname": "templates",
         },
