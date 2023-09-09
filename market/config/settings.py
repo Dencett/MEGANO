@@ -15,7 +15,6 @@ from pathlib import Path
 from django.urls import reverse_lazy
 from dotenv import dotenv_values
 
-import dj_database_url
 
 config = dotenv_values(os.path.join("..", ".env"))
 
@@ -42,10 +41,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_jinja",
+    # "django_jinja",
     "products",
     "shops",
-    "profile_app.apps.ProfileAppConfig",
+    "profiles",
 ]
 
 MIDDLEWARE = [
@@ -61,27 +60,47 @@ MIDDLEWARE = [
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
-    {
-        "BACKEND": "django_jinja.backend.Jinja2",
-        "DIRS": [BASE_DIR / "templates"],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "extensions": {
-                "jinja2.ext.i18n",
-                "django_jinja.builtins.extensions.StaticFilesExtension",
-                "django_jinja.builtins.extensions.CsrfExtension",
-                "django_jinja.builtins.extensions.CacheExtension",
-                "django_jinja.builtins.extensions.DebugExtension",
-                "django_jinja.builtins.extensions.UrlsExtension",
-            },
-            "match_extension": ".jinja2",
-            "match_regex": None,
-            "app_dirname": "templates",
-        },
-    },
+    # {
+    #     "BACKEND": "django_jinja.backend.Jinja2",
+    #     # "BACKEND": 'django.template.backends.jinja2.Jinja2',
+    #     "DIRS": [BASE_DIR / "templates"],
+    #     "APP_DIRS": True,
+    #     "OPTIONS": {
+    #         "extensions": {
+    #             "jinja2.ext.i18n",
+    #             "django_jinja.builtins.extensions.StaticFilesExtension",
+    #             "django_jinja.builtins.extensions.CsrfExtension",
+    #             "django_jinja.builtins.extensions.CacheExtension",
+    #             "django_jinja.builtins.extensions.DebugExtension",
+    #             "django_jinja.builtins.extensions.UrlsExtension",
+    #         },
+    #         "match_extension": ".jinja2",
+    #         "match_regex": None,
+    #         "app_dirname": "templates",
+    #         "context_processors": [
+    #             "django.template.context_processors.debug",
+    #             "django.template.context_processors.request",
+    #             "django.contrib.auth.context_processors.auth",
+    #             "django.contrib.messages.context_processors.messages",
+    #         ],
+    #     },
+    # },
+    # {
+    #     "BACKEND": "django.template.backends.django.DjangoTemplates",
+    #     "DIRS": [BASE_DIR / "templates"],
+    #     "APP_DIRS": True,
+    #     "OPTIONS": {
+    #         "context_processors": [
+    #             "django.template.context_processors.debug",
+    #             "django.template.context_processors.request",
+    #             "django.contrib.auth.context_processors.auth",
+    #             "django.contrib.messages.context_processors.messages",
+    #         ],
+    #     },
+    # },
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -94,17 +113,31 @@ TEMPLATES = [
     },
 ]
 
+# TEMPLATE_LOADERS = (
+#     'jinja2_for_django.Loader',
+# )
+
+# FORM_RENDERER = "django.forms.renderers.Jinja2DivFormRenderer"
+
 WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {"default": dj_database_url.parse(config["DATABASE_URL"])}
+# DATABASES = {"default": dj_database_url.parse(config["DATABASE_URL"])}
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 REDIS_URL = config["REDIS_URL"]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = "profiles.User"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -138,12 +171,16 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = ("static",)
+# STATICFILES_DIRS = ("static",)
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "uploads"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = reverse_lazy("profile:home-page")
-LOGIN_URL = reverse_lazy("profile:login")
+LOGIN_REDIRECT_URL = reverse_lazy("profiles:home-page")
+LOGIN_URL = reverse_lazy("profiles:login")

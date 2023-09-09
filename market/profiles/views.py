@@ -12,7 +12,7 @@ from .forms import UserRegisterForm, ProfileAvatarUpdateForm
 class AboutUserView(TemplateView):
     """View class заглушка - информация о пользователе."""
 
-    template_name = "profile_app/about-user.html"
+    template_name = "profiles/about-user.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -20,39 +20,53 @@ class AboutUserView(TemplateView):
         return context
 
     def post(self, request):
-        # Need a module - pillow
         update_avatar = ProfileAvatarUpdateForm(request.POST, request.FILES)
 
         if update_avatar.is_valid():
             picture = update_avatar.cleaned_data.get("user_avatar")
             profile = Profile.objects.get(user=request.user)
-            profile.user_avatar = picture
+            profile.avatar = picture
             profile.save()
-            return HttpResponseRedirect(reverse("profile:about-user"))
-        return HttpResponseRedirect(reverse("profile:about-user"))
+            return HttpResponseRedirect(reverse("profiles:about-user"))
+        return HttpResponseRedirect(reverse("profiles:about-user"))
 
 
 class HomePage(TemplateView):
     """View class заглушка - главная страница сайта."""
 
-    template_name = "profile_app/index.html"
+    template_name = "profiles/index.html"
+
+    # def get(self, request, **kwargs):
+    #     user = self.request.user
+    #
+    #     self.extra_context = {"user": user}
+    #     # super().get(request)
+    #
+    #     context = self.get_context_data(**kwargs)
+    #     return self.render_to_response(context)
 
 
-class RegisterView(CreateView):
+class UserRegisterView(CreateView):
     """
     View class для регистрации пользователей. Если данные из формы валидны,
     авторизовывает пользователя и перенаправляет на главную страницу сайта.
     """
 
     form_class = UserRegisterForm
-    template_name = "profile_app/register.html"
-    success_url = reverse_lazy("profile:home-page")
+    template_name = "profiles/register.html"
+    success_url = reverse_lazy("profiles:home-page")
+
+    def get(self, request, **kwargs):
+        form = UserRegisterForm()
+        super().get(form)
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
 
     def form_valid(self, form):
         response = super().form_valid(form)
 
-        username = form.cleaned_data.get("username")
         password = form.cleaned_data.get("password1")
+        email = form.cleaned_data.get("email")
         phone_number = form.cleaned_data.get("phone_number")
         residence = form.cleaned_data.get("residence")
         address = form.cleaned_data.get("address")
@@ -66,7 +80,7 @@ class RegisterView(CreateView):
         )
         user = authenticate(
             self.request,
-            username=username,
+            email=email,
             password=password,
         )
 
@@ -80,12 +94,18 @@ class RegisterView(CreateView):
         return response
 
 
-class MyLogoutView(LogoutView):
+class UserLogoutView(LogoutView):
     """View class заглушка - user logout."""
 
-    next_page = reverse_lazy("profile:home-page")
+    next_page = reverse_lazy("profiles:home-page")
 
 
-class UserResetPasswordViewTwo(PasswordChangeView):
-    template_name = "profile_app/password_form.html"
-    success_url = reverse_lazy("profile:home-page")
+class UserResetPasswordView(PasswordChangeView):
+    """View class change password. Asks the user for the old password
+    and the new password twice.
+    If the first new password matches the second, it sets a new password
+    to the user and sends the user to the main page.
+    """
+
+    template_name = "profiles/password_form.html"
+    success_url = reverse_lazy("profiles:home-page")

@@ -20,10 +20,10 @@ class LogoutViewTestCase(TestCase):
         self.client.login(**self.credentials)
 
     def test_logout_user(self):
-        response = self.client.get(reverse("profile:logout"))
-        to_reverse = self.client.get(reverse("profile:home-page"))
+        response = self.client.get(reverse("profiles:logout"))
+        to_reverse = self.client.get(reverse("profiles:home-page"))
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse("profile:home-page"))
+        self.assertRedirects(response, reverse("profiles:home-page"))
         self.assertEqual(to_reverse.status_code, 200)
 
 
@@ -80,25 +80,25 @@ class UserLoginTestCase(TestCase):
         self.client.login(**self.user_login_info)
 
     def test_user_login(self):
-        response = self.client.get(reverse("profile:home-page"))
+        response = self.client.get(reverse("profiles:home-page"))
         self.assertEqual(response.status_code, 200)
         self.assertTrue("Главная страница маркетплейса")
         self.assertContains(response, self.user.username)
 
     def test_user_login_to_about_user_page(self):
-        response = self.client.get(reverse("profile:about-user"))
+        response = self.client.get(reverse("profiles:about-user"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Личный кабинет пользователя")
         self.assertContains(response, self.user.username)
 
     def test_user_login_to_change_password_page(self):
-        response = self.client.get(reverse("profile:change-password"))
+        response = self.client.get(reverse("profiles:change-password"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Password change page")
         self.assertContains(response, "Old password:")
 
     def test_user_login_to_register_page(self):
-        response = self.client.get(reverse("profile:register"))
+        response = self.client.get(reverse("profiles:register"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Registration page")
         self.assertContains(response, "Выбрать, если вы хотите стать продавцом на сайте:")

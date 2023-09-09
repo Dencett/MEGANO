@@ -1,6 +1,7 @@
 from django import forms
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import BaseUserCreationForm, UsernameField
+
+from .models import User
 
 
 class UserRegisterForm(BaseUserCreationForm):
@@ -54,7 +55,7 @@ class UserRegisterForm(BaseUserCreationForm):
             "residence",
             "address",
             "retailer_group",
-        ]  # "__all__",
+        ]
 
         field_classes = {
             "username": UsernameField,
@@ -67,6 +68,13 @@ class UserRegisterForm(BaseUserCreationForm):
             "address": forms.CharField,
             "retailer_group": forms.BooleanField,
         }
+
+
+def profile_directory_path(instance: "ProfileAvatarUpdateForm", filename):
+    return "profile/{pk}/avatar/{filename}".format(
+        pk=instance.user.pk,
+        filename=filename,
+    )
 
 
 class ProfileAvatarUpdateForm(forms.Form):

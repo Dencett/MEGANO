@@ -16,6 +16,7 @@ ipython = "^8.14.0"
 django-extensions = "^3.2.3"
 dj-database-url = "^2.0.0"
 django-jinja = "^2.10.2"
+pillow = "^10.0.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"

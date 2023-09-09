@@ -1,9 +1,16 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _
+
+
+class User(AbstractUser):
+    email = models.EmailField(_("email address"), unique=True)
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
 
 
 def profile_directory_path(instance: "Profile", filename):
-    return "profile/profile_{pk}/avatar/{filename}".format(
+    return "profiles/{pk}/avatar/{filename}".format(
         pk=instance.user.pk,
         filename=filename,
     )

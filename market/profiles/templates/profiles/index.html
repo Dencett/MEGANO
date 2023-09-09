@@ -1,4 +1,4 @@
-{% extends 'profile_app/base.html' %}
+{% extends 'profiles/base.html' %}
 
 {% block title %}
 Home page
@@ -9,11 +9,11 @@ Home page
     {% if user.is_authenticated %}
 
         <p>Добро пожаловать <b>{{ request.user.username }}</b>.</p>
-        <p><a href="{% url 'profile:logout' %}">Выход из аккаунта</a></p>
+        <p><a href="{% url 'profiles:logout' %}">Выход из аккаунта</a></p>
         <br>
-        <p><a href="{% url 'profile:about-user' %}">Личный кабинет</a></p>
+        <p><a href="{% url 'profiles:about-user' %}">Личный кабинет</a></p>
         <br>
-        <p><a href="{% url 'profile:change-password' %}">Сменить пароль</a></p>
+        <p><a href="{% url 'profiles:change-password' %}">Сменить пароль</a></p>
         <br>
 
         {% if user.is_staff %}
@@ -23,8 +23,8 @@ Home page
     {% else %}
 
     <p>Вы просматриваете страницу как "Анонимный" пользователь</p>
-    <p><a href="{% url 'profile:login' %}">Войти в аккаунт</a></p>
+    <p><a href="{% url 'profiles:login' %}">Войти в аккаунт</a></p>
     <br>
-    <p><a href="{% url 'profile:register' %}">Регистрация</a></p>
+    <p><a href="{% url 'profiles:register' %}">Регистрация</a></p>
     {% endif %}
 {% endblock %}
