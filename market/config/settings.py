@@ -15,6 +15,7 @@ from pathlib import Path
 from django.urls import reverse_lazy
 from dotenv import dotenv_values
 
+import dj_database_url
 
 config = dotenv_values(os.path.join("..", ".env"))
 
@@ -62,7 +63,6 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django_jinja.backend.Jinja2",
-        # "BACKEND": 'django.template.backends.jinja2.Jinja2',
         "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -98,40 +98,16 @@ TEMPLATES = [
             ],
         },
     },
-    # {
-    #     "BACKEND": "django.template.backends.django.DjangoTemplates",
-    #     "DIRS": [],
-    #     "APP_DIRS": True,
-    #     "OPTIONS": {
-    #         "context_processors": [
-    #             "django.template.context_processors.debug",
-    #             "django.template.context_processors.request",
-    #             "django.contrib.auth.context_processors.auth",
-    #             "django.contrib.messages.context_processors.messages",
-    #         ],
-    #     },
-    # },
 ]
 
-# TEMPLATE_LOADERS = (
-#     'jinja2_for_django.Loader',
-# )
-
-# FORM_RENDERER = "django.forms.renderers.Jinja2DivFormRenderer"
 
 WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {"default": dj_database_url.parse(config["DATABASE_URL"])}
+DATABASES = {"default": dj_database_url.parse(config["DATABASE_URL"])}
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 REDIS_URL = config["REDIS_URL"]
 
 # Password validation
