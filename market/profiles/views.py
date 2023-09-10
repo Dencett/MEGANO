@@ -12,7 +12,8 @@ from .forms import UserRegisterForm, ProfileAvatarUpdateForm
 class AboutUserView(TemplateView):
     """View class заглушка - информация о пользователе."""
 
-    template_name = "profiles/about-user.html"
+    # template_name = "profiles/about-user.html"
+    template_name = "profiles/about-user.jinja2"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -34,16 +35,8 @@ class AboutUserView(TemplateView):
 class HomePage(TemplateView):
     """View class заглушка - главная страница сайта."""
 
-    template_name = "profiles/index.html"
-
-    # def get(self, request, **kwargs):
-    #     user = self.request.user
-    #
-    #     self.extra_context = {"user": user}
-    #     # super().get(request)
-    #
-    #     context = self.get_context_data(**kwargs)
-    #     return self.render_to_response(context)
+    # template_name = "profiles/index.html"
+    template_name = "profiles/index.jinja2"
 
 
 class UserRegisterView(CreateView):
@@ -53,7 +46,8 @@ class UserRegisterView(CreateView):
     """
 
     form_class = UserRegisterForm
-    template_name = "profiles/register.html"
+    # template_name = "profiles/register.html"
+    template_name = "profiles/register.jinja2"
     success_url = reverse_lazy("profiles:home-page")
 
     def get(self, request, **kwargs):
@@ -107,5 +101,6 @@ class UserResetPasswordView(PasswordChangeView):
     to the user and sends the user to the main page.
     """
 
-    template_name = "profiles/password_form.html"
+    # template_name = "profiles/password_form.html"
+    template_name = "profiles/password_form.jinja2"
     success_url = reverse_lazy("profiles:home-page")

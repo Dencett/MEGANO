@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # "django_jinja",
+    "django_jinja",
     "products",
     "shops",
     "profiles",
@@ -60,47 +60,34 @@ MIDDLEWARE = [
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
-    # {
-    #     "BACKEND": "django_jinja.backend.Jinja2",
-    #     # "BACKEND": 'django.template.backends.jinja2.Jinja2',
-    #     "DIRS": [BASE_DIR / "templates"],
-    #     "APP_DIRS": True,
-    #     "OPTIONS": {
-    #         "extensions": {
-    #             "jinja2.ext.i18n",
-    #             "django_jinja.builtins.extensions.StaticFilesExtension",
-    #             "django_jinja.builtins.extensions.CsrfExtension",
-    #             "django_jinja.builtins.extensions.CacheExtension",
-    #             "django_jinja.builtins.extensions.DebugExtension",
-    #             "django_jinja.builtins.extensions.UrlsExtension",
-    #         },
-    #         "match_extension": ".jinja2",
-    #         "match_regex": None,
-    #         "app_dirname": "templates",
-    #         "context_processors": [
-    #             "django.template.context_processors.debug",
-    #             "django.template.context_processors.request",
-    #             "django.contrib.auth.context_processors.auth",
-    #             "django.contrib.messages.context_processors.messages",
-    #         ],
-    #     },
-    # },
-    # {
-    #     "BACKEND": "django.template.backends.django.DjangoTemplates",
-    #     "DIRS": [BASE_DIR / "templates"],
-    #     "APP_DIRS": True,
-    #     "OPTIONS": {
-    #         "context_processors": [
-    #             "django.template.context_processors.debug",
-    #             "django.template.context_processors.request",
-    #             "django.contrib.auth.context_processors.auth",
-    #             "django.contrib.messages.context_processors.messages",
-    #         ],
-    #     },
-    # },
+    {
+        "BACKEND": "django_jinja.backend.Jinja2",
+        # "BACKEND": 'django.template.backends.jinja2.Jinja2',
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "extensions": {
+                "jinja2.ext.i18n",
+                "django_jinja.builtins.extensions.StaticFilesExtension",
+                "django_jinja.builtins.extensions.CsrfExtension",
+                "django_jinja.builtins.extensions.CacheExtension",
+                "django_jinja.builtins.extensions.DebugExtension",
+                "django_jinja.builtins.extensions.UrlsExtension",
+            },
+            "match_extension": ".jinja2",
+            "match_regex": None,
+            "app_dirname": "templates",
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -111,6 +98,19 @@ TEMPLATES = [
             ],
         },
     },
+    # {
+    #     "BACKEND": "django.template.backends.django.DjangoTemplates",
+    #     "DIRS": [],
+    #     "APP_DIRS": True,
+    #     "OPTIONS": {
+    #         "context_processors": [
+    #             "django.template.context_processors.debug",
+    #             "django.template.context_processors.request",
+    #             "django.contrib.auth.context_processors.auth",
+    #             "django.contrib.messages.context_processors.messages",
+    #         ],
+    #     },
+    # },
 ]
 
 # TEMPLATE_LOADERS = (

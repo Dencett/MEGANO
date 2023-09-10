@@ -15,7 +15,8 @@ urlpatterns = [
     path(
         "login/",
         LoginView.as_view(
-            template_name="profiles/login.html",
+            # template_name="profiles/login.html",
+            template_name="profiles/login.jinja2",
             redirect_authenticated_user=True,
         ),
         name="login",

@@ -17,7 +17,6 @@ class UserRegisterForm(BaseUserCreationForm):
         label="Адрес доставки",
         widget=forms.Textarea(attrs={"cols": "60", "rows": "5"}),
     )
-
     retailer_group = forms.BooleanField(
         initial=False,
         required=False,
