@@ -1,11 +1,10 @@
-from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Profile
+from .models import Profile, User
 
 
-class LogoutViewTestCase(TestCase):
+class UserLogoutTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         # создает пользователя
@@ -27,27 +26,25 @@ class LogoutViewTestCase(TestCase):
         self.assertEqual(to_reverse.status_code, 200)
 
 
-class UserRegisterTestCase(TestCase):
+class UserLoginTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.user_login_info = {
             "username": "John-test",
+            "email": "jhon@test.com",
             "password": "JohnTest1234",
         }
-        cls.user_info = {
-            "first_name": "John",
-            "last_name": "JohnJunior",
-            "email": "test@test.com",
-            "phone_number": "89998881122",
-            "residence": "89998881122",
-            "address": "Tagil",
+        cls.profile_info = {
+            "phone_number": "89701112233",
+            "residence": "London",
+            "address": "Bakers streets 148 ap.3",
         }
         cls.user = User.objects.create_user(**cls.user_login_info)
-
-        cls.user_profile = Profile(
+        cls.profile = Profile.objects.create(
             user=cls.user,
-            phone_number=cls.user_info["phone_number"],
-            residence=cls.user_info["residence"],
+            phone_number=cls.profile_info["phone_number"],
+            residence=cls.profile_info["residence"],
+            address=cls.profile_info["address"],
         )
 
     @classmethod
@@ -55,29 +52,10 @@ class UserRegisterTestCase(TestCase):
         cls.user.delete()
 
     def setUp(self) -> None:
-        self.client.login(**self.user_info)
-
-    def test_user_permissions_active(self):
-        # self.user.groups.add("retailer")
-        response = self.client.get("localhost:8000/admin/")
-        self.assertEqual(response.status_code, 404)
-
-
-class UserLoginTestCase(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.user_login_info = {
-            "username": "John-test",
-            "password": "JohnTest1234",
-        }
-        cls.user = User.objects.create_user(**cls.user_login_info)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
-
-    def setUp(self) -> None:
-        self.client.login(**self.user_login_info)
+        self.client.login(
+            email=self.user_login_info["email"],
+            password=self.user_login_info["password"],
+        )
 
     def test_user_login(self):
         response = self.client.get(reverse("profiles:home-page"))
@@ -88,7 +66,7 @@ class UserLoginTestCase(TestCase):
     def test_user_login_to_about_user_page(self):
         response = self.client.get(reverse("profiles:about-user"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Личный кабинет пользователя")
+        self.assertContains(response, "About user information")
         self.assertContains(response, self.user.username)
 
     def test_user_login_to_change_password_page(self):
@@ -102,3 +80,57 @@ class UserLoginTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Registration page")
         self.assertContains(response, "Выбрать, если вы хотите стать продавцом на сайте:")
+
+
+class UserRegisterTestCase(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.all_info = {
+            "username": "John-test",
+            "phone_number": "89701112233",
+            "residence": "London",
+            "address": "Bakers streets 148 ap.3",
+            "retailer_group": True,
+        }
+        cls.user_login_info = {
+            "email": "jhon@test.com",
+            "password": "JohnTest1234",
+        }
+
+        cls.user = User.objects.create_user(
+            username=cls.all_info["username"],
+            email=cls.user_login_info["email"],
+            password=cls.user_login_info["password"],
+        )
+        cls.profile = Profile.objects.create(
+            user=cls.user,
+            phone_number=cls.all_info["phone_number"],
+            residence=cls.all_info["residence"],
+            address=cls.all_info["address"],
+        )
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.user.delete()
+        cls.profile.delete()
+
+    def setUp(self) -> None:
+        self.client.login(**self.user_login_info)
+
+    def test_user_permissions_active(self):
+        response = self.client.get(reverse("profiles:home-page"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_user_sign_in_profile(self):
+        response = self.client.get(reverse("profiles:about-user"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_user_sign_in_change_password(self):
+        response = self.client.get(reverse("profiles:change-password"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_user_sign_in_logout(self):
+        response = self.client.get(reverse("profiles:logout"))
+        to_home = self.client.get(reverse("profiles:home-page"))
+        url = to_home.wsgi_request.META["PATH_INFO"]
+        self.assertEqual(response.url, url)
