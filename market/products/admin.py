@@ -4,7 +4,57 @@ from django.http import HttpRequest
 
 from django.utils import timezone
 
-from .models import Category
+from .models import Category, Detail, Product, ProductDetail
+
+
+class DetailInline(admin.StackedInline):
+    model = Product.details.through
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    """Админ Продукты"""
+
+    inlines = [
+        DetailInline,
+    ]
+
+    list_display = (
+        "pk",
+        "name",
+    )
+    list_display_links = (
+        "pk",
+        "name",
+    )
+    ordering = ("pk",)
+
+
+@admin.register(Detail)
+class DetailAdmin(admin.ModelAdmin):
+    """Админ Свойство продуктов"""
+
+    list_display = (
+        "pk",
+        "name",
+    )
+    list_display_links = (
+        "pk",
+        "name",
+    )
+    ordering = ("pk",)
+
+
+@admin.register(ProductDetail)
+class ProductDetailAdmin(admin.ModelAdmin):
+    """Админ Значение свойства продукта"""
+
+    list_display = ("pk", "product", "detail", "value")
+    list_display_links = (
+        "pk",
+        "value",
+    )
+    ordering = ("pk",)
 
 
 @admin.action(description="Архивировать категории")
@@ -29,8 +79,11 @@ class CategoryAdmin(admin.ModelAdmin):
         "pk",
         "parent_name_id",
         "name",
+        # "icon",
+        # "icon_path",
         "created_at",
         "modified_at",
+        "is_active",
         "archived",
     )
     list_display_links = (
@@ -54,7 +107,21 @@ class CategoryAdmin(admin.ModelAdmin):
                 "fields": (
                     "name",
                     "parent",
+                    # "icon_path",
                 ),
+            },
+        ),
+        (
+            "Иконка",
+            {
+                "fields": ("icon",),
+            },
+        ),
+        (
+            "Статус категории",
+            {
+                "fields": ("is_active",),
+                "description": "Поле используеться для задания статуса категории",
             },
         ),
         (

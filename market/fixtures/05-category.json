@@ -3,275 +3,195 @@
     "model": "products.category",
     "pk": 1,
     "fields": {
-      "name": "Электроника",
+      "name": "Мобильные телефоны",
       "created_at": "2023-08-31T13:49:46.669Z",
-      "modified_at": "2023-08-31T13:49:52.922Z",
+      "modified_at": "2023-09-10T08:10:34.189Z",
       "archived": false,
-      "parent": null
+      "is_active": true,
+      "parent": null,
+      "icon": "img/icons/categories/mob_icon.svg"
     }
   },
   {
     "model": "products.category",
     "pk": 2,
     "fields": {
-      "name": "Смартфоны и Аксессуары",
+      "name": "Компьютеры",
       "created_at": "2023-08-31T13:55:50.347Z",
-      "modified_at": "2023-08-31T13:55:53.732Z",
+      "modified_at": "2023-09-10T20:17:38.509Z",
       "archived": false,
-      "parent": 1
+      "is_active": true,
+      "parent": null,
+      "icon": "img/icons/categories/ps-icon.svg"
     }
   },
   {
     "model": "products.category",
     "pk": 3,
     "fields": {
-      "name": "Смартфоны",
+      "name": "Ноутбуки",
       "created_at": "2023-08-31T13:59:12.311Z",
-      "modified_at": "2023-08-31T13:59:15.451Z",
+      "modified_at": "2023-09-10T20:18:01.889Z",
       "archived": false,
-      "parent": 2
+      "is_active": true,
+      "parent": 2,
+      "icon": "img/icons/categories/ps-icon_RrRFUvi.svg"
     }
   },
   {
     "model": "products.category",
     "pk": 4,
     "fields": {
-      "name": "Аксессуары для смартфонов",
+      "name": "Планшеты",
       "created_at": "2023-08-31T14:06:23.602Z",
-      "modified_at": "2023-08-31T14:06:26.966Z",
+      "modified_at": "2023-09-10T20:18:19.523Z",
       "archived": false,
-      "parent": 2
+      "is_active": true,
+      "parent": 2,
+      "icon": "img/icons/categories/tv-icon_4j73SQp.svg"
     }
   },
   {
     "model": "products.category",
     "pk": 5,
     "fields": {
-      "name": "Ноутбуки и Компьютеры",
+      "name": "Моноблоки",
       "created_at": "2023-08-31T14:09:03.841Z",
-      "modified_at": "2023-08-31T14:09:07.447Z",
+      "modified_at": "2023-09-08T12:20:32.867Z",
       "archived": false,
-      "parent": 1
+      "is_active": true,
+      "parent": 2,
+      "icon": ""
     }
   },
   {
     "model": "products.category",
     "pk": 6,
     "fields": {
-      "name": "Ноутбуки и Планшеты",
+      "name": "Телевизоры",
       "created_at": "2023-08-31T14:12:59.641Z",
-      "modified_at": "2023-08-31T14:13:01.865Z",
+      "modified_at": "2023-09-10T08:10:57.340Z",
       "archived": false,
-      "parent": 5
+      "is_active": true,
+      "parent": null,
+      "icon": "img/icons/categories/tv-icon.svg"
     }
   },
   {
     "model": "products.category",
     "pk": 7,
     "fields": {
-      "name": "Ноутбуки",
+      "name": "Фотоаппараты",
       "created_at": "2023-08-31T14:14:02.799Z",
-      "modified_at": "2023-08-31T14:14:05.416Z",
+      "modified_at": "2023-09-10T08:11:25.199Z",
       "archived": false,
-      "parent": 6
+      "is_active": true,
+      "parent": null,
+      "icon": "img/icons/categories/camera-icon.svg"
     }
   },
   {
     "model": "products.category",
     "pk": 8,
     "fields": {
-      "name": "Планшеты",
-      "created_at": "2023-08-31T14:14:32.195Z",
-      "modified_at": "2023-08-31T14:14:33.930Z",
+      "name": "Техника для дома",
+      "created_at": "2023-08-31T14:14:02.799Z",
+      "modified_at": "2023-09-08T12:20:55.793Z",
       "archived": false,
-      "parent": 6
+      "is_active": true,
+      "parent": null,
+      "icon": ""
     }
   },
   {
     "model": "products.category",
     "pk": 9,
     "fields": {
-      "name": "Аксессуары для ноутбуков",
-      "created_at": "2023-08-31T14:14:52.765Z",
-      "modified_at": "2023-08-31T14:14:55.342Z",
+      "name": "Микроволновые печи",
+      "created_at": "2023-08-31T14:14:02.799Z",
+      "modified_at": "2023-09-10T20:18:35.796Z",
       "archived": false,
-      "parent": 6
+      "is_active": true,
+      "parent": 8,
+      "icon": "img/icons/categories/microwave-icon.svg"
     }
   },
   {
     "model": "products.category",
     "pk": 10,
     "fields": {
-      "name": "Аксессуары для планшетов",
-      "created_at": "2023-08-31T14:17:59.099Z",
-      "modified_at": "2023-08-31T14:18:01.083Z",
+      "name": "Стиральные машины",
+      "created_at": "2023-08-31T14:14:02.799Z",
+      "modified_at": "2023-09-10T20:18:48.085Z",
       "archived": false,
-      "parent": 6
+      "is_active": true,
+      "parent": 8,
+      "icon": "img/icons/categories/washer-icon.svg"
     }
   },
   {
     "model": "products.category",
     "pk": 11,
     "fields": {
-      "name": "Настольные ПК и моноблоки",
-      "created_at": "2023-08-31T14:19:13.802Z",
-      "modified_at": "2023-08-31T14:19:16.988Z",
+      "name": "Кухонные плиты",
+      "created_at": "2023-08-31T14:14:02.799Z",
+      "modified_at": "2023-09-10T20:19:01.836Z",
       "archived": false,
-      "parent": 5
+      "is_active": true,
+      "parent": 8,
+      "icon": "img/icons/categories/stove-icon.svg"
     }
   },
   {
     "model": "products.category",
     "pk": 12,
     "fields": {
-      "name": "Настольное компьютеры",
-      "created_at": "2023-08-31T15:39:59.012Z",
-      "modified_at": "2023-08-31T15:40:02.122Z",
+      "name": "Электроника",
+      "created_at": "2023-08-31T14:14:02.799Z",
+      "modified_at": "2023-09-08T12:21:23.671Z",
       "archived": false,
-      "parent": 11
+      "is_active": true,
+      "parent": null,
+      "icon": ""
     }
   },
   {
     "model": "products.category",
     "pk": 13,
     "fields": {
-      "name": "Моноблоки",
-      "created_at": "2023-08-31T15:40:25.070Z",
-      "modified_at": "2023-08-31T15:40:28.171Z",
+      "name": "Наушники",
+      "created_at": "2023-08-31T14:14:02.799Z",
+      "modified_at": "2023-09-10T20:19:15.733Z",
       "archived": false,
-      "parent": 11
+      "is_active": true,
+      "parent": 12,
+      "icon": "img/icons/categories/hp-icon.svg"
     }
   },
   {
     "model": "products.category",
     "pk": 14,
     "fields": {
-      "name": "Телевизоры и Аксессуары",
-      "created_at": "2023-08-31T15:42:06.364Z",
-      "modified_at": "2023-08-31T15:42:08.585Z",
+      "name": "Колонки",
+      "created_at": "2023-08-31T14:14:02.799Z",
+      "modified_at": "2023-09-10T20:19:25.334Z",
       "archived": false,
-      "parent": 1
+      "is_active": true,
+      "parent": 12,
+      "icon": "img/icons/categories/loadspeaker-icon.svg"
     }
   },
   {
     "model": "products.category",
     "pk": 15,
     "fields": {
-      "name": "Телевизоры",
-      "created_at": "2023-08-31T15:48:29.503Z",
-      "modified_at": "2023-08-31T15:48:31.384Z",
+      "name": "Аксессуары",
+      "created_at": "2023-08-31T14:14:02.799Z",
+      "modified_at": "2023-09-08T12:14:41.266Z",
       "archived": false,
-      "parent": 14
-    }
-  },
-  {
-    "model": "products.category",
-    "pk": 16,
-    "fields": {
-      "name": "Пульи ДУ",
-      "created_at": "2023-08-31T15:49:54.717Z",
-      "modified_at": "2023-08-31T15:49:56.496Z",
-      "archived": false,
-      "parent": 14
-    }
-  },
-  {
-    "model": "products.category",
-    "pk": 17,
-    "fields": {
-      "name": "3D-очки",
-      "created_at": "2023-08-31T15:50:47.371Z",
-      "modified_at": "2023-08-31T15:50:51.183Z",
-      "archived": false,
-      "parent": 14
-    }
-  },
-  {
-    "model": "products.category",
-    "pk": 18,
-    "fields": {
-      "name": "Кронштейны",
-      "created_at": "2023-08-31T15:51:12.301Z",
-      "modified_at": "2023-08-31T15:51:14.750Z",
-      "archived": false,
-      "parent": 14
-    }
-  },
-  {
-    "model": "products.category",
-    "pk": 19,
-    "fields": {
-      "name": "Бытовая техника",
-      "created_at": "2023-08-31T15:51:58.686Z",
-      "modified_at": "2023-08-31T15:52:00.647Z",
-      "archived": false,
-      "parent": null
-    }
-  },
-  {
-    "model": "products.category",
-    "pk": 20,
-    "fields": {
-      "name": "Крупная техника для кухни",
-      "created_at": "2023-08-31T15:52:57.535Z",
-      "modified_at": "2023-08-31T15:53:01.972Z",
-      "archived": false,
-      "parent": 19
-    }
-  },
-  {
-    "model": "products.category",
-    "pk": 21,
-    "fields": {
-      "name": "Холодильники",
-      "created_at": "2023-08-31T15:53:44.348Z",
-      "modified_at": "2023-08-31T15:53:50.400Z",
-      "archived": false,
-      "parent": 20
-    }
-  },
-  {
-    "model": "products.category",
-    "pk": 22,
-    "fields": {
-      "name": "Посудомоечные машины",
-      "created_at": "2023-08-31T15:54:22.385Z",
-      "modified_at": "2023-08-31T15:54:24.519Z",
-      "archived": false,
-      "parent": 20
-    }
-  },
-  {
-    "model": "products.category",
-    "pk": 23,
-    "fields": {
-      "name": "Климатическая техника",
-      "created_at": "2023-08-31T15:55:13.233Z",
-      "modified_at": "2023-08-31T15:55:15.595Z",
-      "archived": false,
-      "parent": 19
-    }
-  },
-  {
-    "model": "products.category",
-    "pk": 24,
-    "fields": {
-      "name": "Кондиционеры",
-      "created_at": "2023-08-31T15:55:44.607Z",
-      "modified_at": "2023-08-31T15:55:48.013Z",
-      "archived": false,
-      "parent": 23
-    }
-  },
-  {
-    "model": "products.category",
-    "pk": 25,
-    "fields": {
-      "name": "Вентиляторы",
-      "created_at": "2023-08-31T15:58:07.347Z",
-      "modified_at": "2023-08-31T15:58:10.185Z",
-      "archived": false,
-      "parent": 23
+      "is_active": true,
+      "parent": null,
+      "icon": ""
     }
   }
 ]

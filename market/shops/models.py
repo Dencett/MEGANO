@@ -5,6 +5,10 @@ from django.utils.translation import gettext_lazy as _
 class Shop(models.Model):
     """Магазин"""
 
+    class Meta:
+        verbose_name = _("магазин")
+        verbose_name_plural = _("магазины")
+
     name = models.CharField(max_length=512, verbose_name=_("название"))
     products = models.ManyToManyField(
         "products.Product",
@@ -16,6 +20,10 @@ class Shop(models.Model):
 
 class Offer(models.Model):
     """Предложение магазина"""
+
+    class Meta:
+        verbose_name = _("предложение магазина")
+        verbose_name_plural = _("предложения магазина")
 
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)

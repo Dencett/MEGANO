@@ -158,12 +158,10 @@ cython_debug/
 
 # directory with media files
 
-media/
+#media/
 market/static/
 market/templates/elmir_trash/
 .gitignore
-<<<<<<< .gitignore
 
-
-=======
->>>>>>> .gitignore
+#OS
+.DS_Store
