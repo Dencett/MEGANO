@@ -4,20 +4,22 @@ from django.http import HttpRequest
 
 from django.utils import timezone
 
-from .models import Category, Detail, Product, ProductDetail
+from .models import Category, Detail, Product, ProductDetail, ProductImage, Tag
 
 
 class DetailInline(admin.StackedInline):
     model = Product.details.through
 
 
+class ProductImageInline(admin.StackedInline):
+    model = ProductImage
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     """Админ Продукты"""
 
-    inlines = [
-        DetailInline,
-    ]
+    inlines = [DetailInline, ProductImageInline]
 
     list_display = (
         "pk",
@@ -138,3 +140,7 @@ class CategoryAdmin(admin.ModelAdmin):
         if obj.parent is None:
             return
         return str(obj.parent.id)
+
+
+# Регистрация модели тега
+admin.site.register(Tag)

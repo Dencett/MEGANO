@@ -40,6 +40,15 @@
 </head>
 
 <body class="Site">
+    <!--if lt IE 8
+  p.error-browser
+      | Ваш браузер&nbsp;
+      em устарел!&nbsp;
+      a(href="http://browsehappy.com/") Выберите новую версию
+          +s
+          | браузера здесь&nbsp;
+      | для правильного отображения сайта.
+  -->
     <header class="Header">
         <div class="ControlPanel">
             <div class="wrap">
@@ -70,49 +79,19 @@
                 </div>
             </div>
         </div>
-{#        <div class="wrap">#}
-{#          <div class="row Header-rowMain">#}
-{#            <div class="row-block Header-logo"><a class="logo" href="/"><img class="logo-image" src="{{static('assets/img/logo.png')}}" alt=""/></a>#}
-{#            </div>#}
-{#            <nav class="row-block row-block_right Header-menu">#}
-{#              <div class="menuModal" id="navigate">#}
-{#                <ul class="menu menu_main">#}
-{#                  <li class="menu-item"><a class="menu-link" href="/">Home</a>#}
-{#                  </li>#}
-{##}
-{#                  <li class="menu-item"><a class="menu-link" href="/sale">Sale</a>#}
-{#                  </li>#}
-{#                  <li class="menu-item"><span class="menu-label menu-label_success">Hot</span><a class="menu-link" href="/catalog">Catalog</a>#}
-{#                  </li>#}
-{##}
-{#    <!--              <li class="menu-item"><a class="menu-link" href="/catalog">Purchase</a>-->#}
-{#                  </li>#}
-{#                </ul>#}
-{#              </div>#}
-{#            </nav>#}
-{#            <div class="row-block">#}
-{#              <div class="CartBlock"><a class="CartBlock-block" href="#">#}
-{#                <img class="CartBlock-img" src="{{static('assets/img/icons/cart.svg')}}" alt=""/>#}
-{#                  <span class="CartBlock-amount"></span></a>#}
-{#                <div class="CartBlock-block">#}
-{#                    <span class="CartBlock-price">${basketCount.price}$$</span>#}
-{#                </div>#}
-{#              </div>#}
-{#            </div>#}
-{#            <div class="row-block Header-trigger">#}
-{#              <a class="menuTrigger" href="#navigate">#}
-{#                <div class="menuTrigger-content">Показать навигацию</div>#}
-{#                <span></span>#}
-{#                <span></span>#}
-{#                <span></span>#}
-{#              </a>#}
-{#            </div>#}
-{#          </div>#}
-{#    </div>#}
+            <!--+div.menuModal#navigate
+      //    +menu([
+      //        ['Главная','index.html'],
+      //        ['Портфолио','index.html'],
+      //        ['Мои проекты','index.html'],
+      //        ['Контакты','index.html']
+      //    ], page === 'article'? 'Портфолио': 'Главная')._main
+
+      block
+      -->
+    {% block extraheader %}
         <div class="Header-searchWrap">
             <div class="wrap">
-
-                {% block header_categories %}
                     <div class="Header-categories">
                         <div class="CategoriesButton">
 
@@ -128,9 +107,11 @@
                                 {% for item in menu %}
                                     <div class="CategoriesButton-link">
                                         <a href="#">
+                                            {% if item.category.icon %}
                                             <div class="CategoriesButton-icon">
                                                 <img src="/media/{{ item.category.icon }}" alt=""/>
                                             </div>
+                                            {% endif %}
                                             <span class="CategoriesButton-text">{{ item.category.name}}</span>
                                         </a>
 
@@ -139,9 +120,11 @@
                                             <div class="CategoriesButton-submenu">
                                                 {% for subitem in item.submenu %}
                                                     <a class="CategoriesButton-link" href="#">
+                                                        {% if subitem.category.icon %}
                                                         <div class="CategoriesButton-icon">
                                                             <img src="/media/{{ subitem.category.icon }}" alt=""/>
                                                         </div>
+                                                        {% endif %}
                                                         <span class="CategoriesButton-text">{{ subitem.category.name }}</span>
                                                     </a>
                                                 {% endfor %}
@@ -154,16 +137,19 @@
 
                         </div>
                     </div>
-                {% endblock %}
+
 
             </div>
         </div>
-    </header>
-
-    {% block middle %}
     {% endblock %}
 
-    <footer class="Footer">
+
+    </header>
+    {% block middle %}
+
+    {% endblock %}
+    </div>
+      <footer class="Footer">
         <div class="wrap">
             <div class="row Footer-main">
                 <div class="row-block"><a class="logo Footer-logo" href="index.html"><img class="logo-image" src="{{static('assets/img/logo_footer.png')}}" alt="logo_footer.png" /></a>
