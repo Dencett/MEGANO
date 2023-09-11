@@ -79,8 +79,11 @@ class CategoryAdmin(admin.ModelAdmin):
         "pk",
         "parent_name_id",
         "name",
+        # "icon",
+        # "icon_path",
         "created_at",
         "modified_at",
+        "is_active",
         "archived",
     )
     list_display_links = (
@@ -104,7 +107,21 @@ class CategoryAdmin(admin.ModelAdmin):
                 "fields": (
                     "name",
                     "parent",
+                    # "icon_path",
                 ),
+            },
+        ),
+        (
+            "Иконка",
+            {
+                "fields": ("icon",),
+            },
+        ),
+        (
+            "Статус категории",
+            {
+                "fields": ("is_active",),
+                "description": "Поле используеться для задания статуса категории",
             },
         ),
         (
