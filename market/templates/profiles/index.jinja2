@@ -1,0 +1,46 @@
+{% extends 'base.jinja2' %}
+
+{% block title %}
+Home page
+{% endblock %}
+
+{% block extraheader %}
+
+{% endblock %}
+
+{% block middle %}
+
+
+<div class="Middle">
+  <div class="Section">
+      <div class="wrap">
+        <div class="wrapper">
+          <h1 style="text-transform: uppercase;">Главная страница маркетплейса (Test Profiles)</h1>
+
+    {% if user.is_authenticated %}
+        <p style="font-size:1.25em;">Добро пожаловать <b>{{ request.user.username }}</b>.</p>
+
+        <p><a href="{{ url('profiles:logout') }}">Выход из аккаунта</a></p>
+        <br>
+        <p><a href="{{ url('profiles:about-user') }}">Личный кабинет</a></p>
+        <br>
+        <p><a href="{{ url('profiles:change-password') }}">Сменить пароль</a></p>
+        <br>
+
+        {% if user.is_staff %}
+            <p><a href="../admin/">Перейти в админ-панель</a></p>
+        {% endif %}
+
+    {% else %}
+
+    <p>Вы просматриваете страницу как "Анонимный" пользователь</p>
+    <p><a href="{{ url('profiles:login') }}">Войти в аккаунт</a></p>
+    <br>
+    <p><a href="{{ url('profiles:register') }}">Регистрация</a></p>
+    {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+
+from django.urls import reverse_lazy
 from dotenv import dotenv_values
 
 import dj_database_url
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     "django_jinja",
     "products",
     "shops",
+    "profiles",
 ]
 
 MIDDLEWARE = [
@@ -74,6 +77,12 @@ TEMPLATES = [
             "match_extension": ".jinja2",
             "match_regex": None,
             "app_dirname": "templates",
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
         },
     },
     {
@@ -115,6 +124,8 @@ CACHES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = "profiles.User"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -159,3 +170,6 @@ MEDIA_ROOT = "media"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_REDIRECT_URL = reverse_lazy("profiles:home-page")
+LOGIN_URL = reverse_lazy("profiles:login")
