@@ -24,7 +24,12 @@
                                 </h2>
                                 <div class="ProductCard-info">
                                     <div class="ProductCard-cost">
-                                        <div class="ProductCard-price">${{min_price}}
+                                        <div class="ProductCard-price">
+                                            {% if min_price %}
+                                                {{min_price}} ₽
+                                            {% else %}
+                                                Предложений ещё нет
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +138,7 @@
                                                         <div class="Order-info">
                                                             <div class="Order-infoType">Стоимость:
                                                             </div>
-                                                            <div class="Order-infoContent"><span class="Order-price"> {{offer.price}}$</span>
+                                                            <div class="Order-infoContent"><span class="Order-price"> {{offer.price}} ₽</span>
                                                             </div>
                                                         </div>
                                                     </div>

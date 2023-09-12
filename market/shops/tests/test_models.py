@@ -78,3 +78,18 @@ class OfferModelTest(TestCase):
         offer = OfferModelTest.offer
         decimal_places = offer._meta.get_field("price").decimal_places
         self.assertEqual(decimal_places, 2)
+
+    def test_price(self):
+        pass
+
+    def test_product_fields_name(self):
+        attr_names = dir(self.offer)
+        variable_name_in_template = (
+            "shop",
+            "product",
+            "price",
+            "get_delivery_method_display",
+            "get_payment_method_display",
+        )
+        for name in variable_name_in_template:
+            self.assertIn(name, attr_names)

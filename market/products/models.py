@@ -1,3 +1,4 @@
+import os
 from typing import Union
 
 from django.db import models
@@ -9,7 +10,7 @@ from django.core.validators import FileExtensionValidator
 def product_images_directory_path(instance: Union["Product", "ProductImage"], filename: str) -> str:
     if isinstance(instance, ProductImage):
         return "img/products/{name}/{filename}".format(name=instance.product.name, filename=filename)
-    return "img/products/{name}/{filename}".format(name=instance.name, filename=filename)
+    return "img/products/{name}/preview_{filename}".format(name=instance.name, filename=filename)
 
 
 class ProductImage(models.Model):
@@ -21,6 +22,15 @@ class ProductImage(models.Model):
     class Meta:
         verbose_name = _("изображение")
         verbose_name_plural = _("изображения")
+
+    def delete(self, using=None, keep_parents=False):
+        """Удаление файла изображения при удалении экземпляра модели"""
+        try:
+            os.remove(f"media/{self.image}")
+        except FileNotFoundError:
+            pass
+        finally:
+            return super().delete(using, keep_parents)
 
 
 class Product(models.Model):
@@ -41,9 +51,13 @@ class Product(models.Model):
     tags = models.ManyToManyField(to="Tag", verbose_name=_("теги"), related_name="products", blank=True)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        """Попутное создание экземпляра ProductImage от preview"""
+        super().save(force_insert, force_update, using, update_fields)
         if self.preview:
             ProductImage.objects.get_or_create(product=self, image=self.preview)
-        return super().save(force_insert, force_update, using, update_fields)
+
+    def __str__(self) -> str:
+        return f"Товар(pk={self.pk}, name={self.name!r})"
 
 
 class Tag(models.Model):
