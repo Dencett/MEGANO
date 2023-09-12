@@ -1,0 +1,95 @@
+{% extends 'base.jinja2' %}
+
+{% block title %}
+  About user
+{% endblock %}
+
+{% block middle %}
+<div class="Middle">
+    <div class="Section">
+        <div class="wrap">
+        <h1 class="header">About user information</h1>
+        <h2 class="header">Detail user:</h2>
+        <div style="display: flex; justify-content: space-around; align-items: center;">
+
+        {% if user.profile.avatar %}
+            <p>
+                <img src="{{ user.profile.avatar.url }}" alt="{{ user.profile.avatar.name }}" width="300" height="300">
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="id_user_avatar"></label>
+                    <p><input type="file" class="btn btn_square btn-dark" name="user_avatar" accept="image/*" required="" id="id_user_avatar"></p>
+                    <button type="submit" class="btn btn_square btn_dark">Update avatar</button>
+                </form>
+
+            </p>
+
+        {% else %}
+            <h2 class="header">У пользователя нет аватара</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ update_avatar.as_p() }}
+                <button type="submit">Update avatar</button>
+            </form>
+        {% endif%}
+                <div style="display: flex; min-height: 350px; flex-direction: column; justify-content: center; min-width: 440px;">
+                <p class="Cart-title">User name: {{ user.username }}</p>
+                <p class="Cart-title">User first-name: {{ user.first_name }}</p>
+                <p class="Cart-title">User last-name: {{ user.last_name }}</p>
+                <p class="Cart-title">User email: {{ user.email }}</p>
+<!--                <p class="Cart-title">User last_login: {{ user.last_login }}</p>-->
+<!--                <p class="Cart-title">User date_joined: {{ user.date_joined }}</p>-->
+                </div>
+                </div>
+        </div>
+    </div>
+</div>
+    {% endblock %}
+
+
+{% block middle33 %}
+  <h1>Личный кабинет пользователя</h1>
+  {% if user.is_authenticated %}
+    <h2>Детали</h2>
+
+    {% if user.profile.avatar  %}
+      <p>
+        <img src="{{ user.profile.avatar.url }}" alt="{{ user.profile.avatar.name }}">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ update_avatar.as_p }}
+            <button type="submit">Update avatar</button>
+        </form>
+      </p>
+
+    {% else %}
+    <h3>У пользователя нет "Аватара"</h3>
+      <p>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ update_avatar.as_p }}
+            <button type="submit">Update avatar</button>
+        </form>
+      </p>
+    {% endif %}
+    <p>Username: {{ user.username }}</p>
+    <p>First name: {{ user.first_name }}</p>
+    <p>Last name: {{ user.last_name }}</p>
+    <p>City residence: {{ user.profile.residence }}</p>
+    <p>Address: {{ user.profile.address }}</p>
+    <p>Phone number: {{ user.profile.phone_number }}</p>
+    <p>Email: {{ user.email }}</p>
+    <ul>
+      <li><a href="{{ url('profiles:home-page') }}">На главную</a></li>
+      <br>
+      <li><a href="{{ url('profiles:logout') }}">Logout</a></li>
+      <br>
+      <li><a href="{{ url('profiles:change-password') }}">Change password</a></li>
+      <br>
+    </ul>
+  {% else %}
+    <h2>User is anonymous</h2>
+  {% endif %}
+{% endblock %}
