@@ -8,9 +8,11 @@ class ProductModelTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
+        cls.category = Category.objects.create(name="Тестовая категория")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
         cls.product = Product.objects.create(
             name="Тестовый продукт",
+            category=cls.category,
         )
         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
 
@@ -18,6 +20,7 @@ class ProductModelTest(TestCase):
     def tearDownClass(cls):
         cls.detail.delete()
         cls.product.delete()
+        cls.category.delete()
 
     def test_verbose_name(self):
         product = ProductModelTest.product
@@ -78,8 +81,10 @@ class TagModelTest(TestCase):
 class ProductImageModelTest(TestCase):
     @classmethod
     def setUpClass(cls):
+        cls.category = Category.objects.create(name="Тестовая категория")
         cls.product = Product.objects.create(
             name="test_product",
+            category=cls.category,
         )
         cls.image_file_name = "test_img.jpg"
         img_file = SimpleUploadedFile(
@@ -94,6 +99,7 @@ class ProductImageModelTest(TestCase):
     def tearDownClass(cls):
         cls.productimage.delete()
         cls.product.delete()
+        cls.category.delete()
 
     def test_verbose_name(self):
         image = self.productimage
@@ -142,9 +148,11 @@ class ProductDetailModelTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
+        cls.category = Category.objects.create(name="Тестовая категория")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
         cls.product = Product.objects.create(
             name="Тестовый продукт",
+            category=cls.category,
         )
         cls.product_detail = ProductDetail.objects.create(
             product=cls.product,
@@ -157,6 +165,7 @@ class ProductDetailModelTest(TestCase):
         cls.product.delete()
         cls.detail.delete()
         cls.product_detail.delete()
+        cls.category.delete()
 
     def test_verbose_name(self):
         product_detail = ProductDetailModelTest.product_detail
