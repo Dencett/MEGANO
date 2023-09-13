@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile
+from .models import Profile, User
 
 
 @admin.register(Profile)
@@ -41,3 +41,9 @@ class ProfileAdmin(admin.ModelAdmin):
             },
         ),
     ]
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    # Временная модель для Пользователей в админке. В разработке.
+    fields = ["username", "email", "first_name", "last_name", "is_superuser", "is_staff", "password"]
