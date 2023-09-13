@@ -3,11 +3,12 @@ from typing import Union
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from django.conf import settings
 from django.core.validators import FileExtensionValidator
 
 
 def product_images_directory_path(instance: Union["Product", "ProductImage"], filename: str) -> str:
+    "Функция получения пути для изображений продукта и превью продукта"
     if isinstance(instance, ProductImage):
         return "img/products/{name}/{filename}".format(name=instance.product.name, filename=filename)
     return "img/products/{name}/preview_{filename}".format(name=instance.name, filename=filename)
@@ -26,7 +27,7 @@ class ProductImage(models.Model):
     def delete(self, using=None, keep_parents=False):
         """Удаление файла изображения при удалении экземпляра модели"""
         try:
-            os.remove(f"media/{self.image}")
+            os.remove(f"{settings.MEDIA_ROOT}/{self.image}")
         except FileNotFoundError:
             pass
         finally:
@@ -45,7 +46,7 @@ class Product(models.Model):
     about = models.TextField(blank=True, max_length=512, verbose_name="краткое описание")
     description = models.TextField(blank=True, max_length=1024, verbose_name="описание")
     category = models.ForeignKey(
-        null=True, on_delete=models.SET_NULL, to="products.category", verbose_name="категория товаров"
+        null=False, on_delete=models.PROTECT, to="products.category", verbose_name="категория товаров"
     )
     preview = models.ImageField(null=True, blank=True, upload_to=product_images_directory_path)
     tags = models.ManyToManyField(to="Tag", verbose_name=_("теги"), related_name="products", blank=True)
@@ -61,6 +62,7 @@ class Product(models.Model):
 
 
 class Tag(models.Model):
+    "Модель Тег"
     name = models.CharField(max_length=64, verbose_name=_("название тега"))
 
     def __str__(self) -> str:
@@ -93,6 +95,7 @@ class ProductDetail(models.Model):
 
 
 def category_icon_directory_path(instance: "Category", filename: str) -> str:
+    "Функция получения пути для иконок категорий"
     return "img/icons/categories/{filename}".format(
         filename=filename,
     )

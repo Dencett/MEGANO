@@ -122,7 +122,7 @@
                                         <a href="#">
                                             {% if item.category.icon %}
                                             <div class="CategoriesButton-icon">
-                                                <img src="/media/{{ item.category.icon }}" alt=""/>
+                                                <img src="{{ item.category.icon.url }}" alt=""/>
                                             </div>
                                             {% endif %}
                                             <span class="CategoriesButton-text">{{ item.category.name}}</span>
@@ -135,7 +135,7 @@
                                                     <a class="CategoriesButton-link" href="#">
                                                         {% if subitem.category.icon %}
                                                         <div class="CategoriesButton-icon">
-                                                            <img src="/media/{{ subitem.category.icon }}" alt=""/>
+                                                            <img src="{{ subitem.category.icon.url }}" alt=""/>
                                                         </div>
                                                         {% endif %}
                                                         <span class="CategoriesButton-text">{{ subitem.category.name }}</span>

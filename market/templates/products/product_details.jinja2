@@ -10,11 +10,11 @@
                     <div class="ProductCard">
                         <div class="ProductCard-look">
                             <div class="ProductCard-photo">
-                                <img src="/media/{{product.preview}}" alt="{{product.name}} preview" />
+                                <img src="{{product.preview.url}}" alt="{{product.name}} preview" />
                             </div>
                             <div class="ProductCard-picts">
                                 {% for picture in product.productimage_set.all() %}
-                                <a class="ProductCard-pict ProductCard-pict_ACTIVE" href="/media/{{picture.image}}"><img src="/media/{{picture.image}}" alt="image {{product.name}}" /></a>
+                                <a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{picture.image.url}}"><img src="{{picture.image.url}}" alt="image {{product.name}}" /></a>
                                 {% endfor %}
                             </div>
                         </div>
@@ -97,7 +97,7 @@
                             <div class="Tabs-block" id="description">
                                 <h2>{{product.name}}
                                 </h2>
-                                <img class="pict pict_right" src="/media/{{product.preview}}" alt="{{product.name}}_img" />
+                                <img class="pict pict_right" src="{{product.preview.url}}" alt="{{product.name}}_img" />
                                 <div>
                                    {{product.description}}
                                 </div>

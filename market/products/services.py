@@ -1,5 +1,5 @@
-from .models import Category
 from django.core.cache import cache
+from .models import Category
 
 
 def category_menu():

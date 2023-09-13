@@ -4,7 +4,7 @@ from django.core import management
 
 class Command(BaseCommand):
     """
-    Create  test tg_bot_wardrobe_app
+    Команда для массового создания фикстур.
     """
 
     def handle(self, *args, **kwargs):
