@@ -73,7 +73,7 @@ class UserLoginTestCase(TestCase):
         response = self.client.get(reverse("profiles:change-password"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Password change page")
-        self.assertContains(response, "Old password:")
+        self.assertContains(response, "Старый пароль:")
 
     def test_user_login_to_register_page(self):
         response = self.client.get(reverse("profiles:register"))
