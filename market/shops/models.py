@@ -21,6 +21,16 @@ class Shop(models.Model):
         return f"Продавец (pk={self.pk}, name={self.name!r})"
 
 
+class PaymentMethod(models.TextChoices):
+    CARD = "CARD", _("Банковской картой")
+    CASH = "CASH", _("Наличными")
+
+
+class DeliveryMethod(models.TextChoices):
+    REGULAR = "REGULAR", _("Обычная доставка")
+    EXPRESS = "EXPRESS", _("Экспресс доставка")
+
+
 class Offer(models.Model):
     """Предложение магазина"""
 
@@ -28,21 +38,17 @@ class Offer(models.Model):
         verbose_name = _("предложение магазина")
         verbose_name_plural = _("предложения магазина")
 
-    DELIVERY_CHOICE = (("regular", _("Обычная доставка")), ("express", _("Экспресс доставка")))
-
-    PAYMENT_CHOICE = (("card", _("Банковской картой")), ("cash", _("Наличными")))
-
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("цена"))
     payment_method = models.CharField(
-        choices=PAYMENT_CHOICE,
-        default=PAYMENT_CHOICE[0],
+        choices=PaymentMethod.choices,
+        default=PaymentMethod.CARD,
         verbose_name=_("способ оплаты"),
     )
     delivery_method = models.CharField(
-        choices=DELIVERY_CHOICE,
-        default=DELIVERY_CHOICE[0],
+        choices=DeliveryMethod.choices,
+        default=DeliveryMethod.REGULAR,
         verbose_name=_("способ доставки"),
     )
 

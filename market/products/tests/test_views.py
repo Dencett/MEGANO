@@ -5,18 +5,20 @@ from django.shortcuts import render
 from products.services import category_menu
 from products.models import Product
 
+FIXTURES = [
+    "fixtures/04-shops.json",
+    "fixtures/05-category.json",
+    "fixtures/06-tags.json",
+    "fixtures/07-products.json",
+    "fixtures/08-offers.json",
+    "fixtures/09-details.json",
+    "fixtures/10-productimages.json",
+    "fixtures/11-productdetails.json",
+]
+
 
 class ExampleViewTest(TestCase):
-    fixtures = [
-        "fixtures/02-shops.json",
-        "fixtures/04-tags.json",
-        "fixtures/05-category.json",
-        "fixtures/06-products.json",
-        "fixtures/07-offers.json",
-        "fixtures/09-details.json",
-        "fixtures/10-productimages.json",
-        "fixtures/11-productdetails.json",
-    ]
+    fixtures = FIXTURES
 
     def test_example_view(self):
         template = "base.jinja2"
@@ -27,16 +29,7 @@ class ExampleViewTest(TestCase):
 
 
 class ProductsViewTest(TestCase):
-    fixtures = [
-        "fixtures/02-shops.json",
-        "fixtures/04-tags.json",
-        "fixtures/05-category.json",
-        "fixtures/06-products.json",
-        "fixtures/07-offers.json",
-        "fixtures/09-details.json",
-        "fixtures/10-productimages.json",
-        "fixtures/11-productdetails.json",
-    ]
+    fixtures = FIXTURES
 
     def test_products_detail_view(self):
         template = "products/product_details.jinja2"
