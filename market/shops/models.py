@@ -45,11 +45,13 @@ class Offer(models.Model):
         choices=PaymentMethod.choices,
         default=PaymentMethod.CARD,
         verbose_name=_("способ оплаты"),
+        max_length=128,
     )
     delivery_method = models.CharField(
         choices=DeliveryMethod.choices,
         default=DeliveryMethod.REGULAR,
         verbose_name=_("способ доставки"),
+        max_length=128,
     )
 
     def __str__(self) -> str:
