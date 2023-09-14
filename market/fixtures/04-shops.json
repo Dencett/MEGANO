@@ -1,0 +1,30 @@
+[
+{
+    "model": "shops.shop",
+    "pk": 1,
+    "fields": {
+        "name": "DNS"
+    }
+},
+{
+    "model": "shops.shop",
+    "pk": 2,
+    "fields": {
+        "name": "OZON"
+    }
+},
+{
+    "model": "shops.shop",
+    "pk": 3,
+    "fields": {
+        "name": "YANDEX"
+    }
+},
+{
+    "model": "shops.shop",
+    "pk": 4,
+    "fields": {
+        "name": "Wildberries"
+    }
+}
+]

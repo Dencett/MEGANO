@@ -17,6 +17,19 @@ class Shop(models.Model):
         verbose_name=_("товары в магазине"),
     )
 
+    def __str__(self) -> str:
+        return f"Продавец (pk={self.pk}, name={self.name!r})"
+
+
+class PaymentMethod(models.TextChoices):
+    CARD = "CARD", _("Банковской картой")
+    CASH = "CASH", _("Наличными")
+
+
+class DeliveryMethod(models.TextChoices):
+    REGULAR = "REGULAR", _("Обычная доставка")
+    EXPRESS = "EXPRESS", _("Экспресс доставка")
+
 
 class Offer(models.Model):
     """Предложение магазина"""
@@ -28,3 +41,16 @@ class Offer(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("цена"))
+    payment_method = models.CharField(
+        choices=PaymentMethod.choices,
+        default=PaymentMethod.CARD,
+        verbose_name=_("способ оплаты"),
+    )
+    delivery_method = models.CharField(
+        choices=DeliveryMethod.choices,
+        default=DeliveryMethod.REGULAR,
+        verbose_name=_("способ доставки"),
+    )
+
+    def __str__(self) -> str:
+        return f"Предложение (pk={self.pk}, shop={self.shop.name!r}), product={self.product.name!r}"

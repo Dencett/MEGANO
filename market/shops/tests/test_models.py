@@ -1,6 +1,6 @@
 from django.test import TestCase
 from shops.models import Shop, Offer
-from products.models import Product, Detail
+from products.models import Product, Detail, Category
 
 
 class ShopModelTest(TestCase):
@@ -10,8 +10,10 @@ class ShopModelTest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.detail = Detail.objects.create(name="тестовая характеристика")
+        cls.category = Category.objects.create(name="тестовая категория")
         cls.product = Product.objects.create(
             name="тестовый продукт",
+            category=cls.category,
         )
         cls.product.details.set([cls.detail])
         cls.shop = Shop.objects.create(name="тестовый магазин")
@@ -24,6 +26,7 @@ class ShopModelTest(TestCase):
         ShopModelTest.product.delete()
         ShopModelTest.shop.delete()
         ShopModelTest.offer.delete()
+        cls.category.delete()
 
     def test_verbose_name(self):
         shop = ShopModelTest.shop
@@ -47,9 +50,8 @@ class OfferModelTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.product = Product.objects.create(
-            name="тестовый продукт",
-        )
+        cls.category = Category.objects.create(name="тестовая категория")
+        cls.product = Product.objects.create(name="тестовый продукт", category=cls.category)
         cls.shop = Shop.objects.create(name="тестовый магазин")
         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=35)
 
@@ -59,6 +61,7 @@ class OfferModelTest(TestCase):
         OfferModelTest.product.delete()
         OfferModelTest.shop.delete()
         OfferModelTest.offer.delete()
+        cls.category.delete()
 
     def test_verbose_name(self):
         offer = OfferModelTest.offer
@@ -78,3 +81,18 @@ class OfferModelTest(TestCase):
         offer = OfferModelTest.offer
         decimal_places = offer._meta.get_field("price").decimal_places
         self.assertEqual(decimal_places, 2)
+
+    def test_price(self):
+        pass
+
+    def test_product_fields_name(self):
+        attr_names = dir(self.offer)
+        variable_name_in_template = (
+            "shop",
+            "product",
+            "price",
+            "get_delivery_method_display",
+            "get_payment_method_display",
+        )
+        for name in variable_name_in_template:
+            self.assertIn(name, attr_names)
