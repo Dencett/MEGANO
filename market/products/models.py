@@ -45,9 +45,7 @@ class Product(models.Model):
     details = models.ManyToManyField("Detail", through="ProductDetail", verbose_name=_("характеристики"))
     about = models.TextField(blank=True, max_length=512, verbose_name="краткое описание")
     description = models.TextField(blank=True, max_length=1024, verbose_name="описание")
-    category = models.ForeignKey(
-        null=False, on_delete=models.PROTECT, to="products.category", verbose_name="категория товаров"
-    )
+    category = models.ForeignKey(on_delete=models.PROTECT, to="products.category", verbose_name="категория товаров")
     preview = models.ImageField(null=True, blank=True, upload_to=product_images_directory_path)
     tags = models.ManyToManyField(to="Tag", verbose_name=_("теги"), related_name="products", blank=True)
 
