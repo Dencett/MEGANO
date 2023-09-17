@@ -10,7 +10,7 @@ class UserRegisterForm(BaseUserCreationForm):
     Запрашивает у пользователя, хочет ли он стать продавцом на сайте или нет.
     """
 
-    phone_number = forms.CharField(label="Номер телефона", max_length=11, help_text="Вводите номер через '8'")
+    phone = forms.CharField(label="Номер телефона", max_length=11, help_text="Вводите номер через '8'")
     residence = forms.CharField(max_length=80, label="Город проживания")
     address = forms.CharField(
         max_length=80,
@@ -50,7 +50,7 @@ class UserRegisterForm(BaseUserCreationForm):
             "first_name",
             "last_name",
             "email",
-            "phone_number",
+            "phone",
             "residence",
             "address",
             "retailer_group",
@@ -61,19 +61,26 @@ class UserRegisterForm(BaseUserCreationForm):
             "first_name": forms.CharField,
             "last_name": forms.CharField,
             "email": forms.EmailField,
-            "password1": forms.CharField,
-            "phone_number": forms.CharField,
+            "phone": forms.CharField,
             "residence": forms.CharField,
             "address": forms.CharField,
             "retailer_group": forms.BooleanField,
+            "password1": forms.CharField,
         }
 
 
-def profile_directory_path(instance: "ProfileAvatarUpdateForm", filename):
-    return "profile/{pk}/avatar/{filename}".format(
-        pk=instance.user.pk,
-        filename=filename,
-    )
+class ChangeProfileInfoForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "phone",
+            "residence",
+            "address",
+        ]
 
 
 class ProfileAvatarUpdateForm(forms.Form):

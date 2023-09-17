@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$600000$uFoayEVK85jyvMvxQb4Rfd$abncQV++A61pKt9jtWAtaYgBbV2kPM7b8dKyMpoeyeU=",
-        "last_login": "2023-09-10T10:45:18.968Z",
+        "last_login": "2023-09-16T13:20:17.076Z",
         "is_superuser": true,
         "username": "admin",
         "first_name": "admin",
@@ -13,6 +13,10 @@
         "is_active": true,
         "date_joined": "2023-09-10T10:39:46.481Z",
         "email": "admin@admin.com",
+        "phone": "88001112233",
+        "residence": "Moscow",
+        "address": "Zamoskvorechnaya",
+        "avatar": "profiles/1/avatar/card_HlUVSQa.jpg",
         "groups": [],
         "user_permissions": []
     }
@@ -31,6 +35,10 @@
         "is_active": true,
         "date_joined": "2023-09-10T10:44:50.839Z",
         "email": "retailer1@mail.com",
+        "phone": "88003332211",
+        "residence": "California",
+        "address": "One Apple Park Way Cupertino, CA 95014",
+        "avatar": "profiles/2/avatar/111smart.png",
         "groups": [
             1
         ],
@@ -42,7 +50,7 @@
     "pk": 3,
     "fields": {
         "password": "pbkdf2_sha256$600000$zYlo7ESnfaRGTZKklEgGt5$wRqZdObJNKU7yR9yvGX9hbr0bvpAH67Cxl5D8jv4dXo=",
-        "last_login": "2023-09-10T10:49:24.250Z",
+        "last_login": "2023-09-16T15:44:42.134Z",
         "is_superuser": false,
         "username": "client",
         "first_name": "Jhon",
@@ -51,6 +59,10 @@
         "is_active": true,
         "date_joined": "2023-09-10T10:49:23.554Z",
         "email": "client@mail.com",
+        "phone": "89008887766",
+        "residence": "Tagil",
+        "address": "Test address dom 148 test appartament",
+        "avatar": "profiles/3/avatar/card.jpg",
         "groups": [],
         "user_permissions": []
     }

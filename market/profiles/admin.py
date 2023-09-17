@@ -1,49 +1,45 @@
 from django.contrib import admin
-from .models import Profile, User
+from django.contrib.auth.admin import UserAdmin
+from django.utils.translation import gettext_lazy as _
 
-
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = (
-        "pk",
-        "get_username",
-        "phone_number",
-        "residence",
-        "address",
-    )
-    list_display_links = (
-        "pk",
-        "get_username",
-    )
-    ordering = ("pk",)
-    search_fields = (
-        "pk",
-        "residence",
-    )
-    fieldsets = [
-        (None, {"fields": ("user",), "classes": ("collapse",)}),
-        (
-            "Personal information",
-            {
-                "fields": ("phone_number", "residence"),
-                "classes": (
-                    "wide",
-                    "collapse",
-                ),
-            },
-        ),
-        (
-            "Extra options",
-            {
-                "fields": ("address",),
-                "classes": ("collapse",),
-                "description": "Extra options. The 'address' field is intended for additional information",
-            },
-        ),
-    ]
+from .models import User
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    # Временная модель для Пользователей в админке. В разработке.
-    fields = ["username", "email", "first_name", "last_name", "is_superuser", "is_staff", "password"]
+class ModelUserAdmin(UserAdmin):
+    list_display = ("username", "email", "first_name", "last_name", "is_staff")
+    list_filter = ("is_staff", "is_superuser")
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        (
+            _("Personal info"),
+            {
+                "fields": (
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "phone",
+                    "residence",
+                    "address",
+                    "avatar",
+                )
+            },
+        ),
+        (
+            _("Permissions"),
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                ),
+            },
+        ),
+        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+    )
+    ordering = (
+        "pk",
+        "username",
+    )

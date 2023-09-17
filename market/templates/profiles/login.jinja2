@@ -12,8 +12,9 @@ Login page
         <div class="wrapper">
           <h2>Login page</h2>
           <p>{% if form.errors %}
-          {% for error in form.errors %}
-          <p>{{ error }}</p>
+          {% for key, error in form.errors %}
+<!--          <p>{{ error }}</p>-->
+          <p>{{ errors }}</p>
           {% endfor %}
           {% endif %}</p>
 
@@ -28,10 +29,10 @@ Login page
             <input class="user-input" type="password" name="password" autocomplete="current-password" required id="id_password" placeholder="*********">
           </p>
           <input type="submit" value="Login">
-          <a class="forgot-label" href="e-mail.html">Забыли пароль?</a>
-          <a class="registr" href="registr.html">Регистрация</a>
                     <!--    <button type="submit" class="btn btn_square btn_dark">Login</button>-->
           </form>
+          <a class="forgot-label" href="e-mail.html">Забыли пароль?</a>
+          <a class="registr" href="{{ url('profiles:register') }}">Регистрация</a>
       </div>
     </div>
   </div>
