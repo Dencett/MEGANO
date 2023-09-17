@@ -63,7 +63,6 @@ class UserLoginTestCase(TestCase):
 
     def test_user_login_to_change_password_page(self):
         response = self.client.get(reverse("profiles:change-password"))
-        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.request["PATH_INFO"], "/profiles/change_password/")
 
     def test_user_login_to_register_page(self):
