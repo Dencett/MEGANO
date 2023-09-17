@@ -1,0 +1,25 @@
+{% extends 'base.jinja2' %}
+
+{% block title %}
+hello view page
+{% endblock %}
+
+{% block middle %}
+<h1>hello view page</h1>
+
+{% for shop in shop_list %}
+<ul>
+{#<li><a href="{{ url('shops:shop_detail', pk=Shop.objects.filter(pk=1) }}">{{ shop.name }}</a></li> #}
+</ul>
+{% endfor %}
+
+
+<h2>Shop name: {{ shop.name }}</h2>
+<p>User related: {{ shop.user }}</p>
+<p>User related: {{ shop.about }}</p>
+<p>Shop phone: {{ shop.phone }}</p>
+<p>Shop email: {{ shop.email }}</p>
+<p>Shop avatar: {{ shop.avatar }}</p>
+<p>Shop products: {{ shop.products.all() }}</p>
+
+{% endblock %}
