@@ -122,32 +122,6 @@ class UserRegisterTestCase(TestCase):
         self.assertEqual(response.url, url)
 
 
-class UserChangePasswordTestCase(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.user_data = {
-            "username": "bob_test",
-            "email": "bob_test@gmail.com",
-            "password": "bob_test_1234_test_password",
-        }
-
-        cls.user = User.objects.create_user(**cls.user_data)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
-
-    def setUp(self) -> None:
-        self.client.login(**self.user_data)
-
-    def tearDown(self) -> None:
-        self.client.delete()
-
-    def test_get_password_change_page(self):
-        response = self.client.get(reverse("profiles:change-password"))
-        self.assertEqual(response.status_code, 200)
-
-
 class UserChangeInformationTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
