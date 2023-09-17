@@ -46,7 +46,10 @@ INSTALLED_APPS = [
     "products",
     "shops",
     "profiles",
+    "django_extensions",
 ]
+
+SHELL_PLUS_PRINT_SQL = False
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

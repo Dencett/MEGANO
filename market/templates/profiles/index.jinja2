@@ -15,17 +15,20 @@ Home page
   <div class="Section">
       <div class="wrap">
         <div class="wrapper">
-          <h1 style="text-transform: uppercase;">Главная страница маркетплейса (Test Profiles)</h1>
+          <h1 style="text-align: center;">Главная страница маркетплейса (Test Profiles)</h1>
 
     {% if user.is_authenticated %}
-        <p style="font-size:1.25em;">Добро пожаловать <b>{{ request.user.username }}</b>.</p>
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <p style="text-align: center; font-size:1.25em;">Добро пожаловать <b>{{ request.user.username }}</b>.</p>
 
-        <p><a href="{{ url('profiles:logout') }}">Выход из аккаунта</a></p>
+        <p><a href="{{ url('profiles:logout') }}" class="btn btn_square btn_dark">Выход из аккаунта</a></p>
         <br>
-        <p><a href="{{ url('profiles:about-user') }}">Личный кабинет</a></p>
+        <p><a href="{{ url('profiles:about-user') }}" class="btn btn_square btn_dark">Личный кабинет</a></p>
         <br>
-        <p><a href="{{ url('profiles:change-password') }}">Сменить пароль</a></p>
+        <p><a href="{{ url('profiles:change-password') }}" class="btn btn_square btn_dark">Сменить пароль</a></p>
         <br>
+      </div>
+
 
         {% if user.is_staff %}
             <p><a href="../admin/">Перейти в админ-панель</a></p>

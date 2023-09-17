@@ -1,12 +1,13 @@
 from django.contrib.auth.models import Group
 from django.contrib.auth.views import LogoutView, PasswordChangeView
 from django.contrib.auth import authenticate, login
+from django.db import transaction
 from django.urls import reverse_lazy, reverse
 from django.http.response import HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView
 
-from .models import Profile
 from .forms import UserRegisterForm, ProfileAvatarUpdateForm
+from .models import User
 
 
 class AboutUserView(TemplateView):
@@ -18,16 +19,17 @@ class AboutUserView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["update_avatar"] = ProfileAvatarUpdateForm()
+        # context["change_info"] = ChangeProfileInfoForm()
         return context
 
+    @transaction.atomic
     def post(self, request):
         update_avatar = ProfileAvatarUpdateForm(request.POST, request.FILES)
-
         if update_avatar.is_valid():
             picture = update_avatar.cleaned_data.get("user_avatar")
-            profile = Profile.objects.get(user=request.user)
-            profile.avatar = picture
-            profile.save()
+            user = User.objects.get(pk=self.request.user.pk)
+            user.avatar = picture
+            user.save()
             return HttpResponseRedirect(reverse("profiles:about-user"))
         return HttpResponseRedirect(reverse("profiles:about-user"))
 
@@ -35,7 +37,6 @@ class AboutUserView(TemplateView):
 class HomePage(TemplateView):
     """View class заглушка - главная страница сайта."""
 
-    # template_name = "profiles/index.html"
     template_name = "profiles/index.jinja2"
 
 
@@ -46,7 +47,6 @@ class UserRegisterView(CreateView):
     """
 
     form_class = UserRegisterForm
-    # template_name = "profiles/register.html"
     template_name = "profiles/register.jinja2"
     success_url = reverse_lazy("profiles:home-page")
 
@@ -56,22 +56,14 @@ class UserRegisterView(CreateView):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
+    @transaction.atomic
     def form_valid(self, form):
         response = super().form_valid(form)
 
         password = form.cleaned_data.get("password1")
         email = form.cleaned_data.get("email")
-        phone_number = form.cleaned_data.get("phone_number")
-        residence = form.cleaned_data.get("residence")
-        address = form.cleaned_data.get("address")
         retailer_group = form.cleaned_data.get("retailer_group")
 
-        Profile.objects.create(
-            user=self.object,
-            phone_number=phone_number,
-            residence=residence,
-            address=address,
-        )
         user = authenticate(
             self.request,
             email=email,
@@ -101,6 +93,5 @@ class UserResetPasswordView(PasswordChangeView):
     to the user and sends the user to the main page.
     """
 
-    # template_name = "profiles/password_form.html"
     template_name = "profiles/password_form.jinja2"
     success_url = reverse_lazy("profiles:home-page")
