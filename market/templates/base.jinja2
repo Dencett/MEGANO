@@ -40,32 +40,27 @@
 
 <body class="Site">
     <!--if lt IE 8
-  p.error-browser
-      | Ваш браузер&nbsp;
-      em устарел!&nbsp;
-      a(href="http://browsehappy.com/") Выберите новую версию
-          +s
-          | браузера здесь&nbsp;
-      | для правильного отображения сайта.
-  -->
+    p.error-browser
+        | Ваш браузер&nbsp;
+        em устарел!&nbsp;
+        a(href="http://browsehappy.com/") Выберите новую версию
+            +s
+            | браузера здесь&nbsp;
+        | для правильного отображения сайта.
+    -->
 
-    {% block header %}
     {% include "header.jinja2" %}
-    {% endblock %}
-
     {% block middle %}
-
+    Content
     {% endblock %}
-
-    {% block footer %}
     {% include "footer.jinja2" %}
-    {% endblock %}
 
     <!--+Middle-->
     <!--    +div.-top-->
     <!--        +breadcrumbs('Главная','Портфолио')-->
     <!--    +Article('portfolio')-->
     <!---->
+
     <script src="{{static('assets/plg/jQuery/jquery-3.5.0.slim.min.js')}}"></script>
     <script src="{{static('assets/plg/form/jquery.form.js')}}"></script>
     <script src="{{static('assets/plg/form/jquery.maskedinput.min.js')}}"></script>
