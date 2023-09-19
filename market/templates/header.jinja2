@@ -7,20 +7,20 @@
                         <div class="row-block hide_700">
                             <ul class="menu menu_img menu_smallImg ControlPanel-menu">
                                 <li class="menu-item"><a class="menu-link" href="#">
-                                    <img src="{{static('assets/img/icons/socialHeader/tw.svg')}}" alt="tw.svg"/>
+                                    <img src="{{ static('assets/img/icons/socialHeader/tw.svg') }}" alt="tw.svg"/>
                                 </a>
                                 </li>
                                 <li class="menu-item"><a class="menu-link" href="#">
-                                    <img src="{{static('assets/img/icons/socialHeader/in.svg')}}" alt="in.svg"/>
+                                    <img src="{{ static('assets/img/icons/socialHeader/in.svg') }}" alt="in.svg"/>
                                 </a>
                                 </li>
                                 <li class="menu-item">
                                     <a class="menu-link" href="#">
-                                        <img src="{{static('assets/img/icons/socialHeader/pt.svg')}}" alt="pt.svg"/>
+                                        <img src="{{ static('assets/img/icons/socialHeader/pt.svg') }}" alt="pt.svg"/>
                                     </a>
                                 </li>
                                 <li class="menu-item"><a class="menu-link" href="#">
-                                    <img src="{{static('assets/img/icons/socialHeader/mail.svg')}}" alt="mail.svg"/>
+                                    <img src="{{ static('assets/img/icons/socialHeader/mail.svg') }}" alt="mail.svg"/>
                                 </a>
                                 </li>
                             </ul>
@@ -61,22 +61,22 @@
     <div class="wrap">
         <div class="row Header-rowMain">
             <div class="row-block Header-logo">
-                <a class="logo" href="{{static('index.html')}}">
-                    <img class="logo-image" src="{{static('assets/img/logo.png')}}" alt="logo.png"/>
+                <a class="logo" href="{{ url('products:home-page') }}">
+                    <img class="logo-image" src="{{ static('assets/img/logo.png') }}" alt="logo.png"/>
                 </a>
             </div>
             <nav class="row-block row-block_right Header-menu">
                 <div class="menuModal" id="navigate">
                     <ul class="menu menu_main">
                         <li class="menu-item">
-                            <a class="menu-link" href="{{static('index.html')}}">Главная</a>
+                            <a class="menu-link" href="{{ url('products:home-page') }}">Главная</a>
                         </li>
                         <li class="menu-item">
                             <span class="menu-label menu-label_success">Скидки</span>
-                            <a class="menu-link" href="{{static('catalog.html')}}">Каталог</a>
+                            <a class="menu-link" href="{{ static('catalog.html') }}">Каталог</a>
                         </li>
                         <li class="menu-item">
-                            <a class="menu-link" href="{{static('comparison.html')}}">Сравнение</a>
+                            <a class="menu-link" href="{{ static('comparison.html') }}">Сравнение</a>
                         </li>
                     </ul>
                 </div>
@@ -86,7 +86,7 @@
                     <div class="dropdown">
                         <button class="dropbtn">
                             <img class="CartBlock-img"
-                                 src="{{static('assets/img/icons/loon-icon.svg')}}"
+                                 src="{{ static('assets/img/icons/loon-icon.svg') }}"
                                  alt="loon-icon.svg"/>
                         </button>
                         <div class="dropdown-content">
@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <a class="CartBlock-block" href="cart.html">
-                        <img class="CartBlock-img" src="{{static('assets/img/icons/cart.svg')}}" alt="cart.svg"/>
+                        <img class="CartBlock-img" src="{{ static('assets/img/icons/cart.svg') }}" alt="cart.svg"/>
                         <span class="CartBlock-amount">0</span>
                     </a>
                     <div class="CartBlock-block">
@@ -117,7 +117,7 @@
             {% include 'menu.jinja2' %}
 
             <div class="Header-searchLink">
-                <img src="{{static('assets/img/icons/search.svg')}}" alt="search.svg"/>
+                <img src="{{ static('assets/img/icons/search.svg') }}" alt="search.svg"/>
             </div>
             <div class="Header-search">
                 <div class="search">
@@ -125,7 +125,7 @@
                         <input class="search-input" id="query" name="query" type="text"
                                placeholder="NVIDIA GeForce RTX 3060"/>
                         <button class="search-button" type="submit" name="search" id="search">
-                            <img src="{{static('assets/img/icons/search.svg')}}" alt="search.svg"/>
+                            <img src="{{ static('assets/img/icons/search.svg') }}" alt="search.svg"/>
                             Поиск
                         </button>
                     </form>
