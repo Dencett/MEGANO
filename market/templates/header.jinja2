@@ -7,20 +7,20 @@
                         <div class="row-block hide_700">
                             <ul class="menu menu_img menu_smallImg ControlPanel-menu">
                                 <li class="menu-item"><a class="menu-link" href="#">
-                                    <img src="{{static('assets/img/icons/socialHeader/tw.svg')}}" alt="tw.svg"/>
+                                    <img src="{{ static('assets/img/icons/socialHeader/tw.svg') }}" alt="tw.svg"/>
                                 </a>
                                 </li>
                                 <li class="menu-item"><a class="menu-link" href="#">
-                                    <img src="{{static('assets/img/icons/socialHeader/in.svg')}}" alt="in.svg"/>
+                                    <img src="{{ static('assets/img/icons/socialHeader/in.svg') }}" alt="in.svg"/>
                                 </a>
                                 </li>
                                 <li class="menu-item">
                                     <a class="menu-link" href="#">
-                                        <img src="{{static('assets/img/icons/socialHeader/pt.svg')}}" alt="pt.svg"/>
+                                        <img src="{{ static('assets/img/icons/socialHeader/pt.svg') }}" alt="pt.svg"/>
                                     </a>
                                 </li>
                                 <li class="menu-item"><a class="menu-link" href="#">
-                                    <img src="{{static('assets/img/icons/socialHeader/mail.svg')}}" alt="mail.svg"/>
+                                    <img src="{{ static('assets/img/icons/socialHeader/mail.svg') }}" alt="mail.svg"/>
                                 </a>
                                 </li>
                             </ul>
@@ -62,7 +62,7 @@
         <div class="row Header-rowMain">
             <div class="row-block Header-logo">
                 <a class="logo" href="{{ url('products:home-page') }}">
-                    <img class="logo-image" src="{{static('assets/img/logo.png')}}" alt="logo.png"/>
+                    <img class="logo-image" src="{{ static('assets/img/logo.png') }}" alt="logo.png"/>
                 </a>
             </div>
             <nav class="row-block row-block_right Header-menu">
@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <a class="CartBlock-block" href="cart.html">
-                        <img class="CartBlock-img" src="{{static('assets/img/icons/cart.svg')}}" alt="cart.svg"/>
+                        <img class="CartBlock-img" src="{{ static('assets/img/icons/cart.svg') }}" alt="cart.svg"/>
                         <span class="CartBlock-amount">0</span>
                     </a>
                     <div class="CartBlock-block">
@@ -114,7 +114,7 @@
     <div class="Header-searchWrap">
         <div class="wrap">
 
-             {% include 'menu.jinja2' %}
+            {% include 'menu.jinja2' %}
 
             <div class="Header-searchLink">
                 <img src="{{ static('assets/img/icons/search.svg') }}" alt="search.svg"/>

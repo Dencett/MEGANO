@@ -69,7 +69,6 @@ class UserRegisterView(CreateView):
             email=email,
             password=password,
         )
-
         if retailer_group:
             group = Group.objects.get(name="retailer")
             if not user.is_staff:
@@ -83,7 +82,7 @@ class UserRegisterView(CreateView):
 class UserLogoutView(LogoutView):
     """View class заглушка - user logout."""
 
-    next_page = reverse_lazy("profiles:home-page")
+    next_page = reverse_lazy("products:home-page")
 
 
 class UserResetPasswordView(PasswordChangeView):

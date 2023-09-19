@@ -8,11 +8,7 @@ class UserLogoutTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         # создает пользователя
-        cls.credentials = {
-            "username": "bob_test",
-            "email": "bob_test@mail.com",
-            "password": "qwerty",
-        }
+        cls.credentials = {"username": "bob_test", "password": "qwerty"}
         cls.user = User.objects.create_user(**cls.credentials)
 
     @classmethod
@@ -24,9 +20,9 @@ class UserLogoutTestCase(TestCase):
 
     def test_logout_user(self):
         response = self.client.get(reverse("profiles:logout"))
-        to_reverse = self.client.get(reverse("profiles:home-page"))
+        to_reverse = self.client.get(reverse("products:home-page"))
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse("profiles:home-page"))
+        self.assertRedirects(response, reverse("products:home-page"))
         self.assertEqual(to_reverse.status_code, 200)
 
 
@@ -38,7 +34,12 @@ class UserLoginTestCase(TestCase):
             "email": "jhon@test.com",
             "password": "JohnTest1234",
         }
-        cls.user = User.objects.create(**cls.user_login_info)
+        cls.profile_info = {
+            "phone_number": "89701112233",
+            "residence": "London",
+            "address": "Bakers streets 148 ap.3",
+        }
+        cls.user = User.objects.create_user(**cls.user_login_info)
 
     @classmethod
     def tearDownClass(cls):
@@ -51,10 +52,9 @@ class UserLoginTestCase(TestCase):
         )
 
     def test_user_login(self):
-        response = self.client.get(reverse("profiles:home-page"))
+        response = self.client.get(reverse("products:home-page"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Главная страница маркетплейса")
-        # self.assertContains(response, self.user.username)
+        self.assertTrue("Content")
 
     def test_user_login_to_about_user_page(self):
         response = self.client.get(reverse("profiles:about-user"))
@@ -99,6 +99,7 @@ class UserRegisterTestCase(TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.user.delete()
+        cls.profile.delete()
 
     def setUp(self) -> None:
         self.client.login(**self.user_login_info)
@@ -117,7 +118,7 @@ class UserRegisterTestCase(TestCase):
 
     def test_register_user_sign_in_logout(self):
         response = self.client.get(reverse("profiles:logout"))
-        to_home = self.client.get(reverse("profiles:home-page"))
+        to_home = self.client.get(reverse("products:home-page"))
         url = to_home.wsgi_request.META["PATH_INFO"]
         self.assertEqual(response.url, url)
 

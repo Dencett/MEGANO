@@ -5,7 +5,7 @@
 
                 <div class="CategoriesButton-title">
                     <div class="CategoriesButton-icon">
-                        <img src="{{static('assets/img/icons/allDep.svg')}}" alt="allDep.svg"/>
+                        <img src="{{ static('assets/img/icons/allDep.svg') }}" alt="allDep.svg"/>
                     </div>
                     <span class="CategoriesButton-text">Все категории</span>
                     <div class="CategoriesButton-arrow"></div>
@@ -14,7 +14,7 @@
                 <div class="CategoriesButton-content">
                     {% for item in menu %}
                         <div class="CategoriesButton-link">
-                            <a href="{{ url('products:home-page') }}"> {# Добавить путь до category-detail #}
+                            <a href="{{ url ('products:home-page') }}"> {# Добавить путь до category-detail #}
                                 {% if item.category.icon %}
                                 <div class="CategoriesButton-icon">
                                     <img src="{{ item.category.icon.url }}" alt="{{ item.category.get_icon_name() }}"/>
@@ -38,9 +38,11 @@
                                     {% endfor %}
                                 </div>
                             {% endif %}
+
                         </div>
                     {% endfor %}
                 </div>
+
             </div>
         </div>
 

@@ -63,6 +63,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
+if DEBUG:
+    SHELL_PLUS_PRINT_SQL = True
+
 TEMPLATES = [
     {
         "BACKEND": "django_jinja.backend.Jinja2",
@@ -175,5 +178,5 @@ MEDIA_ROOT = "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = reverse_lazy("profiles:home-page")
+LOGIN_REDIRECT_URL = reverse_lazy("products:home-page")
 LOGIN_URL = reverse_lazy("profiles:login")

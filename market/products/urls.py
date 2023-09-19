@@ -2,7 +2,6 @@ from django.urls import path
 
 from .views import HomeView, ProductView
 
-
 app_name = "products"
 
 urlpatterns = [
