@@ -95,7 +95,8 @@ class ProductDetail(models.Model):
 
 def category_icon_directory_path(instance: "Category", filename: str) -> str:
     """Функция получения пути для иконок категорий"""
-    return "img/icons/categories/{filename}".format(
+    return "img/icons/categories/{slug}/{filename}".format(
+        slug=instance.slug,
         filename=filename,
     )
 
@@ -104,6 +105,7 @@ class Category(models.Model):
     """Категория продукта"""
 
     name = models.CharField(max_length=128, unique=True, verbose_name=_("наименование"))
+    slug = models.SlugField(max_length=128, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
     modified_at = models.DateTimeField(auto_now=True, verbose_name=_("дата последнего изменения"))
     archived = models.BooleanField(default=False, verbose_name=_("архивировано"))
@@ -123,5 +125,38 @@ class Category(models.Model):
         validators=[FileExtensionValidator(["svg", "img", "png"])],
     )
 
+    def get_absolute_url(self):
+        # TODO в разработке: будет добавлен после готовности каталога
+        # """ Method returns a string that can be used to refer to the object over HTTP """
+        # return reverse("catalog:category-detail", kwargs={"pk": self.pk})
+        pass
+
+    def get_icon_name(self) -> str:
+        """
+        Получение названия файла иконки
+        :return: название файла
+        """
+        return os.path.basename(self.icon.name)
+
     def __str__(self) -> str:
-        return f"Категория(pk={self.pk}, name={self.name!r})"
+        return f"Категория (pk={self.pk}, name={self.name!r})"
+
+
+class Review(models.Model):
+    """Отзыв на продукт"""
+
+    class Meta:
+        verbose_name = _("отзыв")
+        verbose_name_plural = _("отзывы")
+        app_label = "products"
+
+    user = models.ForeignKey("profiles.User", on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    review_content = models.TextField(verbose_name=_("отзыв"))
+    is_published = models.BooleanField(default=False, verbose_name=_("опубликовано"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
+    modified_at = models.DateTimeField(auto_now=True, verbose_name=_("дата последнего изменения"))
+    archived = models.BooleanField(default=False, verbose_name=_("архивировано"))
+
+    def __str__(self) -> str:
+        return f"Отзыв (pk={self.pk}, product_id={self.product.id})"

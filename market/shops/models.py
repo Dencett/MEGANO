@@ -40,6 +40,7 @@ class Shop(models.Model):
         related_name="shops",
         verbose_name=_("товары в магазине"),
     )
+    # offer = models.OneToOneField("Offer", on_delete=models.CASCADE, db_index=True)
 
     class Meta:
         verbose_name = _("магазин")

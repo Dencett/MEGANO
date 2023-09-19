@@ -81,6 +81,7 @@ TEMPLATES = [
             "match_regex": None,
             "app_dirname": "templates",
             "context_processors": [
+                "context_processors.menu_context.categories_menu",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",

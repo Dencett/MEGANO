@@ -4,12 +4,13 @@
     "pk": 1,
     "fields": {
         "name": "Мобильные телефоны",
+        "slug": "mobile-phones",
         "created_at": "2023-08-31T13:49:46.669Z",
-        "modified_at": "2023-09-10T08:10:34.189Z",
+        "modified_at": "2023-09-15T09:46:38.453Z",
         "archived": false,
         "is_active": true,
         "parent": null,
-        "icon": "img/icons/categories/mob_icon.svg"
+        "icon": "img/icons/categories/mobile-phones/mob_icon.svg"
     }
 },
 {
@@ -17,12 +18,13 @@
     "pk": 2,
     "fields": {
         "name": "Компьютеры",
+        "slug": "computers",
         "created_at": "2023-08-31T13:55:50.347Z",
-        "modified_at": "2023-09-10T20:17:38.509Z",
+        "modified_at": "2023-09-15T09:47:39.089Z",
         "archived": false,
         "is_active": true,
         "parent": null,
-        "icon": "img/icons/categories/ps-icon.svg"
+        "icon": "img/icons/categories/computers/ps-icon.svg"
     }
 },
 {
@@ -30,12 +32,13 @@
     "pk": 3,
     "fields": {
         "name": "Ноутбуки",
+        "slug": "laptops",
         "created_at": "2023-08-31T13:59:12.311Z",
-        "modified_at": "2023-09-10T20:18:01.889Z",
+        "modified_at": "2023-09-15T09:48:57.714Z",
         "archived": false,
         "is_active": true,
         "parent": 2,
-        "icon": "img/icons/categories/ps-icon_RrRFUvi.svg"
+        "icon": "img/icons/categories/laptops/laptops-icon.svg"
     }
 },
 {
@@ -43,12 +46,13 @@
     "pk": 4,
     "fields": {
         "name": "Планшеты",
+        "slug": "tablets",
         "created_at": "2023-08-31T14:06:23.602Z",
-        "modified_at": "2023-09-10T20:18:19.523Z",
+        "modified_at": "2023-09-15T09:49:46.941Z",
         "archived": false,
         "is_active": true,
         "parent": 2,
-        "icon": "img/icons/categories/tv-icon_4j73SQp.svg"
+        "icon": "img/icons/categories/tablets/tablets_icon.svg"
     }
 },
 {
@@ -56,12 +60,13 @@
     "pk": 5,
     "fields": {
         "name": "Моноблоки",
+        "slug": "monoblocks",
         "created_at": "2023-08-31T14:09:03.841Z",
-        "modified_at": "2023-09-08T12:20:32.867Z",
+        "modified_at": "2023-09-15T09:50:42.113Z",
         "archived": false,
         "is_active": true,
         "parent": 2,
-        "icon": ""
+        "icon": "img/icons/categories/monoblocks/monoblock-icon.svg"
     }
 },
 {
@@ -69,12 +74,13 @@
     "pk": 6,
     "fields": {
         "name": "Телевизоры",
+        "slug": "tvs",
         "created_at": "2023-08-31T14:12:59.641Z",
-        "modified_at": "2023-09-10T08:10:57.340Z",
+        "modified_at": "2023-09-15T09:51:20.859Z",
         "archived": false,
         "is_active": true,
         "parent": null,
-        "icon": "img/icons/categories/tv-icon.svg"
+        "icon": "img/icons/categories/tvs/tv-icon.svg"
     }
 },
 {
@@ -82,8 +88,9 @@
     "pk": 7,
     "fields": {
         "name": "Фотоаппараты",
+        "slug": "cameras",
         "created_at": "2023-08-31T14:14:02.799Z",
-        "modified_at": "2023-09-10T08:11:25.199Z",
+        "modified_at": "2023-09-15T09:01:00.436Z",
         "archived": false,
         "is_active": true,
         "parent": null,
@@ -95,12 +102,13 @@
     "pk": 8,
     "fields": {
         "name": "Техника для дома",
+        "slug": "household-appliances",
         "created_at": "2023-08-31T14:14:02.799Z",
-        "modified_at": "2023-09-08T12:20:55.793Z",
+        "modified_at": "2023-09-15T09:52:16.736Z",
         "archived": false,
         "is_active": true,
         "parent": null,
-        "icon": ""
+        "icon": "img/icons/categories/household-appliances/househould-appliance-icon.svg"
     }
 },
 {
@@ -108,12 +116,13 @@
     "pk": 9,
     "fields": {
         "name": "Микроволновые печи",
+        "slug": "microwaves",
         "created_at": "2023-08-31T14:14:02.799Z",
-        "modified_at": "2023-09-10T20:18:35.796Z",
+        "modified_at": "2023-09-15T09:52:33.442Z",
         "archived": false,
         "is_active": true,
         "parent": 8,
-        "icon": "img/icons/categories/microwave-icon.svg"
+        "icon": "img/icons/categories/microwaves/microwave-icon.svg"
     }
 },
 {
@@ -121,12 +130,13 @@
     "pk": 10,
     "fields": {
         "name": "Стиральные машины",
+        "slug": "washing-machines",
         "created_at": "2023-08-31T14:14:02.799Z",
-        "modified_at": "2023-09-10T20:18:48.085Z",
+        "modified_at": "2023-09-15T09:52:56.945Z",
         "archived": false,
         "is_active": true,
         "parent": 8,
-        "icon": "img/icons/categories/washer-icon.svg"
+        "icon": "img/icons/categories/washing-machines/washer-icon.svg"
     }
 },
 {
@@ -134,12 +144,13 @@
     "pk": 11,
     "fields": {
         "name": "Кухонные плиты",
+        "slug": "stoves",
         "created_at": "2023-08-31T14:14:02.799Z",
-        "modified_at": "2023-09-10T20:19:01.836Z",
+        "modified_at": "2023-09-15T09:53:10.796Z",
         "archived": false,
         "is_active": true,
         "parent": 8,
-        "icon": "img/icons/categories/stove-icon.svg"
+        "icon": "img/icons/categories/stoves/stove-icon.svg"
     }
 },
 {
@@ -147,12 +158,13 @@
     "pk": 12,
     "fields": {
         "name": "Электроника",
+        "slug": "electronics",
         "created_at": "2023-08-31T14:14:02.799Z",
-        "modified_at": "2023-09-08T12:21:23.671Z",
+        "modified_at": "2023-09-15T09:54:24.943Z",
         "archived": false,
         "is_active": true,
         "parent": null,
-        "icon": ""
+        "icon": "img/icons/categories/electronics/electronics-icon.svg"
     }
 },
 {
@@ -160,12 +172,13 @@
     "pk": 13,
     "fields": {
         "name": "Наушники",
+        "slug": "headphones",
         "created_at": "2023-08-31T14:14:02.799Z",
-        "modified_at": "2023-09-10T20:19:15.733Z",
+        "modified_at": "2023-09-15T09:55:06.385Z",
         "archived": false,
         "is_active": true,
         "parent": 12,
-        "icon": "img/icons/categories/hp-icon.svg"
+        "icon": "img/icons/categories/headphones/hp-icon.svg"
     }
 },
 {
@@ -173,12 +186,13 @@
     "pk": 14,
     "fields": {
         "name": "Колонки",
+        "slug": "loud-speackers",
         "created_at": "2023-08-31T14:14:02.799Z",
-        "modified_at": "2023-09-10T20:19:25.334Z",
+        "modified_at": "2023-09-15T09:55:17.096Z",
         "archived": false,
         "is_active": true,
         "parent": 12,
-        "icon": "img/icons/categories/loadspeaker-icon.svg"
+        "icon": "img/icons/categories/loud-speackers/loadspeaker-icon.svg"
     }
 },
 {
@@ -186,12 +200,13 @@
     "pk": 15,
     "fields": {
         "name": "Аксессуары",
+        "slug": "accessories",
         "created_at": "2023-08-31T14:14:02.799Z",
-        "modified_at": "2023-09-08T12:14:41.266Z",
+        "modified_at": "2023-09-15T09:57:04.880Z",
         "archived": false,
         "is_active": true,
         "parent": null,
-        "icon": ""
+        "icon": "img/icons/categories/accessories/accessories_icon.svg"
     }
 },
 {
@@ -199,8 +214,9 @@
     "pk": 16,
     "fields": {
         "name": "Без категории",
+        "slug": "none-category-products",
         "created_at": "2023-09-13T10:32:29.149Z",
-        "modified_at": "2023-09-13T10:32:29.149Z",
+        "modified_at": "2023-09-15T09:06:26.838Z",
         "archived": false,
         "is_active": true,
         "parent": null,
