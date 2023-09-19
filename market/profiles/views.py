@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Group
 from django.contrib.auth.views import LogoutView, PasswordChangeView
 from django.contrib.auth import authenticate, login
+from django.db import transaction
 from django.urls import reverse_lazy, reverse
 from django.http.response import HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView
@@ -35,7 +36,6 @@ class AboutUserView(TemplateView):
 class HomePage(TemplateView):
     """View class заглушка - главная страница сайта."""
 
-    # template_name = "profiles/index.html"
     template_name = "profiles/index.jinja2"
 
 
@@ -46,7 +46,6 @@ class UserRegisterView(CreateView):
     """
 
     form_class = UserRegisterForm
-    # template_name = "profiles/register.html"
     template_name = "profiles/register.jinja2"
     success_url = reverse_lazy("profiles:home-page")
 
@@ -56,6 +55,7 @@ class UserRegisterView(CreateView):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
+    @transaction.atomic
     def form_valid(self, form):
         response = super().form_valid(form)
 
@@ -65,7 +65,6 @@ class UserRegisterView(CreateView):
         residence = form.cleaned_data.get("residence")
         address = form.cleaned_data.get("address")
         retailer_group = form.cleaned_data.get("retailer_group")
-
         Profile.objects.create(
             user=self.object,
             phone_number=phone_number,
@@ -77,7 +76,6 @@ class UserRegisterView(CreateView):
             email=email,
             password=password,
         )
-
         if retailer_group:
             group = Group.objects.get(name="retailer")
             if not user.is_staff:
@@ -91,7 +89,7 @@ class UserRegisterView(CreateView):
 class UserLogoutView(LogoutView):
     """View class заглушка - user logout."""
 
-    next_page = reverse_lazy("profiles:home-page")
+    next_page = reverse_lazy("products:home-page")
 
 
 class UserResetPasswordView(PasswordChangeView):
@@ -101,6 +99,5 @@ class UserResetPasswordView(PasswordChangeView):
     to the user and sends the user to the main page.
     """
 
-    # template_name = "profiles/password_form.html"
     template_name = "profiles/password_form.jinja2"
     success_url = reverse_lazy("profiles:home-page")
