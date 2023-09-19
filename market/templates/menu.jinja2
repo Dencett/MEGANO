@@ -1,0 +1,50 @@
+{#<div class="Header-searchWrap">#}
+{#    <div class="wrap">#}
+        <div class="Header-categories">
+            <div class="CategoriesButton">
+
+                <div class="CategoriesButton-title">
+                    <div class="CategoriesButton-icon">
+                        <img src="{{static('assets/img/icons/allDep.svg')}}" alt="allDep.svg"/>
+                    </div>
+                    <span class="CategoriesButton-text">Все категории</span>
+                    <div class="CategoriesButton-arrow"></div>
+                </div>
+
+                <div class="CategoriesButton-content">
+                    {% for item in menu %}
+                        <div class="CategoriesButton-link">
+                            <a href="{{ url ("home-page") }}"> {# Добавить путь до category-detail #}
+                                {% if item.category.icon %}
+                                <div class="CategoriesButton-icon">
+                                    <img src="{{ item.category.icon.url }}" alt="{{ item.category.get_icon_name() }}"/>
+                                </div>
+                                {% endif %}
+                                <span class="CategoriesButton-text">{{ item.category.name }}</span>
+                            </a>
+
+                            {% if item.submenu %}
+                                <a class="CategoriesButton-arrow" href="#"></a>
+                                <div class="CategoriesButton-submenu">
+                                    {% for subitem in item.submenu %}
+                                        <a class="CategoriesButton-link" href="{{ url ("home-page") }}"> {# Добавить путь до category-detail #}
+                                            {% if subitem.category.icon %}
+                                            <div class="CategoriesButton-icon">
+                                                <img src="{{ subitem.category.icon.url }}" alt="{{ subitem.category.get_icon_name() }}"/>
+                                            </div>
+                                            {% endif %}
+                                            <span class="CategoriesButton-text">{{ subitem.category.name }}</span>
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+{#    </div>#}
+{#</div>#}
