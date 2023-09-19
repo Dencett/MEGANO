@@ -3,8 +3,9 @@ from django.db.models import QuerySet
 from django.http import HttpRequest
 
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
-from .models import Category, Detail, Product, ProductDetail, ProductImage, Tag
+from .models import Category, Detail, Product, ProductDetail, ProductImage, Tag, Review
 
 
 class DetailInline(admin.StackedInline):
@@ -59,13 +60,13 @@ class ProductDetailAdmin(admin.ModelAdmin):
     ordering = ("pk",)
 
 
-@admin.action(description="Архивировать категории")
-def mark_archived(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
+@admin.action(description=_("Архивировать категорию"))
+def mark_archived_category(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
     queryset.update(archived=True, modified_at=timezone.now())
 
 
-@admin.action(description="Разархивировать категории")
-def mark_unarchived(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
+@admin.action(description=_("Разархивировать категорию"))
+def mark_unarchived_category(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
     queryset.update(archived=False, modified_at=timezone.now())
 
 
@@ -74,15 +75,14 @@ class CategoryAdmin(admin.ModelAdmin):
     """Админ Категория"""
 
     actions = [
-        mark_archived,
-        mark_unarchived,
+        mark_archived_category,
+        mark_unarchived_category,
     ]
     list_display = (
         "pk",
         "parent_name_id",
         "name",
-        # "icon",
-        # "icon_path",
+        "icon",
         "created_at",
         "modified_at",
         "is_active",
@@ -97,7 +97,7 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = [
         "name",
     ]
-    search_help_text = "Поиск категории по названию"
+    search_help_text = _("Поиск категории по названию")
     list_filter = (
         "created_at",
         "modified_at",
@@ -109,34 +109,34 @@ class CategoryAdmin(admin.ModelAdmin):
                 "fields": (
                     "name",
                     "parent",
-                    # "icon_path",
+                    "slug",
                 ),
             },
         ),
         (
-            "Иконка",
+            _("Иконка"),
             {
                 "fields": ("icon",),
             },
         ),
         (
-            "Статус категории",
+            _("Статус категории"),
             {
                 "fields": ("is_active",),
-                "description": "Поле используеться для задания статуса категории",
+                "description": _("Поле используеться для задания статуса категории"),
             },
         ),
         (
-            "Дополнительные функции",
+            _("Дополнительные функции"),
             {
                 "fields": ("archived",),
-                "description": "Поле 'архивировано' используеться для 'soft delete'",
+                "description": _("Поле 'архивировано' используеться для 'soft delete'"),
             },
         ),
     ]
 
     @admin.display(description="родительская категория")
-    def parent_name_id(self, obj: Category) -> str:
+    def parent_name_id(self, obj: Category):
         if obj.parent is None:
             return
         return str(obj.parent.id)
@@ -144,3 +144,71 @@ class CategoryAdmin(admin.ModelAdmin):
 
 # Регистрация модели тега
 admin.site.register(Tag)
+
+
+@admin.action(description=_("Архивировать отзыв"))
+def mark_archived_review(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
+    queryset.update(archived=True, modified_at=timezone.now())
+
+
+@admin.action(description=_("Разархивировать отзыв"))
+def mark_unarchived_review(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
+    queryset.update(archived=False, modified_at=timezone.now())
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    """Админ Отзыв"""
+
+    actions = [
+        mark_archived_review,
+        mark_unarchived_review,
+    ]
+
+    list_display = (
+        "pk",
+        "user_id",
+        "product_id",
+        "short_review_content",
+        "is_published",
+        "created_at",
+        "modified_at",
+        "archived",
+    )
+
+    list_display_links = ("pk",)
+
+    ordering = ("pk",)
+
+    list_filter = (
+        "created_at",
+        "modified_at",
+    )
+
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": ("user", "product", "review_content"),
+            },
+        ),
+        (
+            _("Статус публикации"),
+            {
+                "fields": ("is_published",),
+            },
+        ),
+        (
+            _("Дополнительные функции"),
+            {
+                "fields": ("archived",),
+                "description": _("Поле 'архивировано' используеться для 'soft delete'"),
+            },
+        ),
+    ]
+
+    @admin.display(description="отзыв")
+    def short_review_content(self, obj: Review) -> str:
+        if len(obj.review_content) > 50:
+            return obj.review_content[:50] + "..."
+        return obj.review_content

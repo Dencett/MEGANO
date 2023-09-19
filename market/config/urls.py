@@ -21,7 +21,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("products/", include("products.urls")),
+    path("", include("products.urls")),
     path("profiles/", include("profiles.urls")),
     # path("vendors/", include("vendors.urls")),  # Резервирую строчку под приложение продавцов
 ]

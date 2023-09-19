@@ -2,8 +2,10 @@ from django.test import TestCase
 from django.http import HttpRequest
 from django.shortcuts import render
 
-from products.services import category_menu
+
 from products.models import Product
+
+from products.services.review_services import ReviewServices
 
 FIXTURES = [
     "fixtures/04-shops.json",
@@ -17,24 +19,33 @@ FIXTURES = [
 ]
 
 
-class ExampleViewTest(TestCase):
+class HomeViewTest(TestCase):
     fixtures = FIXTURES
 
     def test_example_view(self):
         template = "base.jinja2"
         request = HttpRequest()
-        context = {"menu": category_menu()}
+        context = {}
         response = render(request, template, context)
         self.assertEqual(response.status_code, 200)
 
 
-class ProductsViewTest(TestCase):
+class ProductViewTest(TestCase):
     fixtures = FIXTURES
 
-    def test_products_detail_view(self):
+    def test_product_detail_view(self):
         template = "products/product_details.jinja2"
         request = HttpRequest()
         product = Product.objects.get(pk=1)
-        context = {"product": product}
+        review = ReviewServices(request=request, product=product)
+        context = dict()
+
+        context["product"] = product
+        context["reviews"] = review.get_reviews()
+        context["page_obj"] = review.listing(context["reviews"])
         response = render(request, template, context)
         self.assertEqual(response.status_code, 200)
+
+    def test_product_form_view(self):
+        # в процессе
+        pass
