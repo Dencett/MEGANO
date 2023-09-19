@@ -61,7 +61,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-SHELL_PLUS_PRINT_SQL = False
+if DEBUG:
+    SHELL_PLUS_PRINT_SQL = True
 
 TEMPLATES = [
     {
