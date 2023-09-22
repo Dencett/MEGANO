@@ -10,8 +10,6 @@ from .services.review_services import ReviewServices
 from .forms import ProductReviewForm
 from django.urls import reverse
 
-# Create your views here.
-
 
 class HomeView(View):
     """Главная страница магазина"""
@@ -69,7 +67,7 @@ class ProductReviewFormView(SingleObjectMixin, FormView):
         return response
 
     def get_success_url(self):
-        return reverse("product-detail", kwargs={"pk": self.object.pk})
+        return reverse("products:product-detail", kwargs={"pk": self.object.pk})
 
 
 class ProductView(View):

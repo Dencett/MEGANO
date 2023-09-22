@@ -8,7 +8,7 @@
                         <img src="{{ static('assets/img/icons/allDep.svg') }}" alt="allDep.svg"/>
                     </div>
                     <span class="CategoriesButton-text">Все категории</span>
-                    <div class="CategoriesButton-arrow"></div>
+                    <div class="CategoriesButton-arrow"> </div>
                 </div>
 
                 <div class="CategoriesButton-content">
@@ -24,7 +24,7 @@
                             </a>
 
                             {% if item.submenu %}
-                                <a class="CategoriesButton-arrow" href="#"></a>
+                                <a class="CategoriesButton-arrow"></a>
                                 <div class="CategoriesButton-submenu">
                                     {% for subitem in item.submenu %}
                                         <a class="CategoriesButton-link" href="{{ url ('products:home-page') }}"> {# Добавить путь до category-detail #}
