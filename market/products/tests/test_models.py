@@ -1,6 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
-from products.models import Product, Detail, ProductDetail, Category, ProductImage, Tag
+from products.models import Product, Detail, ProductDetail, Category, ProductImage, Tag, Review
+
+
+User = get_user_model()
 
 
 class ProductModelTest(TestCase):
@@ -203,6 +207,7 @@ class CategoryModelTest(TestCase):
         field_verboses = {
             "name": "наименование",
             "parent": "родитель",
+            "slug": "slug",
             "created_at": "дата создания",
             "modified_at": "дата последнего изменения",
         }
@@ -244,3 +249,41 @@ class CategoryModelTest(TestCase):
         category = CategoryModelTest.category
         subcategory = CategoryModelTest.subcategory
         self.assertEqual(subcategory.parent.pk, category.pk)
+
+
+class ReviewModelTest(TestCase):
+    """Класс тестов модели Отзывов"""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.category = Category.objects.create(name="Тестовая категория")
+        cls.detail = Detail.objects.create(name="Тестовая характеристика")
+        cls.product = Product.objects.create(name="Тестовый продукт", category=cls.category)
+        cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
+        cls.user = User.objects.create(username="Test_user", email="test@test.com", password="Test123!$")
+        cls.review = Review.objects.create(
+            user=cls.user, product=cls.product, review_content="Тестовая отзыв продукта"
+        )
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.review.delete()
+        cls.user.delete()
+        cls.product.delete()
+        cls.detail.delete()
+        cls.category.delete()
+
+    def test_verbose_name(self):
+        review = ReviewModelTest.review
+        field_verboses = {
+            "user": "user",
+            "product": "product",
+            "review_content": "отзыв",
+            "is_published": "опубликовано",
+            "created_at": "дата создания",
+            "modified_at": "дата последнего изменения",
+            "archived": "архивировано",
+        }
+        for field, expected_value in field_verboses.items():
+            with self.subTest(field=field):
+                self.assertEqual(review._meta.get_field(field).verbose_name, expected_value)
