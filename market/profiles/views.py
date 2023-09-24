@@ -6,8 +6,8 @@ from django.urls import reverse_lazy, reverse
 from django.http.response import HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView
 
-from .models import Profile
 from .forms import UserRegisterForm, ProfileAvatarUpdateForm
+from .models import User
 
 
 class AboutUserView(TemplateView):
@@ -21,14 +21,14 @@ class AboutUserView(TemplateView):
         context["update_avatar"] = ProfileAvatarUpdateForm()
         return context
 
+    @transaction.atomic
     def post(self, request):
         update_avatar = ProfileAvatarUpdateForm(request.POST, request.FILES)
-
         if update_avatar.is_valid():
             picture = update_avatar.cleaned_data.get("user_avatar")
-            profile = Profile.objects.get(user=request.user)
-            profile.avatar = picture
-            profile.save()
+            user = User.objects.get(pk=self.request.user.pk)
+            user.avatar = picture
+            user.save()
             return HttpResponseRedirect(reverse("profiles:about-user"))
         return HttpResponseRedirect(reverse("profiles:about-user"))
 
@@ -61,16 +61,8 @@ class UserRegisterView(CreateView):
 
         password = form.cleaned_data.get("password1")
         email = form.cleaned_data.get("email")
-        phone_number = form.cleaned_data.get("phone_number")
-        residence = form.cleaned_data.get("residence")
-        address = form.cleaned_data.get("address")
         retailer_group = form.cleaned_data.get("retailer_group")
-        Profile.objects.create(
-            user=self.object,
-            phone_number=phone_number,
-            residence=residence,
-            address=address,
-        )
+
         user = authenticate(
             self.request,
             email=email,
