@@ -1,71 +1,115 @@
 {% extends 'base.jinja2' %}
 
 {% block title %}
-  About user
+Информация о пользователе
 {% endblock %}
 
 {% block middle %}
 {% if user.is_authenticated %}
-<div class="Middle">
-    <div class="Section">
+
+
+<div class="Middle Middle_top">
+    <div class="Section Section_column Section_columnLeft">
         <div class="wrap">
-        <h1 class="header">Страница детальной информации</h1>
-        <h2 class="header">Детальная информация о пользователе: {{ user.username }}</h2>
-        <a href="{{ url('products:home-page') }}" class="btn btn_square btn_dark" style="margin-bottom: 15px;">На главную</a>
-        <a href="{{ url('profiles:change-password') }}" class="btn btn_square btn_dark">Изменить пароль</a>
-        <div style="display: flex; justify-content: space-around; align-items: center;">
+<!--========================================== SIDE BAR!  НАЧАЛО   ==========================================-->
+            <div class="Section-column">
+                <div class="Section-columnSection">
+                    <header class="Section-header">
+                        <strong class="Section-title">Навигация
+                        </strong>
+                    </header>
+                    <div class="Section-columnContent">
+                        <div class="NavigateProfile">
+                            <ul class="menu menu_vt">
+                                <li class="menu-item_ACTIVE menu-item">
+                                    <a class="menu-link" href="{{ url('profiles:about-user') }}">Личный кабинет</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a class="menu-link" href="profile.html">Профиль</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a class="menu-link" href="historyorder.html">История заказов</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a class="menu-link" href="{{ url('profiles:change-password') }}">Сменить пароль</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a class="menu-link" href="{{ url('products:home-page') }}">На главную</a>
+                                </li>
 
-        {% if user.avatar %}
-            <p style="display: flex; just">
-                <img src="{{ user.avatar.url }}" alt="{{ user.avatar.name }}" width="300" height="300">
-            </p>
+                            </ul>
+                        </div>
+                    </div>
 
-                <form method="post" enctype="multipart/form-data" style="padding-left: 45px;">
-                    {% csrf_token %}
-                    <label for="id_user_avatar"></label>
-                    <input type="file" class="btn btn_square btn-dark" name="user_avatar" accept="image/*" required="" id="id_user_avatar" style="margin:0; padding: 0;">
-                    <button type="submit" class="btn btn_square btn_dark">Update avatar</button>
-                </form>
-
-
-        {% else %}
-            <h2 class="header">У пользователя нет аватара</h2>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ update_avatar.as_p() }}
-                <button type="submit" class="btn btn_square btn_dark">Update avatar</button>
-            </form>
-        {% endif%}
-                <div style="display: flex; min-height: 350px; flex-direction: column; justify-content: center; min-width: 440px;">
-                    <p class="Cart-title">Никнейм пользователя: {{ user.username }}</p>
-                    <p class="Cart-title">Имя: {{ user.first_name }}</p>
-                    <p class="Cart-title">Фамилия: {{ user.last_name }}</p>
-                    <p class="Cart-title">Email: {{ user.email }}</p>
-                    <p class="Cart-title">Телефон: {{ user.phone }}</p>
-                    <p class="Cart-title">Город проживания: {{ user.residence }}</p>
-                    <p class="Cart-title">Адрес: {{ user.address }}</p>
-                    <a href="#"  class="btn btn_square btn_dark" style="margin-bottom: 15px;">Изменить профиль</a>
                 </div>
+            </div>
+<!--========================================== SIDE BAR!  КОНЕЦ  ==========================================-->
+            <div class="Section-content">
+                <div class="Profile">
+                    <div class="row-block">
+                        <h2 class="Section-title">Страница детальной информации</h2>
+                        <h3 class="header">Здравствуйте, {{ user.username }}</h3>
+                    </div>
+                </div>
+                <div class="row">
+<!--========================================== AVATAR!  НАЧАЛО  ==========================================-->
+                    <div class="row-block">
+                        {% if user.avatar %}
+                        <div class="form-group">
 
+                            <div class="Profile-avatar">
+                            <p style="display: flex; just"><img src="{{ user.avatar.url }}" alt="{{ user.avatar.name }}" height="268px"></p>
+                            </div>
+                             <div class="form-group">
+                                <label class="form-label" for="avatar-new">Сменить аватар</label>
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="Profile-avatar Profile-avatar_noimg" style="height: 80px;">
+                                        <label class="Profile-fileLabel" for="avatar-new">
+                                            <img src="{{ static('assets/img/icons/upload.png') }}" alt="#.png" />
+                                            Загрузить фото</label>
+                                        <input type="file" id="avatar-new" class="Profile-file form-input" accept="image/*" name="user_avatar" data-validate="onlyImgAvatar"></label>
+                                    </div>
+                                   <button type="submit" class="btn btn_square btn_dark" style="margin-top:80px">Обновить аватар</button>
+                                </form>
+                            </div>
+                        </div>
+                        {% else %}
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label class="form-label" for="avatar">Аватар</label>
+                                <div class="Profile-avatar Profile-avatar_noimg">
+                                <label class="Profile-fileLabel" for="avatar">
+                                    <img src="{{ static('assets/img/icons/upload.png') }}" alt="#.png" />
+                                    Загрузить фото</label>
+                                <input type="file" id="avatar" class="Profile-file form-input" accept="image/*" name="user_avatar" data-validate="onlyImgAvatar"></label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn_square btn_dark" style="margin-top:80px">Обновить аватар</button>
+                        </form>
+
+                        {% endif%}
+
+                    </div>
+<!--========================================== AVATAR!  КОНЕЦ  ==========================================-->
+<!--========================================== Информация пользователя пользователя!  НАЧАЛО  ==========================================-->
+                    <div class="row-block">
+                        <h3>Информация о пользователе</h3>
+                        <p class="Cart-title">Никнейм пользователя: {{ user.username }}</p>
+                        <p class="Cart-title">Имя: {{ user.first_name }}</p>
+                        <p class="Cart-title">Фамилия: {{ user.last_name }}</p>
+                        <p class="Cart-title">Email: {{ user.email }}</p>
+                        <p class="Cart-title">Телефон: {{ user.phone }}</p>
+                        <p class="Cart-title">Город проживания: {{ user.residence }}</p>
+                        <p class="Cart-title">Адрес: {{ user.address }}</p>
+                        <a href="#" class="btn btn_square btn_dark" style="margin-bottom: 15px;">Изменить профиль</a>
+                    </div>
+    <!--========================================== Информация пользователя пользователя!  КОНЕЦ  ==========================================-->
+                </div>
             </div>
         </div>
     </div>
 </div>
-{% else %}
-<div class="Middle">
-    <div class="Section">
-        <div class="wrap">
-            <div class="wrapper">
-            <h2 style="text-align: center">Система видит вас как анонимный пользователь.</h2>
-<!--                <p>Войдите в систему</p>-->
-                <button  class="btn btn_square btn_dark">
-                    <a href="{{ url('profiles:login') }}">Войти в систему</a>
-                </button>
-            </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 {% endif %}
 {% endblock %}
