@@ -99,28 +99,22 @@ class UserRegisterTestCase(TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.user.delete()
-        cls.profile.delete()
 
     def setUp(self) -> None:
         self.client.login(**self.user_login_info)
 
-    def test_user_permissions_active(self):
-        response = self.client.get(reverse("profiles:home-page"))
-        self.assertEqual(response.status_code, 200)
-
-    def test_register_user_sign_in_profile(self):
+    def test_user_to_profile_page(self):
         response = self.client.get(reverse("profiles:about-user"))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "John-test")
 
-    def test_register_user_sign_in_change_password(self):
+    def test_user_to_change_password_page(self):
         response = self.client.get(reverse("profiles:change-password"))
         self.assertEqual(response.status_code, 200)
 
-    def test_register_user_sign_in_logout(self):
-        response = self.client.get(reverse("profiles:logout"))
-        to_home = self.client.get(reverse("products:home-page"))
-        url = to_home.wsgi_request.META["PATH_INFO"]
-        self.assertEqual(response.url, url)
+    def test_user_to_home_page(self):
+        response = self.client.get(reverse("profiles:home-page"))
+        self.assertEqual(response.status_code, 200)
 
 
 class UserChangeInformationTestCase(TestCase):

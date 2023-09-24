@@ -5,7 +5,7 @@ from profiles.models import User
 
 
 def shop_avatar_path(instance: "User", filename):
-    return "shop/{pk}/avatar/{filename}".format(
+    return "shops/{pk}/avatar/{filename}".format(
         pk=instance.pk,
         filename=filename,
     )

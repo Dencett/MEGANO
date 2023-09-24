@@ -63,9 +63,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-if DEBUG:
-    SHELL_PLUS_PRINT_SQL = True
-
 TEMPLATES = [
     {
         "BACKEND": "django_jinja.backend.Jinja2",

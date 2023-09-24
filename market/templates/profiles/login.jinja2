@@ -12,10 +12,7 @@ Login page
         <div class="wrapper">
           <h2>Login page</h2>
           <p>{% if form.errors %}
-          {% for key, error in form.errors %}
-<!--          <p>{{ error }}</p>-->
-          <p>{{ errors }}</p>
-          {% endfor %}
+              <p>{{ form.errors }}</p>
           {% endif %}</p>
 
           <form method="post">
