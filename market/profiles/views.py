@@ -13,7 +13,6 @@ from .models import User
 class AboutUserView(TemplateView):
     """View class заглушка - информация о пользователе."""
 
-    # template_name = "profiles/about-user.html"
     template_name = "profiles/about-user.jinja2"
 
     def get_context_data(self, **kwargs):
