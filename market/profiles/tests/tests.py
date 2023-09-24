@@ -99,7 +99,6 @@ class UserRegisterTestCase(TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.user.delete()
-        cls.profile.delete()
 
     def setUp(self) -> None:
         self.client.login(**self.user_login_info)
