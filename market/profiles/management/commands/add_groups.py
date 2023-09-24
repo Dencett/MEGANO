@@ -32,6 +32,11 @@ class Command(BaseCommand):
             "change_productdetail",
             "delete_productdetail",
             "view_productdetail",
+            "add_offer",
+            "change_offer",
+            "delete_offer",
+            "view_offer",
+            "view_shop",
         ]
         [retailer.permissions.add(Permission.objects.get(codename=perm)) for perm in permission_list_retailer]
         retailer.save()
