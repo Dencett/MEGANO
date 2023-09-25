@@ -4,10 +4,13 @@ from django.contrib.auth import authenticate, login
 from django.db import transaction
 from django.urls import reverse_lazy, reverse
 from django.http.response import HttpResponseRedirect
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, ListView
 
 from .forms import UserRegisterForm, ProfileAvatarUpdateForm
 from .models import User
+from products.models import Product
+from .services.products_history import get_products_in_user_history
+from products.services.product_price import product_min_price
 
 
 class AboutUserView(TemplateView):
@@ -18,6 +21,10 @@ class AboutUserView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["update_avatar"] = ProfileAvatarUpdateForm()
+        user = self.request.user
+        history = get_products_in_user_history(user, number=3)
+        context["history"] = history
+        context["price"] = product_min_price
         return context
 
     def post(self, request):
@@ -91,3 +98,14 @@ class UserResetPasswordView(PasswordChangeView):
 
     template_name = "profiles/password_form.jinja2"
     success_url = reverse_lazy("profiles:home-page")
+
+
+class UserHistoryView(ListView):
+    template_name = "profiles/product-history.jinja2"
+    model = Product
+    context_object_name = "history"
+    extra_context = {"price": product_min_price}
+
+    def get_queryset(self):
+        user = self.request.user
+        return get_products_in_user_history(user)

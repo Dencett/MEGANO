@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.core.validators import FileExtensionValidator
+from django.urls import reverse
 
 
 def product_images_directory_path(instance: Union["Product", "ProductImage"], filename: str) -> str:
@@ -54,6 +55,10 @@ class Product(models.Model):
         super().save(force_insert, force_update, using, update_fields)
         if self.preview:
             ProductImage.objects.get_or_create(product=self, image=self.preview)
+
+    def get_absolute_url(self):
+        """Method returns a string that can be used to refer to the object over HTTP"""
+        return reverse("products:product-detail", kwargs={"pk": self.pk})
 
     def __str__(self) -> str:
         return f"Товар(pk={self.pk}, name={self.name!r})"
