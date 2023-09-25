@@ -31,13 +31,19 @@ Shop detail
                 </div>
             </div>
 
-
+<!-- ==================================================================================-->
             <div class="Section-content">
                 <div class="Account">
                     <div class="Account-group">
                         <div class="Account-column">
+<!-- =========================== shop avatar =======================================-->
+                            {% if shop.avatar %}
                             <div class="Account-avatar"><img src="{{ shop.avatar.url }}" alt="card.jpg"/>
+                            {% else %}
+                            <h2>У магазина нет аватара</h2>
+                            {% endif %}
                             </div>
+<!-- =========================== shop avatar =======================================-->
                         </div>
                         <div class="Account-column">
                             <div class="Account-name">{{ shop.name }}</div>
