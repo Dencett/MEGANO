@@ -1,5 +1,5 @@
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render  # noqa F401
+from django.shortcuts import render
 from django.views import View
 from django.views.generic import DetailView
 from django.views.generic.detail import SingleObjectMixin
@@ -73,8 +73,8 @@ class ProductReviewFormView(SingleObjectMixin, FormView):
 class ProductView(View):
     """
     Представление в котором:
-        - при полечении "GET" запроса возвращается ProductDetailView.as_view
-        - при полечении "POST" запроса возвращается ProductReviewFormView.as_view
+        - при получении "GET" запроса возвращается ProductDetailView.as_view
+        - при получении "POST" запроса возвращается ProductReviewFormView.as_view
     doc: https://docs.djangoproject.com/en/3.2/topics/class-based-views/mixins/#using-formmixin-with-detailview
     """
 

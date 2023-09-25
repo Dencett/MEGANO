@@ -8,7 +8,7 @@ from django.core.validators import FileExtensionValidator
 
 
 def product_images_directory_path(instance: Union["Product", "ProductImage"], filename: str) -> str:
-    "Функция получения пути для изображений продукта и превью продукта"
+    """Функция получения пути для изображений продукта и превью продукта"""
     if isinstance(instance, ProductImage):
         return "img/products/{name}/{filename}".format(name=instance.product.name, filename=filename)
     return "img/products/{name}/preview_{filename}".format(name=instance.name, filename=filename)
@@ -60,7 +60,8 @@ class Product(models.Model):
 
 
 class Tag(models.Model):
-    "Модель Тег"
+    """Модель Тег"""
+
     name = models.CharField(max_length=64, verbose_name=_("название тега"))
 
     def __str__(self) -> str:
@@ -70,11 +71,11 @@ class Tag(models.Model):
 class Detail(models.Model):
     """Свойство продукта"""
 
+    name = models.CharField(max_length=512, verbose_name=_("наименование"))
+
     class Meta:
         verbose_name = _("свойство продуктов")
         verbose_name_plural = _("свойства продуктов")
-
-    name = models.CharField(max_length=512, verbose_name=_("наименование"))
 
     def __str__(self) -> str:
         return f"Детали продукта (pk={self.pk}, name={self.name!r})"
@@ -83,17 +84,17 @@ class Detail(models.Model):
 class ProductDetail(models.Model):
     """Значение свойства продукта"""
 
-    class Meta:
-        verbose_name = _("значение свойства продуктов")
-        verbose_name_plural = _("значения свойства продуктов")
-
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     detail = models.ForeignKey(Detail, on_delete=models.CASCADE)
     value = models.CharField(max_length=128, verbose_name=_("значение"))
 
+    class Meta:
+        verbose_name = _("значение свойства продуктов")
+        verbose_name_plural = _("значения свойства продуктов")
+
 
 def category_icon_directory_path(instance: "Category", filename: str) -> str:
-    "Функция получения пути для иконок категорий"
+    """Функция получения пути для иконок категорий"""
     return "img/icons/categories/{slug}/{filename}".format(
         slug=instance.slug,
         filename=filename,
@@ -103,11 +104,6 @@ def category_icon_directory_path(instance: "Category", filename: str) -> str:
 class Category(models.Model):
     """Категория продукта"""
 
-    class Meta:
-        verbose_name = _("категория")
-        verbose_name_plural = _("категории")
-        app_label = "products"
-
     name = models.CharField(max_length=128, unique=True, verbose_name=_("наименование"))
     slug = models.SlugField(max_length=128, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
@@ -115,6 +111,11 @@ class Category(models.Model):
     archived = models.BooleanField(default=False, verbose_name=_("архивировано"))
     is_active = models.BooleanField(default=True, verbose_name=_("активно"))
     parent = models.ForeignKey("self", blank=True, null=True, verbose_name=_("родитель"), on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _("категория")
+        verbose_name_plural = _("категории")
+        app_label = "products"
 
     icon = models.FileField(
         null=True,

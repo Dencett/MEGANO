@@ -1,19 +1,19 @@
-from django.contrib import admin  # noqa F401
+from django.contrib import admin
 
 from .models import Shop, Offer
 
 
-class ProductInline(admin.StackedInline):
-    model = Shop.products.through
+# class ProductInline(admin.StackedInline):
+#     model = Shop.products.through
 
 
 @admin.register(Shop)
-class ShopAdmin(admin.ModelAdmin):  # noqa  F811
+class ShopAdmin(admin.ModelAdmin):
     """Админ Магазин"""
 
-    inlines = [
-        ProductInline,
-    ]
+    # inlines = [
+    #     ProductInline,
+    # ]
 
     list_display = (
         "pk",
@@ -44,3 +44,4 @@ class OfferAdmin(admin.ModelAdmin):
         "pk",
         "price",
     )
+    search_fields = ["product", "shop"]

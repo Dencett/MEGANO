@@ -23,7 +23,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("products.urls")),
     path("profiles/", include("profiles.urls")),
-    # path("vendors/", include("vendors.urls")),  # Резервирую строчку под приложение продавцов
+    path("shops/", include("shops.urls")),
 ]
 
 if settings.DEBUG:

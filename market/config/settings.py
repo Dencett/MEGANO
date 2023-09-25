@@ -43,11 +43,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_jinja",
-    "django_extensions",
     "products",
     "shops",
     "profiles",
+    "django_extensions",
 ]
+
+SHELL_PLUS_PRINT_SQL = False
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -60,9 +62,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
-
-if DEBUG:
-    SHELL_PLUS_PRINT_SQL = True
 
 TEMPLATES = [
     {
