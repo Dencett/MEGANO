@@ -20,7 +20,6 @@ class AboutUserView(TemplateView):
         context["update_avatar"] = ProfileAvatarUpdateForm()
         return context
 
-    @transaction.atomic
     def post(self, request):
         update_avatar = ProfileAvatarUpdateForm(request.POST, request.FILES)
         if update_avatar.is_valid():
