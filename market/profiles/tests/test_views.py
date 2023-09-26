@@ -4,8 +4,6 @@ from products.models import Product
 from django.urls import reverse
 
 FIXTURES = [
-    "fixtures/0-contenttypes.json",
-    "fixtures/00-groups_and_permissions.json",
     "fixtures/01-users.json",
     "fixtures/04-shops.json",
     "fixtures/05-category.json",
