@@ -4,7 +4,14 @@
         <strong class="Card-title"><a href="{{ product.get_absolute_url() }}">{{ product.name }}</a>
         </strong>
         <div class="Card-description">
-            <div class="Card-cost"><span class="Card-price">От {{ price(product) }} р</span>
+            <div class="Card-cost">
+                <span class="Card-price">
+                    {% if price(product) %}
+                        От {{ price(product) }} р
+                    {% else %}
+                        Нет в наличие
+                    {% endif %}
+                </span>
             </div>
             <div class="Card-category">
                 {% for tag in product.tags.all() %}

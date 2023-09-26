@@ -5,6 +5,7 @@ from django.db import transaction
 from django.urls import reverse_lazy, reverse
 from django.http.response import HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView, ListView
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 from .forms import UserRegisterForm, ProfileAvatarUpdateForm
 from .models import User
@@ -22,8 +23,9 @@ class AboutUserView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["update_avatar"] = ProfileAvatarUpdateForm()
         user = self.request.user
-        history = get_products_in_user_history(user, number=3)
-        context["history"] = history
+        if user.is_authenticated:
+            history = get_products_in_user_history(user, number=3)
+            context["history"] = history
         context["price"] = product_min_price
         return context
 
@@ -100,7 +102,7 @@ class UserResetPasswordView(PasswordChangeView):
     success_url = reverse_lazy("profiles:home-page")
 
 
-class UserHistoryView(ListView):
+class UserHistoryView(UserPassesTestMixin, ListView):
     template_name = "profiles/product-history.jinja2"
     model = Product
     context_object_name = "history"
@@ -109,3 +111,6 @@ class UserHistoryView(ListView):
     def get_queryset(self):
         user = self.request.user
         return get_products_in_user_history(user)
+
+    def test_func(self):
+        return self.request.user.is_authenticated
