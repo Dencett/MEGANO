@@ -28,11 +28,11 @@ class UserProductHistory(models.Model):
     """История посещения пользователем страницы товара"""
 
     time = models.DateTimeField(auto_now_add=True, verbose_name=_("дата и время посещения"))
-    product = models.ForeignKey(on_delete=models.deletion.CASCADE, to="products.product")
+    product = models.ForeignKey(to="products.product", on_delete=models.deletion.CASCADE)
     user = models.ForeignKey(
-        on_delete=models.deletion.CASCADE,
-        related_name="history_record",
         to=User,
+        on_delete=models.CASCADE,
+        related_name="history_record",
     )
 
     class Meta:
