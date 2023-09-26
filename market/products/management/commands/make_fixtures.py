@@ -9,8 +9,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         fixtures_dict = {
-            "contenttypes": "0-contenttypes.json",
-            "auth": "00-groups_and_permissions.json",
+            # "contenttypes": "0-contenttypes.json",
+            # "auth": "00-groups_and_permissions.json",
             "profiles.user": "01-users.json",
             "shops.shop": "04-shops.json",
             "products.category": "05-category.json",
