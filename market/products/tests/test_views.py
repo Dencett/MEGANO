@@ -3,20 +3,22 @@ from django.test import TestCase
 from django.http import HttpRequest
 from django.shortcuts import render, reverse
 
-from products.models import Product, Category, Detail, Review
+from products.models import Product, Category, Detail, Review, Manufacturer
 from shops.models import Shop, Offer
 
 from products.services.review_services import ReviewServices
 
 FIXTURES = [
+    "fixtures/01-users.json",
     "fixtures/04-shops.json",
     "fixtures/05-category.json",
-    "fixtures/06-tags.json",
-    "fixtures/07-products.json",
-    "fixtures/08-offers.json",
-    "fixtures/09-details.json",
-    "fixtures/10-productimages.json",
-    "fixtures/11-productdetails.json",
+    "fixtures/06-manufacturer.json",
+    "fixtures/07-tags.json",
+    "fixtures/08-products.json",
+    "fixtures/09-offers.json",
+    "fixtures/10-details.json",
+    "fixtures/11-productimages.json",
+    "fixtures/12-productdetails.json",
 ]
 
 
@@ -41,8 +43,12 @@ class ProductViewTest(TestCase):
     def setUpClass(cls):
         cls.category = Category.objects.create(name="Тестовая категория")
         cls.detail = Detail.objects.create(name="Тестовая характеристика")
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.product = Product.objects.create(
-            name="Тестовый продукт", category=cls.category, preview="/img/products/test_product/"
+            name="Тестовый продукт",
+            category=cls.category,
+            manufacturer=cls.manufacturer,
+            preview="/img/products/test_product/",
         )
         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
         cls.user = User.objects.create(username="Test_user", email="test@test.com", password="Test123!$")
@@ -50,7 +56,7 @@ class ProductViewTest(TestCase):
             user=cls.user, product=cls.product, review_content="Тестовая отзыв продукта"
         )
         cls.shop = Shop.objects.create(name="тестовый магазин")
-        cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25)
+        cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25, remains=42)
 
     @classmethod
     def tearDownClass(cls):
@@ -61,6 +67,7 @@ class ProductViewTest(TestCase):
         cls.product.delete()
         cls.detail.delete()
         cls.category.delete()
+        cls.manufacturer.delete()
 
     def test_product_detail_view(self):
         template = "products/product_details.jinja2"

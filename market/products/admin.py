@@ -5,7 +5,7 @@ from django.http import HttpRequest
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from .models import Category, Detail, Product, ProductDetail, ProductImage, Tag, Review
+from .models import Category, Detail, Product, ProductDetail, ProductImage, Tag, Review, Manufacturer
 
 
 class DetailInline(admin.StackedInline):
@@ -25,6 +25,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = (
         "pk",
         "name",
+        "manufacturer",
     )
     list_display_links = (
         "pk",
@@ -212,3 +213,57 @@ class ReviewAdmin(admin.ModelAdmin):
         if len(obj.review_content) > 50:
             return obj.review_content[:50] + "..."
         return obj.review_content
+
+
+@admin.action(description=_("Архивировать производителя"))
+def mark_archived_manufacturer(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
+    queryset.update(archived=True, modified_at=timezone.now())
+
+
+@admin.action(description=_("Разархивировать производителя"))
+def mark_unarchived_manufacturer(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
+    queryset.update(archived=False, modified_at=timezone.now())
+
+
+@admin.register(Manufacturer)
+class ManufacturerAdmin(admin.ModelAdmin):
+    """Админ Производитель"""
+
+    actions = [mark_archived_manufacturer, mark_unarchived_manufacturer]
+
+    list_display = (
+        "pk",
+        "name",
+        "slug",
+        "created_at",
+        "modified_at",
+        "archived",
+    )
+
+    list_display_links = (
+        "pk",
+        "name",
+    )
+
+    ordering = ("pk",)
+
+    list_filter = (
+        "created_at",
+        "modified_at",
+    )
+
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": ("name", "slug"),
+            },
+        ),
+        (
+            _("Дополнительные функции"),
+            {
+                "fields": ("archived",),
+                "description": _("Поле 'архивировано' используеться для 'soft delete'"),
+            },
+        ),
+    ]

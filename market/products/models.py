@@ -43,6 +43,7 @@ class Product(models.Model):
         verbose_name_plural = _("продукты")
 
     name = models.CharField(max_length=512, verbose_name=_("наименование"))
+    manufacturer = models.ForeignKey("Manufacturer", on_delete=models.CASCADE, verbose_name=_("производитель"))
     details = models.ManyToManyField("Detail", through="ProductDetail", verbose_name=_("характеристики"))
     about = models.TextField(blank=True, max_length=512, verbose_name="краткое описание")
     description = models.TextField(blank=True, max_length=1024, verbose_name="описание")
@@ -164,3 +165,18 @@ class Review(models.Model):
 
     def __str__(self) -> str:
         return f"Отзыв (pk={self.pk}, product_id={self.product.id})"
+
+
+class Manufacturer(models.Model):
+    class Meta:
+        verbose_name = _("производитель")
+        verbose_name_plural = _("производители")
+
+    name = models.CharField(max_length=128, unique=True, verbose_name=_("производитель"))
+    slug = models.SlugField(max_length=128, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
+    modified_at = models.DateTimeField(auto_now=True, verbose_name=_("дата последнего изменения"))
+    archived = models.BooleanField(default=False, verbose_name=_("архивировано"))
+
+    def __str__(self) -> str:
+        return f"Производитель(pk={self.pk}, name={self.name!r})"

@@ -7,12 +7,13 @@ FIXTURES = [
     "fixtures/01-users.json",
     "fixtures/04-shops.json",
     "fixtures/05-category.json",
-    "fixtures/06-tags.json",
-    "fixtures/07-products.json",
-    "fixtures/08-offers.json",
-    "fixtures/09-details.json",
-    "fixtures/10-productimages.json",
-    "fixtures/11-productdetails.json",
+    "fixtures/06-manufacturer.json",
+    "fixtures/07-tags.json",
+    "fixtures/08-products.json",
+    "fixtures/09-offers.json",
+    "fixtures/10-details.json",
+    "fixtures/11-productimages.json",
+    "fixtures/12-productdetails.json",
 ]
 
 

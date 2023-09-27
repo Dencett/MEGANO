@@ -6,6 +6,7 @@
         "shop": 1,
         "product": 1,
         "price": "100.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -17,6 +18,7 @@
         "shop": 2,
         "product": 1,
         "price": "90.00",
+        "remains": 2,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -28,6 +30,7 @@
         "shop": 3,
         "product": 1,
         "price": "95.00",
+        "remains": 0,
         "payment_method": "CASH",
         "delivery_method": "EXPRESS"
     }
@@ -39,6 +42,7 @@
         "shop": 2,
         "product": 2,
         "price": "350.00",
+        "remains": 20,
         "payment_method": "CASH",
         "delivery_method": "REGULAR"
     }
@@ -50,6 +54,7 @@
         "shop": 3,
         "product": 2,
         "price": "340.00",
+        "remains": 54,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -61,6 +66,7 @@
         "shop": 3,
         "product": 2,
         "price": "370.00",
+        "remains": 62,
         "payment_method": "CARD",
         "delivery_method": "EXPRESS"
     }
@@ -72,6 +78,7 @@
         "shop": 1,
         "product": 3,
         "price": "540.00",
+        "remains": 2,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -83,6 +90,7 @@
         "shop": 3,
         "product": 3,
         "price": "550.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -94,6 +102,7 @@
         "shop": 3,
         "product": 4,
         "price": "39990.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "EXPRESS"
     }
@@ -105,6 +114,7 @@
         "shop": 2,
         "product": 4,
         "price": "39990.00",
+        "remains": 20,
         "payment_method": "CASH",
         "delivery_method": "REGULAR"
     }
@@ -116,6 +126,7 @@
         "shop": 4,
         "product": 4,
         "price": "40000.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "EXPRESS"
     }
@@ -127,6 +138,7 @@
         "shop": 1,
         "product": 5,
         "price": "120000.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "EXPRESS"
     }
@@ -138,6 +150,7 @@
         "shop": 2,
         "product": 5,
         "price": "120999.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -149,6 +162,7 @@
         "shop": 3,
         "product": 5,
         "price": "119999.00",
+        "remains": 20,
         "payment_method": "CASH",
         "delivery_method": "REGULAR"
     }
@@ -160,6 +174,7 @@
         "shop": 4,
         "product": 5,
         "price": "124000.00",
+        "remains": 20,
         "payment_method": "CASH",
         "delivery_method": "EXPRESS"
     }
@@ -171,6 +186,7 @@
         "shop": 1,
         "product": 6,
         "price": "22000.00",
+        "remains": 20,
         "payment_method": "CASH",
         "delivery_method": "EXPRESS"
     }
@@ -182,6 +198,7 @@
         "shop": 2,
         "product": 6,
         "price": "22300.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -193,6 +210,7 @@
         "shop": 2,
         "product": 6,
         "price": "23000.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "EXPRESS"
     }
@@ -204,6 +222,7 @@
         "shop": 3,
         "product": 6,
         "price": "21999.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -215,6 +234,7 @@
         "shop": 1,
         "product": 7,
         "price": "35000.00",
+        "remains": 0,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -226,6 +246,7 @@
         "shop": 2,
         "product": 7,
         "price": "34000.00",
+        "remains": 26,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -237,6 +258,7 @@
         "shop": 1,
         "product": 8,
         "price": "8000.00",
+        "remains": 24,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -248,6 +270,7 @@
         "shop": 3,
         "product": 8,
         "price": "7999.00",
+        "remains": 230,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -259,6 +282,7 @@
         "shop": 1,
         "product": 9,
         "price": "17000.00",
+        "remains": 220,
         "payment_method": "CASH",
         "delivery_method": "EXPRESS"
     }
@@ -270,6 +294,7 @@
         "shop": 3,
         "product": 9,
         "price": "17100.00",
+        "remains": 130,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -281,6 +306,7 @@
         "shop": 4,
         "product": 9,
         "price": "17999.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -292,6 +318,7 @@
         "shop": 1,
         "product": 10,
         "price": "34000.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -303,6 +330,7 @@
         "shop": 2,
         "product": 10,
         "price": "34500.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -314,6 +342,7 @@
         "shop": 4,
         "product": 10,
         "price": "32000.00",
+        "remains": 20,
         "payment_method": "CASH",
         "delivery_method": "REGULAR"
     }
@@ -325,6 +354,7 @@
         "shop": 2,
         "product": 11,
         "price": "55000.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "EXPRESS"
     }
@@ -336,6 +366,7 @@
         "shop": 4,
         "product": 11,
         "price": "560050.00",
+        "remains": 20,
         "payment_method": "CASH",
         "delivery_method": "REGULAR"
     }
@@ -347,6 +378,7 @@
         "shop": 1,
         "product": 11,
         "price": "54999.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "EXPRESS"
     }
@@ -358,6 +390,7 @@
         "shop": 1,
         "product": 12,
         "price": "28000.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -369,6 +402,7 @@
         "shop": 2,
         "product": 12,
         "price": "27000.00",
+        "remains": 20,
         "payment_method": "CASH",
         "delivery_method": "REGULAR"
     }
@@ -380,6 +414,7 @@
         "shop": 3,
         "product": 12,
         "price": "28000.00",
+        "remains": 20,
         "payment_method": "CASH",
         "delivery_method": "REGULAR"
     }
@@ -391,6 +426,7 @@
         "shop": 4,
         "product": 13,
         "price": "3300.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -402,6 +438,7 @@
         "shop": 2,
         "product": 13,
         "price": "3200.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -413,6 +450,7 @@
         "shop": 3,
         "product": 13,
         "price": "3199.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -424,6 +462,7 @@
         "shop": 1,
         "product": 14,
         "price": "3500.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -435,6 +474,7 @@
         "shop": 2,
         "product": 14,
         "price": "3600.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -446,6 +486,7 @@
         "shop": 3,
         "product": 14,
         "price": "3499.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "EXPRESS"
     }
@@ -457,6 +498,7 @@
         "shop": 4,
         "product": 14,
         "price": "3450.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -468,6 +510,7 @@
         "shop": 4,
         "product": 15,
         "price": "38000.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -479,6 +522,7 @@
         "shop": 2,
         "product": 15,
         "price": "39000.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "REGULAR"
     }
@@ -490,6 +534,7 @@
         "shop": 3,
         "product": 15,
         "price": "39999.00",
+        "remains": 20,
         "payment_method": "CARD",
         "delivery_method": "EXPRESS"
     }
