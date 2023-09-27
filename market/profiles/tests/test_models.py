@@ -1,6 +1,6 @@
 from django.test import TestCase
 from profiles.models import UserProductHistory, User
-from products.models import Product, Category, Detail
+from products.models import Product, Category, Detail, Manufacturer
 
 
 class UserProductHistoryTest(TestCase):
@@ -9,15 +9,15 @@ class UserProductHistoryTest(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.all_info = {
-            "username": "John-test",
+            "username": "John-for-test",
             "phone": "89701112233",
             "residence": "London",
             "address": "Bakers streets 148 ap.3",
             "retailer_group": True,
         }
         cls.user_login_info = {
-            "email": "jhon@test.com",
-            "password": "JohnTest1234",
+            "email": "jhon@fortest.com",
+            "password": "JohnforTest1234",
         }
 
         cls.user = User.objects.create_user(
@@ -30,10 +30,10 @@ class UserProductHistoryTest(TestCase):
         )
 
         cls.category = Category.objects.create(name="Тестовая категория")
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
         cls.product = Product.objects.create(
-            name="Тестовый продукт",
-            category=cls.category,
+            name="Тестовый продукт", category=cls.category, manufacturer=cls.manufacturer
         )
         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
 
@@ -43,6 +43,7 @@ class UserProductHistoryTest(TestCase):
     def tearDownClass(cls):
         cls.user.delete()
         cls.product.delete()
+        cls.manufacturer.delete()
 
     def test_create_object(self):
         record = UserProductHistory.objects.filter(user=self.user, product=self.product)[0]
