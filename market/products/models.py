@@ -115,6 +115,7 @@ class Category(models.Model):
     archived = models.BooleanField(default=False, verbose_name=_("архивировано"))
     is_active = models.BooleanField(default=True, verbose_name=_("активно"))
     parent = models.ForeignKey("self", blank=True, null=True, verbose_name=_("родитель"), on_delete=models.CASCADE)
+    foreground = models.BooleanField(default=False, verbose_name=_("приоритетный"))
 
     icon = models.FileField(
         null=True,
@@ -159,3 +160,25 @@ class Review(models.Model):
 
     def __str__(self) -> str:
         return f"Отзыв (pk={self.pk}, product_id={self.product.id})"
+
+
+def banner_directory_path(instance: "Banner", filename: str) -> str:
+    return "img/banner/{filename}".format(
+        filename=filename,
+    )
+
+
+class Banner(models.Model):
+    """Баннер"""
+
+    class Meta:
+        verbose_name = _("баннер")
+        verbose_name_plural = _("баннеры")
+
+    name = models.CharField(max_length=512, verbose_name=_("наименование"))
+    description = models.TextField(blank=True, max_length=512, verbose_name="описание")
+    image = models.ImageField(null=True, blank=True, upload_to=banner_directory_path)
+    archived = models.BooleanField(default=False, verbose_name=_("архивировано"))
+
+    def __str__(self) -> str:
+        return f"Баннер (pk={self.pk}, name={self.name!r})"
