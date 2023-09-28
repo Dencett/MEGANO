@@ -11,7 +11,6 @@ class Command(BaseCommand):
         fixtures_dict = {
             # "contenttypes": "0-contenttypes.json",
             # "auth": "00-groups_and_permissions.json",
-            "profiles.user": "01-users.json",
             "shops.shop": "04-shops.json",
             "products.category": "05-category.json",
             "products.manufacturer": "06-manufacturer.json",
@@ -24,4 +23,4 @@ class Command(BaseCommand):
             "products.review": "13-reviews.json",
         }
         for model_name, file_name in fixtures_dict.items():
-            management.call_command("dumpdata", model_name, output=file_name, indent=4)
+            management.call_command("loaddata", f"fixtures/{file_name}")

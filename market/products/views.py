@@ -5,12 +5,14 @@ from django.views import View
 from django.views.generic import DetailView, TemplateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormView
+from django.urls import reverse
 
 from shops.models import Offer
 from .models import Product, Category, Banner
 from .services.review_services import ReviewServices
+from .services.product_price import product_min_price
+from profiles.services.products_history import make_record_in_history
 from .forms import ProductReviewForm
-from django.urls import reverse
 
 
 class HomeView(TemplateView):
@@ -49,13 +51,17 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         review = ReviewServices(self.request, self.object)
         offers = self.object.offer_set.all()
-
-        context["min_price"] = min(offers, key=lambda x: x.price).price
+        context["min_price"] = product_min_price(product=self.object, product_offers=offers)
         context["form"] = ProductReviewForm()
         context["reviews"] = review.get_reviews()
         context["page_obj"] = review.listing(context["reviews"])
-
         return context
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        if not request.user.is_anonymous:
+            make_record_in_history(user=request.user, product=self.object)
+        return response
 
 
 class ProductReviewFormView(SingleObjectMixin, FormView):

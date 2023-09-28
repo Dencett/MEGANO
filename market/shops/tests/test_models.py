@@ -1,6 +1,6 @@
 from django.test import TestCase
 from shops.models import Shop, Offer
-from products.models import Product, Detail, Category
+from products.models import Product, Detail, Category, Manufacturer
 
 
 class ShopModelTest(TestCase):
@@ -11,13 +11,13 @@ class ShopModelTest(TestCase):
         super().setUpClass()
         cls.detail = Detail.objects.create(name="тестовая характеристика")
         cls.category = Category.objects.create(name="тестовая категория")
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.product = Product.objects.create(
-            name="тестовый продукт",
-            category=cls.category,
+            name="тестовый продукт", category=cls.category, manufacturer=cls.manufacturer
         )
         cls.product.details.set([cls.detail])
         cls.shop = Shop.objects.create(name="тестовый магазин")
-        cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25)
+        cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25, remains=12)
 
     @classmethod
     def tearDownClass(cls):
@@ -27,6 +27,7 @@ class ShopModelTest(TestCase):
         ShopModelTest.shop.delete()
         ShopModelTest.offer.delete()
         cls.category.delete()
+        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         shop = ShopModelTest.shop
@@ -51,9 +52,12 @@ class OfferModelTest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.category = Category.objects.create(name="тестовая категория")
-        cls.product = Product.objects.create(name="тестовый продукт", category=cls.category)
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
+        cls.product = Product.objects.create(
+            name="тестовый продукт", category=cls.category, manufacturer=cls.manufacturer
+        )
         cls.shop = Shop.objects.create(name="тестовый магазин")
-        cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=35)
+        cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=35, remains=2)
 
     @classmethod
     def tearDownClass(cls):
@@ -62,6 +66,7 @@ class OfferModelTest(TestCase):
         OfferModelTest.shop.delete()
         OfferModelTest.offer.delete()
         cls.category.delete()
+        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         offer = OfferModelTest.offer

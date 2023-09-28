@@ -6,6 +6,7 @@ from .views import (
     UserLogoutView,
     UserRegisterView,
     UserResetPasswordView,
+    UserHistoryView,
 )
 
 app_name = "profiles"
@@ -15,7 +16,6 @@ urlpatterns = [
     path(
         "login/",
         LoginView.as_view(
-            # template_name="profiles/login.html",
             template_name="profiles/login.jinja2",
             redirect_authenticated_user=True,
         ),
@@ -25,4 +25,5 @@ urlpatterns = [
     path("about-user/", AboutUserView.as_view(), name="about-user"),
     path("register/", UserRegisterView.as_view(), name="register"),
     path("change_password/", UserResetPasswordView.as_view(), name="change-password"),
+    path("history/", UserHistoryView.as_view(), name="browsing_history"),
 ]

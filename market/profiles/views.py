@@ -4,31 +4,38 @@ from django.contrib.auth import authenticate, login
 from django.db import transaction
 from django.urls import reverse_lazy, reverse
 from django.http.response import HttpResponseRedirect
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, ListView
+from django.contrib.auth.mixins import UserPassesTestMixin
 
-from .models import Profile
 from .forms import UserRegisterForm, ProfileAvatarUpdateForm
+from .models import User
+from products.models import Product
+from .services.products_history import get_products_in_user_history
+from products.services.product_price import product_min_price
 
 
 class AboutUserView(TemplateView):
     """View class заглушка - информация о пользователе."""
 
-    # template_name = "profiles/about-user.html"
     template_name = "profiles/about-user.jinja2"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["update_avatar"] = ProfileAvatarUpdateForm()
+        user = self.request.user
+        if user.is_authenticated:
+            history = get_products_in_user_history(user, number=3)
+            context["history"] = history
+        context["price"] = product_min_price
         return context
 
     def post(self, request):
         update_avatar = ProfileAvatarUpdateForm(request.POST, request.FILES)
-
         if update_avatar.is_valid():
             picture = update_avatar.cleaned_data.get("user_avatar")
-            profile = Profile.objects.get(user=request.user)
-            profile.avatar = picture
-            profile.save()
+            user = User.objects.get(pk=self.request.user.pk)
+            user.avatar = picture
+            user.save()
             return HttpResponseRedirect(reverse("profiles:about-user"))
         return HttpResponseRedirect(reverse("profiles:about-user"))
 
@@ -61,16 +68,8 @@ class UserRegisterView(CreateView):
 
         password = form.cleaned_data.get("password1")
         email = form.cleaned_data.get("email")
-        phone_number = form.cleaned_data.get("phone_number")
-        residence = form.cleaned_data.get("residence")
-        address = form.cleaned_data.get("address")
         retailer_group = form.cleaned_data.get("retailer_group")
-        Profile.objects.create(
-            user=self.object,
-            phone_number=phone_number,
-            residence=residence,
-            address=address,
-        )
+
         user = authenticate(
             self.request,
             email=email,
@@ -101,3 +100,17 @@ class UserResetPasswordView(PasswordChangeView):
 
     template_name = "profiles/password_form.jinja2"
     success_url = reverse_lazy("profiles:home-page")
+
+
+class UserHistoryView(UserPassesTestMixin, ListView):
+    template_name = "profiles/product-history.jinja2"
+    model = Product
+    context_object_name = "history"
+    extra_context = {"price": product_min_price}
+
+    def get_queryset(self):
+        user = self.request.user
+        return get_products_in_user_history(user)
+
+    def test_func(self):
+        return self.request.user.is_authenticated
