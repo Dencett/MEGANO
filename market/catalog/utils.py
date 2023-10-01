@@ -1,6 +1,6 @@
-from typing import Tuple, Any, Dict, Generator
+from typing import Tuple, Any, Dict, Generator, List
 
-from django.db.models import QuerySet, F, Count
+from django.db.models import QuerySet, Count, F, Q
 
 from catalog.common import Params
 from catalog.forms import CatalogFilterForm
@@ -43,75 +43,98 @@ class Filter:
         except ValueError:
             return
 
-    def get_context_data(self) -> Dict[str, Any]:
-        data = self.__extract_params_data()
-        prices = self.parse_price(self.__params.get("price"))
+    def __add_price_context(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        prices = self.parse_price(data.get("price"))
 
         if prices:
             data["start_price"] = prices[0]
             data["stop_price"] = prices[1]
+
+        return data
+
+    def get_context_data(self) -> Dict[str, Any]:
+        data = self.__extract_params_data()
+        data = self.__add_price_context(data)
 
         data["default_price_from"] = self.default_price_from
         data["default_price_to"] = self.default_price_to
 
         return data
 
-    def __price_filter(self) -> Dict[str, Tuple[float, float]]:
+    def __price_filter(self, field: str | None = None) -> Dict[str, Tuple[float, float]]:
         """
         Offer price filer
         """
-        start_price = self.get_context_data().get("start_price", self.default_price_from)
-        stop_price = self.get_context_data().get("stop_price", self.default_price_to)
+        if not field:
+            field = "price"
 
-        return {"price__range": (start_price, stop_price)}
+        data_from_context = self.get_context_data()
 
-    def __delivery_filter(self) -> Dict[str, str]:
+        start_price = data_from_context.get("start_price", self.default_price_from)
+        stop_price = data_from_context.get("stop_price", self.default_price_to)
+
+        return {f"{field}__range": (start_price, stop_price)}
+
+    def __delivery_filter(self, field: str | None = None) -> Dict[str, str]:
         """
         Offer delivery filer
         """
-        return {"delivery_method": "REGULAR"}
+        if not field:
+            field = "delivery_method"
 
-    def __title_filter(self) -> Dict[str, str]:
+        return {field: "REGULAR"}
+
+    def __product_search_filter(self, value: str, fields: List[str] | Tuple[str, str] | None = None) -> Q:
         """
-        Product title filer
+        Product search filer
         """
-        return {"product__about__contains": self.__params.get("title")}
+        if not fields:
+            fields = "about", "name"
+
+        return Q(**{f"product__{fields[0]}__contains": value}) | Q(**{f"product__{fields[0]}__contains": value})
 
     def __category_filter(self) -> Dict[str, bool]:
         """
         Product category filter
         """
+
         return {"product__category__is_active": True, "product__category__archived": False}
 
-    def __remain_filter(self) -> Dict[str, int]:
+    def __remain_filter(self, field: str | None = None) -> Dict[str, int]:
         """
         Offer remain filter
         """
-        return {"remains__gte": 1}
+        if not field:
+            field = "remains"
+
+        return {f"{field}__gte": 1}
 
     def filter_offer(self, queryset: QuerySet) -> QuerySet:
         filter_: Dict[str, Any] = {}
 
         if "price" in self.__params.items:
-            filter_.update(self.__price_filter())
+            filter_.update(self.__price_filter("price"))
 
         if "free_delivery" in self.__params.items:
-            filter_.update(self.__delivery_filter())
+            filter_.update(self.__delivery_filter("delivery_method"))
 
         if "remains" in self.__params.items:
-            filter_.update(self.__remain_filter())
+            filter_.update(self.__remain_filter("remains"))
 
         return queryset.filter(**filter_)
 
     def filter_prodict(self, queryset: QuerySet) -> QuerySet:
-        filter_: Dict[str, Any] = {}
+        filter_kwargs: Dict[str, Any] = {}
+        filter_args = []
 
-        if "title" in self.__params.items:
-            filter_.update(self.__title_filter())
+        search_or_title_value = self.__params.items.get("title", self.__params.items.get("search"))
 
-        filter_.update(self.__category_filter())
+        if search_or_title_value:
+            filter_args.append(self.__product_search_filter(search_or_title_value))
 
-        return queryset.filter(**filter_)
+        filter_kwargs.update(self.__category_filter())
+
+        return queryset.filter(*filter_args, **filter_kwargs)
 
 
 class Sorter:

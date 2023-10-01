@@ -1,3 +1,4 @@
+import random
 from typing import Any, Dict, Generator
 
 from django.core.paginator import Paginator
@@ -85,7 +86,15 @@ class CatalogListView(ListView):
         context["filter_params"] = filter_params.to_string()
         context["params"] = sort_params + filter_params
 
+        self.__set_random_search_placeholder(context)
         return context
+
+    def __set_random_search_placeholder(self, context: Dict[str, Any]) -> None:
+        offers = context.get("object_list")
+
+        if offers:
+            random_offer: Offer = random.choice(offers)
+            context["search_placeholder"] = random_offer.product.name
 
     def __get_pagination_range(self, paginator: Paginator) -> Generator:
         page_number = self.request.GET.get("page")
@@ -105,10 +114,10 @@ class CatalogFilteredView(View):
         form = CatalogFilterForm(request.POST)
         form.is_valid()
 
-        sort_manager = Sorter(Params(**request.GET.dict()))
+        sorter_ = Sorter(Params(**request.GET.dict()))
+        filter_ = Filter(Params(**form.cleaned_data))
 
-        filter_params = Params(**form.cleaned_data)
-        params = filter_params + sort_manager.build_params()
+        params = filter_.build_params() + sorter_.build_params()
 
         url = reverse("catalog:index")
 

@@ -6,7 +6,7 @@
             </a>
             <div class="Card-content">
                 <strong class="Card-title">
-                    <a href="{{ url('products:product-detail', pk=offer.product.pk) }}">{{ offer.product.about }}</a>
+                    <a href="{{ url('products:product-detail', pk=offer.product.pk) }}">{{ offer.product.name }}</a>
                 </strong>
                 <div class="Card-description">
                     <div class="Card-cost">
@@ -19,10 +19,10 @@
                         </span>
                     </div>
                     <div class="Card-category">{{ offer.product.category.name }}</div>
-                    {% if offer.review_count %}
-                        <div class="Card-category">Отзывы {{ offer.review_count }}</div>
-                    {% endif %}
-                    <div class="Card-category">Дата изменения {{ offer.product.manufacturer.modified_at.date() }}</div>
+                    <!-- {% if offer.review_count %} -->
+                    <!--     <div class="Card-category">Отзывы {{ offer.review_count }}</div> -->
+                    <!-- {% endif %} -->
+                    <!-- <div class="Card-category">Дата изменения {{ offer.product.manufacturer.modified_at.date() }}</div> -->
                     <div class="Card-hover">
                         <a class="Card-btn" href="#Корзина">
                             <img src="{{ static('assets/img/icons/card/cart.svg') }}" alt="cart.svg"/>
