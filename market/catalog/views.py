@@ -129,8 +129,8 @@ class CatalogFilteredView(View):
 
         sorter_ = Sorter(Params(**params))
 
-        filter_ = Filter(Params(**form.cleaned_data))
-        base_filter_params = filter_.extract_by_form_fields()
+        filter_ = Filter(Params())
+        base_filter_params = filter_.extract_by_form_fields(form.cleaned_data)
         additional_filter_params = filter_.extract_additional_params_data(params)
         filter_params = Params(**base_filter_params, **additional_filter_params)
 

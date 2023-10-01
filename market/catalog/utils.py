@@ -13,32 +13,30 @@ class Filter:
     def __init__(self, params: Params) -> None:
         self.__params = params
 
-    def extract_by_form_fields(self, data: Dict[str, Any] | None = None) -> Dict[str, Any]:
-        if not data:
-            data = {}
+    def extract_by_form_fields(self, params_data: Dict[str, Any]) -> Dict[str, Any]:
+        result = {}
 
         for field in CatalogFilterForm().fields:
-            param_value = self.__params.get(field)
+            param_value = params_data.get(field)
 
             if param_value:
-                data[field] = param_value
+                result[field] = param_value
 
-        return data
+        return result
 
-    def extract_additional_params_data(self, data: Dict[str, Any] | None = None) -> Dict[str, Any]:
-        if not data:
-            data = {}
+    def extract_additional_params_data(self, params_data: Dict[str, Any]) -> Dict[str, Any]:
+        result = {}
 
-        category_id = self.__params.get("category_id")
+        category_id = params_data.get("category_id")
+
         if category_id:
-            data["category_id"] = category_id
+            result["category_id"] = category_id
 
-        return data
+        return result
 
     def __extract_params_data(self) -> Dict[str, Any]:
-        data = self.extract_by_form_fields()
-        data = self.extract_additional_params_data(data)
-
+        data = self.extract_by_form_fields(self.__params.items)
+        data.update(self.extract_additional_params_data(self.__params.items))
         return data
 
     def build_params(self) -> Params:
