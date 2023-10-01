@@ -13,14 +13,31 @@ class Filter:
     def __init__(self, params: Params) -> None:
         self.__params = params
 
-    def __extract_params_data(self) -> Dict:
-        data = {}
+    def extract_by_form_fields(self, data: Dict[str, Any] | None = None) -> Dict[str, Any]:
+        if not data:
+            data = {}
 
         for field in CatalogFilterForm().fields:
             param_value = self.__params.get(field)
 
             if param_value:
                 data[field] = param_value
+
+        return data
+
+    def extract_additional_params_data(self, data: Dict[str, Any] | None = None) -> Dict[str, Any]:
+        if not data:
+            data = {}
+
+        category_id = self.__params.get("category_id")
+        if category_id:
+            data["category_id"] = category_id
+
+        return data
+
+    def __extract_params_data(self) -> Dict[str, Any]:
+        data = self.extract_by_form_fields()
+        data = self.extract_additional_params_data(data)
 
         return data
 
@@ -93,12 +110,20 @@ class Filter:
 
         return Q(**{f"product__{fields[0]}__contains": value}) | Q(**{f"product__{fields[0]}__contains": value})
 
-    def __category_filter(self) -> Dict[str, bool]:
+    def __category_available_filter(self) -> Dict[str, bool]:
+        """
+        Category available filter
+        """
+        return {
+            "product__category__is_active": True,
+            "product__category__archived": False,
+        }
+
+    def __category_filter(self, value: str) -> Dict[str, Any]:
         """
         Product category filter
         """
-
-        return {"product__category__is_active": True, "product__category__archived": False}
+        return {"product__category__pk": value}
 
     def __remain_filter(self, field: str | None = None) -> Dict[str, int]:
         """
@@ -132,7 +157,12 @@ class Filter:
         if search_or_title_value:
             filter_args.append(self.__product_search_filter(search_or_title_value))
 
-        filter_kwargs.update(self.__category_filter())
+        category_id = self.__params.get("category_id")
+
+        if category_id:
+            filter_kwargs.update(self.__category_filter(category_id))
+
+        filter_kwargs.update(self.__category_available_filter())
 
         return queryset.filter(*filter_args, **filter_kwargs)
 

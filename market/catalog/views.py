@@ -1,5 +1,6 @@
 from typing import Any, Dict, Generator
 
+from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
@@ -73,19 +74,38 @@ class CatalogListView(ListView):
         sort_manager = Sorter(params)
         filter_manager = Filter(params)
 
-        sort_params = sort_manager.build_params()
-        filter_params = filter_manager.build_params()
-
         sort_context = sort_manager.get_context_data()
         filter_context = filter_manager.get_context_data()
 
         context.update(**sort_context, **filter_context)
         context["pagination_range"] = self.__get_pagination_range(context["paginator"])
+
+        self.__set_params_context(context, sort_manager, filter_manager)
+        self.__set_current_category_context(context, params)
+
+        return context
+
+    def __set_current_category_context(self, context: Dict[str, Any], params: Params) -> None:
+        category_id = params.get("category_id")
+
+        if not category_id:
+            return
+
+        cache_key = "categories_data_export"
+        categories_list = cache.get(cache_key)
+
+        for category in categories_list:
+            if str(category.pk) == category_id:
+                context["current_category"] = category
+                break
+
+    def __set_params_context(self, context: Dict[str, Any], sort_manager: Sorter, filter_manager: Filter) -> None:
+        sort_params = sort_manager.build_params()
+        filter_params = filter_manager.build_params()
+
         context["sort_params"] = sort_params.to_string()
         context["filter_params"] = filter_params.to_string()
         context["params"] = sort_params + filter_params
-
-        return context
 
     def __get_pagination_range(self, paginator: Paginator) -> Generator:
         page_number = self.request.GET.get("page")
@@ -105,10 +125,16 @@ class CatalogFilteredView(View):
         form = CatalogFilterForm(request.POST)
         form.is_valid()
 
-        sorter_ = Sorter(Params(**request.GET.dict()))
-        filter_ = Filter(Params(**form.cleaned_data))
+        params = request.GET.dict()
 
-        params = filter_.build_params() + sorter_.build_params()
+        sorter_ = Sorter(Params(**params))
+
+        filter_ = Filter(Params(**form.cleaned_data))
+        base_filter_params = filter_.extract_by_form_fields()
+        additional_filter_params = filter_.extract_additional_params_data(params)
+        filter_params = Params(**base_filter_params, **additional_filter_params)
+
+        params = filter_params + sorter_.build_params()
 
         url = reverse("catalog:index")
 

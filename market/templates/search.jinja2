@@ -4,7 +4,9 @@
 <div class="Header-search">
     <div class="search">
         {% set default_placeholder="NVIDIA GeForce RTX 3060" %}
-        <form class="form form_search" action="{{ url('catalog:index') }}" method="post">
+        <form class="form form_search"
+              action="{{ url('catalog:index') }}{% if current_category %}?category_id={{ current_category.pk }}{% endif %}"
+              method="post">
             {% csrf_token %}
             <input class="search-input"
                    id="query"
