@@ -9,8 +9,9 @@ User = get_user_model()
 
 
 FIXTURES = [
-    "fixtures/01-users.json",
-    "fixtures/04-shops.json",
+    "fixtures/0-1-groups.json",
+    "fixtures/0-01-users.json",
+    "fixtures/0-04-shops.json",
     "fixtures/05-category.json",
     "fixtures/06-tags.json",
     "fixtures/07-products.json",
@@ -174,45 +175,6 @@ class UserChangeInformationTestCase(TestCase):
         self.assertContains(response, self.user.residence)
 
 
-# class ShopDetailViewTestCase(TestCase):
-#     fixtures = FIXTURES
-#
-#     @classmethod
-#     def setUpClass(cls):
-#         cls.category = Category.objects.create(name="Тестовая категория")
-#         cls.detail = Detail.objects.create(name="Тестовая характеристика")
-#         cls.product = Product.objects.create(
-#             name="Тестовый продукт", category=cls.category, preview="/img/products/test_product/"
-#         )
-#         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
-#         cls.user = User.objects.create(username="Test_user", email="test@test.com", password="Test123!$")
-#         cls.review = Review.objects.create(
-#             user=cls.user, product=cls.product, review_content="Тестовая отзыв продукта"
-#         )
-#         cls.shop = Shop.objects.create(user=cls.user, name="тестовый магазин", phone="89991002233")
-#         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25)
-#
-#     @classmethod
-#     def tearDownClass(cls):
-#         cls.offer.delete()
-#         cls.shop.delete()
-#         cls.review.delete()
-#         cls.user.delete()
-#         cls.product.delete()
-#         cls.detail.delete()
-#         cls.category.delete()
-#
-#     def setUp(self) -> None:
-#         self.client.force_login(self.user)
-#
-#     def test_example_view(self):
-#         template = "shops/shop_2_detail.jinja2"
-#         request = HttpRequest()
-#         context = {}
-#         response = render(request, template, context)
-#         self.assertEqual(response.status_code, 200)
-
-
 class UserHaveShopViewTestCase(TestCase):
     fixtures = FIXTURES
 
@@ -244,92 +206,17 @@ class UserHaveShopViewTestCase(TestCase):
     def setUp(self) -> None:
         self.client.force_login(self.user)
 
-    # def tearDown(self):
-    #     self.user.delete()
-
     def test_user_get_shop_page(self):
-        response = self.client.get(reverse("shops:shop_detail", kwargs={"pk": 1}))
+        response = self.client.get(reverse("shops:shop_detail", kwargs={"pk": self.shop.pk}))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "89991002233")
 
     def test_user_get_shop_update_info(self):
-        response = self.client.get(reverse("shops:shop-update", kwargs={"pk": 1}))
+        response = self.client.get(reverse("shops:shop-update", kwargs={"pk": self.shop.pk}))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "тестовый магазин")
 
     def test_user_get_shop_products_page(self):
-        response = self.client.get(reverse("shops:shop_products", kwargs={"pk": 1}))
+        response = self.client.get(reverse("shops:shop_products", kwargs={"pk": self.shop.pk}))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Тестовый продукт")
-
-
-# class ShopModelTestCase(TestCase):
-#
-#     pass
-
-
-# ====================================================================================================
-# class ProductViewTest(TestCase):
-#     fixtures = FIXTURES
-#
-#     @classmethod
-#     def setUpClass(cls):
-#         cls.category = Category.objects.create(name="Тестовая категория")
-#         cls.detail = Detail.objects.create(name="Тестовая характеристика")
-#         cls.product = Product.objects.create(
-#             name="Тестовый продукт", category=cls.category, preview="/img/products/test_product/"
-#         )
-#         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
-#         cls.user = User.objects.create(username="Test_user", email="test@test.com", password="Test123!$")
-#         cls.review = Review.objects.create(
-#             user=cls.user, product=cls.product, review_content="Тестовая отзыв продукта"
-#         )
-#         cls.shop = Shop.objects.create(name="тестовый магазин")
-#         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25)
-#
-#     @classmethod
-#     def tearDownClass(cls):
-#         cls.offer.delete()
-#         cls.shop.delete()
-#         cls.review.delete()
-#         cls.user.delete()
-#         cls.product.delete()
-#         cls.detail.delete()
-#         cls.category.delete()
-#
-#     def test_product_detail_view(self):
-#         template = "products/product_details.jinja2"
-#         request = HttpRequest()
-#         review = ReviewServices(request=request, product=self.product)
-#         context = dict()
-#
-#         context["product"] = self.product
-#         context["reviews"] = review.get_reviews()
-#         context["page_obj"] = review.listing(context["reviews"])
-#
-#         response = render(request, template, context)
-#         self.assertEqual(response.status_code, 200)
-#
-#     def test_view_url_accessible_by_name(self):
-#         response = self.client.get(reverse("products:product-detail", kwargs={"pk": self.product.pk}))
-#         self.assertEqual(response.status_code, 200)
-#
-#     def test_view_url_exists_at_desired_location(self):
-#         response = self.client.get("/product/{pk}/".format(pk=self.product.pk))
-#         self.assertEqual(response.status_code, 200)
-#
-#     def test_view_success_url_redirect(self):
-#         login = self.client.force_login(self.user)  # noqa F401
-#         response = self.client.post(
-#             reverse("products:product-detail", kwargs={"pk": self.product.pk}), {"review_content": "Test content"}
-#         )
-#
-#         self.assertEqual(response.status_code, 302)
-#         self.assertRedirects(
-#         response,
-#         expected_url=reverse(
-#         "products:product-detail",
-#         kwargs={"pk": self.product.pk}
-#         )
-#         )
-# ====================================================================================================
