@@ -15,7 +15,7 @@ class Shop(models.Model):
     """Магазин"""
 
     # Магазин связан с пользователем
-    user = models.OneToOneField(User, on_delete=models.CASCADE, db_index=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
     name = models.CharField(max_length=512, verbose_name=_("название"))
     about = models.TextField(
         verbose_name=_("Описание магазина"),
@@ -33,7 +33,7 @@ class Shop(models.Model):
         help_text=_("Контактный емаил магазина."),
         null=True,
     )
-    avatar = models.ImageField(verbose_name=_("Аватар"), upload_to=shop_avatar_path)
+    avatar = models.ImageField(verbose_name=_("Аватар"), upload_to=shop_avatar_path, null=True)
     products = models.ManyToManyField(
         "products.Product",
         through="Offer",

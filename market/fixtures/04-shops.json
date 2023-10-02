@@ -7,7 +7,8 @@
         "name": "DNS",
         "about": "Description DNS",
         "phone": "89001112233",
-        "email": "dns@mail.com"
+        "email": "dns@mail.com",
+        "avatar": "shops/1/avatar/dns.jpg"
     }
 },
 {
@@ -16,9 +17,10 @@
     "fields": {
         "user": 4,
         "name": "OZON",
-        "about": "Description OZON",
+        "about": "Description OZON: \r\n\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aut dolor ducimus eius et inventore molestiae molestias, non officia pariatur praesentium qui, reiciendis repellat totam, ullam ut veniam vitae voluptatibus.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aut dolor ducimus eius et inventore molestiae molestias, non officia pariatur praesentium qui, reiciendis repellat totam, ullam ut veniam vitae voluptatibus.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aut dolor ducimus eius et inventore molestiae molestias, non officia pariatur praesentium qui, reiciendis repellat totam, ullam ut veniam vitae voluptatibus.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aut dolor ducimus eius et inventore molestiae molestias, non officia pariatur praesentium qui, reiciendis repellat totam, ullam ut veniam vitae voluptatibus.",
         "phone": "89001112233",
-        "email": "ozon@mail.com"
+        "email": "ozon@mail.com",
+        "avatar": "shops/2/avatar/ozon.jpg"
     }
 },
 {
@@ -29,7 +31,8 @@
         "name": "YANDEX",
         "about": "Description YANDEX",
         "phone": "89001112233",
-        "email": "yandex@mail.com"
+        "email": "yandex@mail.com",
+        "avatar": "shops/3/avatar/yandex-market.jpg"
     }
 },
 {
@@ -40,7 +43,8 @@
         "name": "Wildberries",
         "about": "Description Wildberries",
         "phone": "89001112233",
-        "email": "wildberries@mail.com"
+        "email": "wildberries@mail.com",
+        "avatar": "shops/4/avatar/wildberries.jpg"
     }
 }
 ]

@@ -10,7 +10,11 @@
                     <div class="ProductCard">
                         <div class="ProductCard-look">
                             <div class="ProductCard-photo">
-                                <img src="{{product.preview.url}}" alt="{{product.name}} preview" />
+                            {% if product.preview %}
+                                <img src="{{ product.preview.url }}" alt="{{ product.name }} preview" />
+                                {% else %}
+                                <p>Изображение отсутствует</p>
+                            {% endif %}
                             </div>
                             <div class="ProductCard-picts">
                                 {% for picture in product.productimage_set.all() %}
@@ -22,13 +26,13 @@
                         </div>
                         <div class="ProductCard-desc">
                             <div class="ProductCard-header">
-                                <h2 class="ProductCard-title"> {{product.name}}
+                                <h2 class="ProductCard-title"> {{ product.name }}
                                 </h2>
                                 <div class="ProductCard-info">
                                     <div class="ProductCard-cost">
                                         <div class="ProductCard-price">
                                             {% if min_price %}
-                                                {{min_price}} ₽
+                                                {{ min_price }} ₽
                                             {% else %}
                                                 Предложений ещё нет
                                             {% endif %}
@@ -37,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="ProductCard-text">
-                                {{product.about}}
+                                {{ product.about }}
                             </div>
                             <div class="ProductCard-cart">
                                 <div class="ProductCard-cartElement ProductCard-cartElement_amount">
@@ -74,7 +78,7 @@
                                     <strong class="ProductCard-tagsTitle">Тэги:
                                     </strong>
                                     {% for tag in product.tags.all() %}
-                                    {{tag.name}};
+                                    {{ tag.name }};
                                     {% endfor %}
                                 </div>
                             </div>
@@ -97,11 +101,15 @@
                         </div>
                         <div class="Tabs-wrap">
                             <div class="Tabs-block" id="description">
-                                <h2>{{product.name}}
+                                <h2>{{ product.name }}
                                 </h2>
-                                <img class="pict pict_right" src="{{product.preview.url}}" alt="{{product.name}}_img" />
+                                {% if product.preview %}
+                                <img class="pict pict_right" src="{{ product.preview.url }}" alt="{{ product.name }}_img" />
+                                {% else %}
+                                <p>Изображение отсутствует</p>
+                                {% endif %}
                                 <div>
-                                   {{product.description}}
+                                   {{ product.description }}
                                 </div>
                                 <div class="clearfix">
                                 </div>
@@ -115,7 +123,7 @@
                                                 <div class="row">
                                                     <div class="row-block">
                                                         <a class="Order-title" href="oneorder.html">
-                                                            {{offer.shop.name}}
+                                                            {{ offer.shop.name }}
                                                         </a>
                                                         <div class="ProductCard-cartElement" style="margin-top: 10px;">
                                                             <a class="btn btn_primary" href="#modal_open">
@@ -128,19 +136,19 @@
                                                         <div class="Order-info Order-info_delivery">
                                                             <div class="Order-infoType">Тип доставки:
                                                             </div>
-                                                            <div class="Order-infoContent"> {{offer.get_delivery_method_display()}}
+                                                            <div class="Order-infoContent"> {{ offer.get_delivery_method_display() }}
                                                             </div>
                                                         </div>
                                                         <div class="Order-info Order-info_pay">
                                                             <div class="Order-infoType">Оплата:
                                                             </div>
-                                                            <div class="Order-infoContent"> {{offer.get_payment_method_display()}}
+                                                            <div class="Order-infoContent"> {{ offer.get_payment_method_display() }}
                                                             </div>
                                                         </div>
                                                         <div class="Order-info">
                                                             <div class="Order-infoType">Стоимость:
                                                             </div>
-                                                            <div class="Order-infoContent"><span class="Order-price"> {{offer.price}} ₽</span>
+                                                            <div class="Order-infoContent"><span class="Order-price"> {{ offer.price }} ₽</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -155,8 +163,8 @@
                                 <div class="Product-props">
                                     {% for parameter in product.productdetail_set.all() %}
                                     <div class="Product-prop">
-                                        <strong> {{parameter.detail.name}}
-                                        </strong><span> {{parameter.value}} </span>
+                                        <strong> {{ parameter.detail.name }}
+                                        </strong><span> {{ parameter.value }} </span>
                                     </div>
                                     {% endfor %}
                                 </div>

@@ -1,86 +1,63 @@
-{% extends 'base.jinja2' %}
-
+{% extends 'shops/base_shop.jinja2' %}
 
 {% block title %}
-Shop detail
+Информация о магазине {{ shop.name }}
+{% endblock %}
+
+{% block shop_sidebar %}
+  <div class="Section-column">
+    <div class="Section-columnSection">
+      <header class="Section-header">
+        <strong class="Section-title">Навигация</strong>
+      </header>
+      <div class="Section-columnContent">
+        <div class="NavigateProfile">
+          <ul class="menu menu_vt">
+            <li class="menu-item_ACTIVE menu-item">
+              <a class="menu-link" href="{{ url('shops:shop_detail', pk=shop.pk) }}">Информация о магазине</a>
+            </li>
+            <li class="menu-item"><a class="menu-link" href="{{ url('shops:shop-update', pk=shop.pk) }}">Редактировать профиль</a>
+            </li>
+            <li class="menu-item"><a class="menu-link" href="{{ url('shops:shop_products', pk=shop.pk) }}">Товары магазина</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 
-{% block middle %}
-<div class="Middle Middle_top">
-    <div class="Section Section_column Section_columnLeft">
-        <div class="wrap">
-            <div class="Section-column">
-                <div class="Section-columnSection">
-                    <header class="Section-header">
-                        <strong class="Section-title">Навигация</strong>
-                    </header>
-                    <div class="Section-columnContent">
-                        <div class="NavigateProfile">
-                            <ul class="menu menu_vt">
-                                <li class="menu-item_ACTIVE menu-item">
-                                    <a class="menu-link" href="account.html">Информация о магазине</a>
-                                </li>
-                                <li class="menu-item"><a class="menu-link" href="profile.html">Профиль</a>
-                                </li>
-                                <li class="menu-item"><a class="menu-link" href="{{ url('shops:shop_products') }}">Товары магазина</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{% block shop_content %}
 
-<!-- ==================================================================================-->
-            <div class="Section-content">
-                <div class="Account">
-                    <div class="Account-group">
-                        <div class="Account-column">
-<!-- =========================== shop avatar =======================================-->
-                            {% if shop.avatar %}
-                            <div class="Account-avatar"><img src="{{ shop.avatar.url }}" alt="card.jpg"/>
-                            {% else %}
-                            <h2>У магазина нет аватара</h2>
-                            {% endif %}
-                            </div>
-<!-- =========================== shop avatar =======================================-->
-                        </div>
-                        <div class="Account-column">
-                            <div class="Account-name">{{ shop.name }}</div>
-                            <br>
-                            <p>Телефон магазина: {{ shop.phone }}</p>
-                            <p>Email магазина: {{ shop.email }}</p>
-                            <a class="Account-editLink" href="profile.html">Редактировать профиль</a>
-                        </div>
-                    </div>
-                    <div class="Account-group">
-                        <div class="Account-column">
-                            <h2>Shop name: {{ shop.name }}</h2>
-                            <p>User related: {{ shop.user }}</p>
-                            <p style="max-width: 60%;">User related: {{ shop.about }}</p>
-                            <p>Shop phone: {{ shop.phone }}</p>
-                            <p>Shop email: {{ shop.email }}</p>
+{% if shop.avatar %}
+    <div class="Account-avatar" style="max-width: 400px; max-height: 310px;">
+      <img src="{{ shop.avatar.url }}" alt="card.jpg" />
+{% else %}
+    <div class="Account-avatar" style="max-width: 400px; max-height: 310px;">У магазина нет аватара</div>
+{% endif %}
+    </div>
+<div class="Account-column" style="padding-left:40px;">
+  <div class="Account-name">{{ shop.name }}</div>
+  {% if request.user.pk==shop.user.pk  %}
+  <a class="Account-editLink" href="{{ url('shops:shop-update', pk=shop.pk) }}">Редактировать профиль</a>
+  {% endif %}
+  <p>Телефон магазина: {{ shop.phone }}</p>
+  <p>Email магазина: {{ shop.email }}</p>
+  <p>Владелец магазина: {{ shop.user }}</p>
+  <p>О магазине: </p>
+  <p style="max-width: 600px">{{ shop.about }}</p>
 
-                            <div class="Section-column">
-                                <div class="Account-group">
-                                    <div class="Account-column">
-                                        <h2>Товары магазина</h2>
-                                        {% for product in shop.products.all() %}
-                                        <ul>
-                                            <li>
-                                                {{ product.name }}
-                                            </li>
-                                        </ul>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
+  {# <p><a class="Account-editLink" href="{{ url('shops:offer-create') }}">Создать новый заказ</a></p> #}
+</div>
+
 
 {% endblock %}
+
+<!--user-->
+<!--name-->
+<!--about-->
+<!--phone-->
+<!--email-->
+<!--avatar-->
+<!--products-->

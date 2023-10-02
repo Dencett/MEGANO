@@ -4,10 +4,11 @@ from django.contrib.auth import authenticate, login
 from django.db import transaction
 from django.urls import reverse_lazy, reverse
 from django.http.response import HttpResponseRedirect
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, UpdateView
 
 from .forms import UserRegisterForm, ProfileAvatarUpdateForm
 from .models import User
+from .services import user_have_store
 
 
 class AboutUserView(TemplateView):
@@ -18,7 +19,16 @@ class AboutUserView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["update_avatar"] = ProfileAvatarUpdateForm()
-        # context["change_info"] = ChangeProfileInfoForm()
+        context["user_example"] = User.objects.filter(pk=self.request.user.pk).first()
+        # Проверяем имеет ли пользователь магазин
+        have_shop = user_have_store(self.request)
+        # Если возвращается 1 или более магазинов
+        # отправим queryset магазинов в переменную
+        if len(have_shop) >= 1:
+            context["shop"] = have_shop
+        # Если список пуст, вернём пустую строку.
+        else:
+            context["shop"] = ""
         return context
 
     @transaction.atomic
@@ -47,7 +57,7 @@ class UserRegisterView(CreateView):
 
     form_class = UserRegisterForm
     template_name = "profiles/register.jinja2"
-    success_url = reverse_lazy("profiles:home-page")
+    success_url = reverse_lazy("products:home-page")
 
     def get(self, request, **kwargs):
         form = UserRegisterForm()
@@ -92,4 +102,23 @@ class UserResetPasswordView(PasswordChangeView):
     """
 
     template_name = "profiles/password_form.jinja2"
-    success_url = reverse_lazy("profiles:home-page")
+    success_url = reverse_lazy("products:home-page")
+
+
+class UserUpdateProfileInfo(UpdateView):
+    """View of user information updates"""
+
+    model = User
+    template_name = "profiles/user_update_form.jinja2"
+    template_name_suffix = "_update_form"
+    success_url = reverse_lazy("profiles:about-user")
+    fields = [
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "phone",
+        "residence",
+        "address",
+        "avatar",
+    ]

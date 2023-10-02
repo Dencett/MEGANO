@@ -1,0 +1,47 @@
+{% extends 'shops/base_shop.jinja2' %}
+
+
+{% block title %}
+Обновление информации о магазине
+{% endblock %}
+
+
+{% block shop_sidebar %}
+  <div class="Section-column">
+    <div class="Section-columnSection">
+      <header class="Section-header">
+        <strong class="Section-title">Навигация</strong>
+      </header>
+      <div class="Section-columnContent">
+        <div class="NavigateProfile">
+          <ul class="menu menu_vt">
+            <li class="menu-item">
+              <a class="menu-link" href="{{ url('shops:shop_detail', pk=shop.pk) }}">Информация о магазине</a>
+            </li>
+            <li class="menu-item_ACTIVE menu-item"><a class="menu-link" href="#">Редатировать информацию</a>
+            </li>
+            <li class="menu-item"><a class="menu-link" href="{{ url('shops:shop_products', pk=shop.pk) }}">Товары магазина</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block shop_content %}
+
+<form method="post">
+
+    {% csrf_token %}
+    {% if object.avatar %}
+      <img src="{{ object.avatar.url }}" alt="Логотип магазина" style="max-height: 300px;">
+    {% else %}
+      <p>У магазина нет авата</p>
+    {% endif %}
+    {{ form.as_p() }}
+
+<button type="submit">Обновить</button>
+</form>
+
+{% endblock %}

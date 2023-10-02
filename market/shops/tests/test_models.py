@@ -1,6 +1,10 @@
 from django.test import TestCase
 from shops.models import Shop, Offer
 from products.models import Product, Detail, Category
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 
 class ShopModelTest(TestCase):
@@ -16,7 +20,12 @@ class ShopModelTest(TestCase):
             category=cls.category,
         )
         cls.product.details.set([cls.detail])
-        cls.shop = Shop.objects.create(name="тестовый магазин")
+        cls.user = User.objects.create(
+            username="test_user_for_shop_test",
+            password="QWerty1234",
+            email="test_user@mail.com",
+        )
+        cls.shop = Shop.objects.create(user=cls.user, name="тестовый магазин")
         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25)
 
     @classmethod
@@ -27,6 +36,7 @@ class ShopModelTest(TestCase):
         ShopModelTest.shop.delete()
         ShopModelTest.offer.delete()
         cls.category.delete()
+        cls.user.delete()
 
     def test_verbose_name(self):
         shop = ShopModelTest.shop
@@ -52,7 +62,12 @@ class OfferModelTest(TestCase):
         super().setUpClass()
         cls.category = Category.objects.create(name="тестовая категория")
         cls.product = Product.objects.create(name="тестовый продукт", category=cls.category)
-        cls.shop = Shop.objects.create(name="тестовый магазин")
+        cls.user = User.objects.create(
+            username="test_user_for_shop_test",
+            password="QWerty1234",
+            email="test_user@mail.com",
+        )
+        cls.shop = Shop.objects.create(user=cls.user, name="тестовый магазин")
         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=35)
 
     @classmethod
@@ -62,6 +77,7 @@ class OfferModelTest(TestCase):
         OfferModelTest.shop.delete()
         OfferModelTest.offer.delete()
         cls.category.delete()
+        cls.user.delete()
 
     def test_verbose_name(self):
         offer = OfferModelTest.offer
@@ -96,3 +112,64 @@ class OfferModelTest(TestCase):
         )
         for name in variable_name_in_template:
             self.assertIn(name, attr_names)
+
+
+class ShopModelTestCase(TestCase):
+    """Класс тестов модели Магазин"""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.category = Category.objects.create(name="Тестовая категория")
+        cls.detail = Detail.objects.create(name="тестовая характеристика")
+        cls.product = Product.objects.create(
+            name="test product for shop",
+            category=cls.category,
+        )
+        cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
+
+        cls.user = User.objects.create(
+            username="test_user_for_shop_test",
+            password="QWerty1234",
+            email="test_user@mail.com",
+        )
+
+        cls.shop = Shop.objects.create(
+            user=cls.user,
+            name="Test shop 55",
+            about="Test description test shop 123124312",
+            phone="89006663322",
+            email="test-shop-reatailer@mail.com",
+            avatar="media/shops/1/avatar/dns.jpg",
+        )
+        cls.shop.products.set([cls.product], through_defaults={"price": "1235.99"})
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.user.delete()
+        cls.shop.delete()
+        cls.product.delete()
+        cls.detail.delete()
+        cls.category.delete()
+
+    def test_verbose_name(self):
+        shop = ShopModelTestCase.shop
+        field_verboses = {
+            "name": "название",
+            "about": "Описание магазина",
+            "phone": "Телефон магазина",
+            "email": "Емаил магазина",
+            "avatar": "Аватар",
+            "products": "товары в магазине",
+        }
+        for field, expected_value in field_verboses.items():
+            with self.subTest(field=field):
+                self.assertEqual(shop._meta.get_field(field).verbose_name, expected_value)
+
+    def test_check_the_database_for_compliance(self):
+        # self.assertEqual(self.shop.pk, 1)
+        self.assertEqual(self.shop.name, "Test shop 55")
+        self.assertEqual(self.shop.email, "test-shop-reatailer@mail.com")
+        self.assertEqual(self.shop.phone, "89006663322")
+        self.assertEqual(self.shop.avatar, "media/shops/1/avatar/dns.jpg")
+        self.assertEqual(self.shop.user.username, "test_user_for_shop_test")
+        self.assertEqual(self.shop.user.email, "test_user@mail.com")
