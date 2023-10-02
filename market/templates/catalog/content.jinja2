@@ -6,17 +6,11 @@
             </a>
             <div class="Card-content">
                 <strong class="Card-title">
-                    <a href="{{ url('products:product-detail', pk=offer.product.pk) }}">{{ offer.product.name }}</a>
+                    <a href="{{ url('products:product-detail', pk=offer.product.pk) }}" id="card-title">{{ offer.product.name }}</a>
                 </strong>
                 <div class="Card-description">
                     <div class="Card-cost">
-                        <span class="Card-price">
-                        {% if offer.remains %}
-                            {{ offer.price }} ₽
-                        {% else %}
-                            Предложений ещё нет
-                        {% endif %}
-                        </span>
+                        <span class="Card-price" id="card-price">{% if offer.remains %}{{ offer.price }} ₽{% else %}Предложений ещё нет{% endif %}</span>
                     </div>
                     <div class="Card-category">{{ offer.product.category.name }}</div>
                     <div class="Card-hover">

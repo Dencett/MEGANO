@@ -6,7 +6,7 @@
         <div class="buttons">
         {% for tag in famous_tags %}
             <a class="btn btn_default btn_sm"
-               href="{{ request.path }}?tag_id={{ tag.pk }}{{ filter_params.to_string('&') }}{{ sort_params.to_string('&') }}">{{ tag.name }}</a>
+               href="{{ request.path }}?tag_id={{ tag.pk }}{{ sort_params.to_string('&') }}">{{ tag.name }}</a>
         {% endfor %}
         </div>
     </div>
