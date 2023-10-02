@@ -113,6 +113,13 @@ DATABASES = {"default": dj_database_url.parse(config["DATABASE_URL"])}
 
 REDIS_URL = config["REDIS_URL"]
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "test-shop_4.sqlite3",
+    }
+}
+
 CACHE_TTL = 60 * 60 * 24
 
 CACHES = {
