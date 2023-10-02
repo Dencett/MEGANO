@@ -42,13 +42,13 @@
                                 </li>
 
                                 {% if shop != "" %}
-                                <h3 class="header">Информация о магазине</h3>
-                                {% for all_shop in shop %}
-                                <li class="menu-item">
-                                    <a class="menu-link" href="{{ url('shops:shop_detail', pk=all_shop.pk)}}">{{ all_shop.name }}</a>
-                                </li>
-                                    {# {{ shop }} #}
-                                {% endfor %}
+                                    <h3 class="header">Информация о магазине</h3>
+                                    {% for all_shop in shop %}
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="{{ url('shops:shop_detail', pk=all_shop.pk)}}">{{ all_shop.name }}</a>
+                                    </li>
+                                        {# {{ shop }} #}
+                                    {% endfor %}
                                 {% else %}
 
                                 {% endif %}
@@ -117,18 +117,18 @@
 <!--========================================== Информация пользователя пользователя!  КОНЕЦ  ==========================================-->
 </div>
 <!--========================================== Раздел история просмотра товаров!  НАЧАЛО  ==========================================-->
-{% if history %}
-<div class="row-block">
-        <h2></h2>
-        <h3 class="header">Вы смотрели</h3>
-</div>
+    {% if history %}
+    <div class="row-block">
+            <h2></h2>
+            <h3 class="header">Вы смотрели</h3>
+    </div>
 
-<div class="Account-group">
-   {% for product in history %}
-       {% include "profiles/product_card.jinja2" %}
-   {% endfor %}
-</div>
-<a href="{{ url('profiles:browsing_history') }}" class="btn btn_square btn_dark" style="margin-bottom: 15px;">Перейти к полной истории</a>
-{% endif %}
+    <div class="Account-group">
+       {% for product in history %}
+           {% include "profiles/product_card.jinja2" %}
+       {% endfor %}
+    </div>
+    <a href="{{ url('profiles:browsing_history') }}" class="btn btn_square btn_dark" style="margin-bottom: 15px;">Перейти к полной истории</a>
+    {% endif %}
 <!--========================================== Раздел история просмотра товаров!  КОНЕЦ  ==========================================-->
 {% endblock %}

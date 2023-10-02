@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 
 from .forms import UserRegisterForm, ProfileAvatarUpdateForm
 from .models import User
-from .services import user_have_store
+from profiles.services.have_store import user_have_store
 from products.models import Product
 from .services.products_history import get_products_in_user_history
 from products.services.product_price import product_min_price
