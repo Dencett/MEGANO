@@ -1,0 +1,62 @@
+{% extends 'base.jinja2' %}
+
+{% block title %}
+Информация о пользователе
+{% endblock %}
+
+{% block middle %}
+{% if user.is_authenticated %}
+
+
+<div class="Middle Middle_top">
+    <div class="Section Section_column Section_columnLeft">
+        <div class="wrap">
+<!--========================================== SIDE BAR!  НАЧАЛО   ==========================================-->
+            <div class="Section-column">
+                <div class="Section-columnSection">
+                    <header class="Section-header">
+                        <strong class="Section-title">Навигация
+                        </strong>
+                    </header>
+                    <div class="Section-columnContent">
+                        <div class="NavigateProfile">
+                            <ul class="menu menu_vt">
+                                <li class="{% block activate_cabinet %} menu-item {% endblock %}">
+                                    <a class="menu-link" href="{{ url('profiles:about-user') }}">Личный кабинет</a>
+                                </li>
+                                <li class="{% block activate_profile %} menu-item {% endblock %}">
+                                    <a class="menu-link" href="profile.html">Профиль</a>
+                                </li>
+                                <li class="{% block history_order %} menu-item {% endblock %}">
+                                    <a class="menu-link" href="historyorder.html">История заказов</a>
+                                </li>
+                                <li class="{% block history_product %} menu-item {% endblock %}">
+                                    <a class="menu-link" href="{{ url('profiles:browsing_history') }}">История просмотра</a>
+                                </li>
+                                <li class="{% block change_password %} menu-item {% endblock %}">
+                                    <a class="menu-link" href="{{ url('profiles:change-password') }}">Сменить пароль</a>
+                                </li>
+                                <li class="{% block to_main %} menu-item {% endblock %}">
+                                    <a class="menu-link" href="{{ url('products:home-page') }}">На главную</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="Section-content">
+                {% block account_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<h2>Вы зашли как анонимный пользователь.</h2>
+<p>Пожалуйста,
+    <a href="{{ url('profiles:login') }}">авторизуйтесь</a> или <a href="{{ url('profiles:register') }}">зарегистрируйтесь.</a>
+</p>
+{% endif %}
+{% endblock %}

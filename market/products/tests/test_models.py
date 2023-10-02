@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
-from products.models import Product, Detail, ProductDetail, Category, ProductImage, Tag, Review
+from products.models import Product, Detail, ProductDetail, Category, ProductImage, Tag, Review, Manufacturer
 
 
 User = get_user_model()
@@ -13,10 +13,10 @@ class ProductModelTest(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.category = Category.objects.create(name="Тестовая категория")
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
         cls.product = Product.objects.create(
-            name="Тестовый продукт",
-            category=cls.category,
+            name="Тестовый продукт", category=cls.category, manufacturer=cls.manufacturer
         )
         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
 
@@ -25,6 +25,7 @@ class ProductModelTest(TestCase):
         cls.detail.delete()
         cls.product.delete()
         cls.category.delete()
+        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         product = ProductModelTest.product
@@ -86,10 +87,8 @@ class ProductImageModelTest(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.category = Category.objects.create(name="Тестовая категория")
-        cls.product = Product.objects.create(
-            name="test_product",
-            category=cls.category,
-        )
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
+        cls.product = Product.objects.create(name="test_product", category=cls.category, manufacturer=cls.manufacturer)
         cls.image_file_name = "test_img.jpg"
         img_file = SimpleUploadedFile(
             name=cls.image_file_name,
@@ -104,6 +103,7 @@ class ProductImageModelTest(TestCase):
         cls.productimage.delete()
         cls.product.delete()
         cls.category.delete()
+        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         image = self.productimage
@@ -154,9 +154,9 @@ class ProductDetailModelTest(TestCase):
     def setUpClass(cls):
         cls.category = Category.objects.create(name="Тестовая категория")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.product = Product.objects.create(
-            name="Тестовый продукт",
-            category=cls.category,
+            name="Тестовый продукт", category=cls.category, manufacturer=cls.manufacturer
         )
         cls.product_detail = ProductDetail.objects.create(
             product=cls.product,
@@ -170,6 +170,7 @@ class ProductDetailModelTest(TestCase):
         cls.detail.delete()
         cls.product_detail.delete()
         cls.category.delete()
+        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         product_detail = ProductDetailModelTest.product_detail
@@ -258,7 +259,10 @@ class ReviewModelTest(TestCase):
     def setUpClass(cls):
         cls.category = Category.objects.create(name="Тестовая категория")
         cls.detail = Detail.objects.create(name="Тестовая характеристика")
-        cls.product = Product.objects.create(name="Тестовый продукт", category=cls.category)
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
+        cls.product = Product.objects.create(
+            name="Тестовый продукт", category=cls.category, manufacturer=cls.manufacturer
+        )
         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
         cls.user = User.objects.create(username="Test_user", email="test@test.com", password="Test123!$")
         cls.review = Review.objects.create(
@@ -272,6 +276,7 @@ class ReviewModelTest(TestCase):
         cls.product.delete()
         cls.detail.delete()
         cls.category.delete()
+        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         review = ReviewModelTest.review

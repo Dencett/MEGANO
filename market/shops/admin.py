@@ -35,6 +35,7 @@ class OfferAdmin(admin.ModelAdmin):
         "shop",
         "product",
         "price",
+        "remains",
     )
     list_display_links = (
         "pk",

@@ -38,6 +38,7 @@ class Shop(models.Model):
         "products.Product",
         through="Offer",
         related_name="shops",
+        related_query_name="shop",
         verbose_name=_("товары в магазине"),
     )
 
@@ -69,6 +70,7 @@ class Offer(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("цена"))
+    remains = models.PositiveIntegerField(verbose_name=_("остаток"))
     payment_method = models.CharField(
         choices=PaymentMethod.choices,
         default=PaymentMethod.CARD,

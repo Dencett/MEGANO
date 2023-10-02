@@ -43,10 +43,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_jinja",
+    "django_extensions",
     "products",
     "shops",
     "profiles",
-    "django_extensions",
 ]
 
 SHELL_PLUS_PRINT_SQL = False
@@ -62,6 +62,21 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
+
+if DEBUG:
+    SHELL_PLUS_PRINT_SQL = True
+
+    INTERNAL_IPS = [
+        "0.0.0.0",
+        "127.0.0.1",
+    ]
+
+    ALLOWED_HOSTS += INTERNAL_IPS
+
+    INSTALLED_APPS += ["debug_toolbar"]
+
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+
 
 TEMPLATES = [
     {
@@ -112,13 +127,6 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {"default": dj_database_url.parse(config["DATABASE_URL"])}
 
 REDIS_URL = config["REDIS_URL"]
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "test-shop_4.sqlite3",
-    }
-}
 
 CACHE_TTL = 60 * 60 * 24
 

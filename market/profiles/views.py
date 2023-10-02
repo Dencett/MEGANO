@@ -4,11 +4,15 @@ from django.contrib.auth import authenticate, login
 from django.db import transaction
 from django.urls import reverse_lazy, reverse
 from django.http.response import HttpResponseRedirect
-from django.views.generic import TemplateView, CreateView, UpdateView
+from django.views.generic import TemplateView, CreateView, UpdateView, ListView
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 from .forms import UserRegisterForm, ProfileAvatarUpdateForm
 from .models import User
 from .services import user_have_store
+from products.models import Product
+from .services.products_history import get_products_in_user_history
+from products.services.product_price import product_min_price
 
 
 class AboutUserView(TemplateView):
@@ -29,9 +33,13 @@ class AboutUserView(TemplateView):
         # Если список пуст, вернём пустую строку.
         else:
             context["shop"] = ""
+        user = self.request.user
+        if user.is_authenticated:
+            history = get_products_in_user_history(user, number=3)
+            context["history"] = history
+        context["price"] = product_min_price
         return context
 
-    @transaction.atomic
     def post(self, request):
         update_avatar = ProfileAvatarUpdateForm(request.POST, request.FILES)
         if update_avatar.is_valid():
@@ -122,3 +130,17 @@ class UserUpdateProfileInfo(UpdateView):
         "address",
         "avatar",
     ]
+
+
+class UserHistoryView(UserPassesTestMixin, ListView):
+    template_name = "profiles/product-history.jinja2"
+    model = Product
+    context_object_name = "history"
+    extra_context = {"price": product_min_price}
+
+    def get_queryset(self):
+        user = self.request.user
+        return get_products_in_user_history(user)
+
+    def test_func(self):
+        return self.request.user.is_authenticated

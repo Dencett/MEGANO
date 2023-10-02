@@ -24,7 +24,12 @@ urlpatterns = [
     path("", include("products.urls")),
     path("profiles/", include("profiles.urls")),
     path("shops/", include("shops.urls")),
+    path("catalog/", include("catalog.urls")),
 ]
 
 if settings.DEBUG:
+    urlpatterns.append(
+        path("__debug__/", include("debug_toolbar.urls")),
+    )
     urlpatterns.extend(static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
+    urlpatterns.extend(static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS))
