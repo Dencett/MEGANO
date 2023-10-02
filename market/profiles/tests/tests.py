@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from products.models import Product, Category, Review, Detail
+from products.models import Product, Category, Review, Detail, Manufacturer
 
 from shops.models import Shop, Offer
 
@@ -10,15 +10,15 @@ User = get_user_model()
 
 FIXTURES = [
     "fixtures/01-users.json",
-    "fixtures/02-groups.json",
     "fixtures/04-shops.json",
     "fixtures/05-category.json",
-    "fixtures/06-tags.json",
-    "fixtures/07-products.json",
-    "fixtures/08-offers.json",
-    "fixtures/09-details.json",
-    "fixtures/10-productimages.json",
-    "fixtures/11-productdetails.json",
+    "fixtures/06-manufacturer.json",
+    "fixtures/07-tags.json",
+    "fixtures/08-products.json",
+    "fixtures/09-offers.json",
+    "fixtures/10-details.json",
+    "fixtures/11-productimages.json",
+    "fixtures/12-productdetails.json",
 ]
 
 
@@ -182,8 +182,9 @@ class UserHaveShopViewTestCase(TestCase):
     def setUpClass(cls):
         cls.category = Category.objects.create(name="Тестовая категория")
         cls.detail = Detail.objects.create(name="Тестовая характеристика")
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.product = Product.objects.create(
-            name="Тестовый продукт", category=cls.category, preview="/img/products/test_product/"
+            name="Тестовый продукт", category=cls.category, manufacturer=cls.manufacturer
         )
         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
         cls.user = User.objects.create(username="Test_user", email="test@test.com", password="Test123!$")
@@ -199,9 +200,10 @@ class UserHaveShopViewTestCase(TestCase):
         cls.shop.delete()
         cls.review.delete()
         cls.user.delete()
+        cls.manufacturer.delete()
+        cls.category.delete()
         cls.product.delete()
         cls.detail.delete()
-        cls.category.delete()
 
     def setUp(self) -> None:
         self.client.force_login(self.user)

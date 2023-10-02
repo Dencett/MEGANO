@@ -25,7 +25,7 @@
                                     <a class="menu-link" href="{{ url('profiles:about-user') }}">Личный кабинет</a>
                                 </li>
                                 <li class="{% block activate_profile %} menu-item {% endblock %}">
-                                    <a class="menu-link" href="profile.html">Профиль</a>
+                                    <a class="menu-link" href="{{ url('profiles:update-info', pk=user.pk) }}">Профиль</a>
                                 </li>
                                 <li class="{% block history_order %} menu-item {% endblock %}">
                                     <a class="menu-link" href="historyorder.html">История заказов</a>
@@ -39,15 +39,24 @@
                                 <li class="{% block to_main %} menu-item {% endblock %}">
                                     <a class="menu-link" href="{{ url('products:home-page') }}">На главную</a>
                                 </li>
+                                {% if shop != "" %}
+                                <h3 class="header">Информация о магазине</h3>
+                                    {% for all_shop in shop %}
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="{{ url('shops:shop_detail', pk=all_shop.pk)}}">{{ all_shop.name }}</a>
+                                    </li>
+                                    {% endfor %}
+                                {% else %}
 
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="Section-content">
                 {% block account_content %}
+
                 {% endblock %}
             </div>
         </div>
