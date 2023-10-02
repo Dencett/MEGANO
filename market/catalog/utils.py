@@ -1,4 +1,4 @@
-from typing import Tuple, Any, Dict, Generator, List, Self
+from typing import Tuple, Any, Dict, Generator, List
 
 from django.db.models import QuerySet, Count, F, Q
 
@@ -72,7 +72,7 @@ class Params:
     def __setitem__(self, key: Any, value: Any) -> None:
         return self.__items.__setitem__(key, value)
 
-    def __add__(self, other) -> Self:
+    def __add__(self, other) -> "Params":
         if isinstance(other, Params):
             self.__items.update(other.__items)
             return self
@@ -83,7 +83,7 @@ class Params:
 
         raise ValueError(f"`{other}` must be {self.__class__.__name__} or dict")
 
-    def __iadd__(self, other) -> Self:
+    def __iadd__(self, other) -> "Params":
         return self.__add__(other)
 
     def __contains__(self, value) -> bool:
