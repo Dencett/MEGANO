@@ -118,7 +118,7 @@ class Filter:
         if not field:
             field = "delivery_method"
 
-        return {field: "REGULAR"}
+        return {field: "FREE"}
 
     def __product_search_filter(
         self,

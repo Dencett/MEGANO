@@ -1,11 +1,10 @@
-from contextlib import suppress
 from typing import Any, Dict, Generator
 
-from django.core.cache import cache
 from django.http import HttpRequest
 
 from catalog.common import get_famous_tags, parse_price
 from catalog.utils import Params, Sorter, Filter
+from context_processors.menu_context import get_categories_list
 from products.models import Category
 
 
@@ -54,7 +53,7 @@ class CatalogContextProcessor:
             stop_price - Float\n
             price - String\n
             title - String\n
-            remains - Boolean\n
+            remains - Integer\n
             free_delivery - String\n
             search - String\n
         """
@@ -171,7 +170,7 @@ class CatalogContextProcessor:
         Optional context keys:
             price - String\n
             title - String\n
-            remains - Boolean\n
+            remains - Integer\n
             free_delivery - String
         """
         if not data:
@@ -189,20 +188,11 @@ class CatalogContextProcessor:
 
         for key, value in raw_context.items():
             if value:
-                with suppress(KeyError):
-                    self.context.pop(key)
-
                 context_data[key] = value
 
         filter_params = Params(**context_data)
 
-        if filter_params:
-            with suppress(KeyError):
-                self.context.pop("filter_params")
-
-            context_data["filter_params"] = filter_params
-        else:
-            context_data["filter_params"] = Params()
+        context_data["filter_params"] = filter_params or Params()
 
         self.context.update(context_data)
 
@@ -219,8 +209,7 @@ class CatalogContextProcessor:
         )
 
     def __get_current_category(self, category_id: str) -> Category:
-        cache_key = "categories_data_export"
-        categories_list = cache.get(cache_key)
+        categories_list = get_categories_list()
 
         for category in categories_list:
             if str(category.pk) == category_id:
