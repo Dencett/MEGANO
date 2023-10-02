@@ -1,17 +1,15 @@
-from typing import Any, Dict, Generator
-
-from django.core.cache import cache
-from django.core.paginator import Paginator
-from django.db.models import QuerySet
+from typing import Any, Dict
+from django.db.models import QuerySet, Prefetch
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView
 
-from catalog.common import Params
-from catalog.utils import Filter, Sorter
+from catalog.context import CatalogContextProcessor
+from catalog.utils import Params
 from catalog.forms import CatalogFilterForm
+from products.models import Tag
 from shops.models import Offer
 
 
@@ -52,72 +50,48 @@ class CatalogListView(ListView):
         ]
 
         queryset = Offer.objects.select_related(*select_related_fields)
-
         params = Params(**self.request.GET.dict())
+        context_proc = CatalogContextProcessor(self.request, {}, params)
 
-        queryset = self._filter(queryset, params)
-        queryset = self._sort(queryset, params)
+        tag_id = params.get("tag_id")
+
+        if tag_id:
+            queryset = queryset.prefetch_related(self.__get_tags_prefetch(tag_id))
+
+        queryset = self._filter(queryset, context_proc)
+        queryset = self._sort(queryset, context_proc)
+
         return queryset.only(*fields)
 
-    def _filter(self, queryset: QuerySet, params: Params) -> QuerySet:
-        filter_manager = Filter(params)
-        queryset = filter_manager.filter_offer(queryset)
-        return filter_manager.filter_prodict(queryset)
+    def __get_tags_prefetch(self, tag_id: str) -> Prefetch:
+        fields = ["pk", "name"]
+        queryset = Tag.objects.filter(pk=tag_id).only(*fields)
+        return Prefetch("product__tags", queryset=queryset)
 
-    def _sort(self, queryset: QuerySet, params: Params) -> QuerySet:
-        return Sorter(params).sort(queryset)
+    def _filter(self, queryset: QuerySet, proc: CatalogContextProcessor) -> QuerySet:
+        queryset = proc.filter.filter_offer(queryset)
+        queryset = proc.filter.filter_category(queryset)
+        queryset = proc.filter.filter_tags(queryset)
+        return proc.filter.filter_prodict(queryset)
+
+    def _sort(self, queryset: QuerySet, proc: CatalogContextProcessor) -> QuerySet:
+        sort_ = proc.params.get("sort")
+        desc_ = proc.params.get("desc")
+        return proc.sorter.sort(queryset, sort_, desc_)
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(object_list=object_list, **kwargs)
-        params = Params(**self.request.GET.dict())
 
-        sort_manager = Sorter(params)
-        filter_manager = Filter(params)
-
-        sort_context = sort_manager.get_context_data()
-        filter_context = filter_manager.get_context_data()
-
-        context.update(**sort_context, **filter_context)
-        context["pagination_range"] = self.__get_pagination_range(context["paginator"])
-
-        self.__set_params_context(context, sort_manager, filter_manager)
-        self.__set_current_category_context(context, params)
-
-        return context
-
-    def __set_current_category_context(self, context: Dict[str, Any], params: Params) -> None:
-        category_id = params.get("category_id")
-
-        if not category_id:
-            return
-
-        cache_key = "categories_data_export"
-        categories_list = cache.get(cache_key)
-
-        for category in categories_list:
-            if str(category.pk) == category_id:
-                context["current_category"] = category
-                break
-
-    def __set_params_context(self, context: Dict[str, Any], sort_manager: Sorter, filter_manager: Filter) -> None:
-        sort_params = sort_manager.build_params()
-        filter_params = filter_manager.build_params()
-
-        context["sort_params"] = sort_params.to_string()
-        context["filter_params"] = filter_params.to_string()
-        context["params"] = sort_params + filter_params
-
-    def __get_pagination_range(self, paginator: Paginator) -> Generator:
-        page_number = self.request.GET.get("page")
-
-        if not page_number:
-            page_number = 1
-
-        return paginator.get_elided_page_range(
-            number=page_number,
-            on_each_side=self.pagination_on_each_side,
-            on_ends=self.pagination_on_ends,
+        context_proc = CatalogContextProcessor(
+            self.request,
+            context,
+            Params(**self.request.GET.dict()),
         )
+        context_proc.set_filter_context()
+        context_proc.set_pagination_context()
+        context_proc.set_context()
+
+        return context_proc.context
 
 
 class CatalogFilteredView(View):
@@ -125,21 +99,16 @@ class CatalogFilteredView(View):
         form = CatalogFilterForm(request.POST)
         form.is_valid()
 
-        params = request.GET.dict()
-
-        sorter_ = Sorter(Params(**params))
-
-        filter_ = Filter(Params())
-        base_filter_params = filter_.extract_by_form_fields(form.cleaned_data)
-        additional_filter_params = filter_.extract_additional_params_data(params)
-        filter_params = Params(**base_filter_params, **additional_filter_params)
-
-        params = filter_params + sorter_.build_params()
+        context_proc = CatalogContextProcessor(request, {}, Params(**request.GET.dict()))
+        context_proc.set_filter_context(form.cleaned_data)
+        context_proc.set_context()
 
         url = reverse("catalog:index")
 
+        params = context_proc.context.get("params")
+
         if params:
-            url += "?" + params
+            url += params.to_string("?")
 
         return redirect(url, permanent=True)
 

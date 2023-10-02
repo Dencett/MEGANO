@@ -95,7 +95,7 @@ TEMPLATES = [
             "app_dirname": "templates",
             "context_processors": [
                 "context_processors.menu_context.categories_menu",
-                "context_processors.search_placeholders_context.product_placeholders",
+                "context_processors.catalog_context.product_placeholders",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",

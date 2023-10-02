@@ -1,13 +1,13 @@
 import random
-from typing import List
 
+from typing import List, Dict
 from django.core.cache import cache
 from django.http import HttpRequest
 
 from products.models import Product
 
 
-def product_placeholders(request: HttpRequest):
+def product_placeholders(request: HttpRequest) -> Dict[str, str]:
     """
     Контекстный процессор добавления случайных заполнителей строки поиска
     """

@@ -4,7 +4,7 @@
     </header>
     <div class="Section-columnContent">
         <form class="form"
-              action="{{ url('catalog:index') }}{% if params %}?{{ params }}{% endif %}"
+              action="{{ url('catalog:index') }}{{ sort_params.to_string('?') }}{{ tag_params.to_string('&') }}{{ category_params.to_string('&') }}"
               method="post">
             {% csrf_token %}
             <div class="form-group">
