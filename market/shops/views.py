@@ -4,7 +4,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView, TemplateView, UpdateView
-from shops.forms import OfferCreateForm
+
+# from shops.forms import OfferCreateForm
 
 from shops.models import Shop, Offer
 
@@ -87,13 +88,13 @@ class ShopUpdateView(UpdateView):
         )
 
 
-class ShopNewOfferCreateView(TemplateView):
-    template_name = "shops/shops_offer_create.jinja2"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["user_shop_offer"] = (
-            Offer.objects.prefetch_related("product").select_related("shop").filter(shop__user_id=self.request.user.pk)
-        )
-        context["form"] = OfferCreateForm()
-        return context
+# class ShopNewOfferCreateView(TemplateView):
+#     template_name = "shops/shops_offer_create.jinja2"
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context["user_shop_offer"] = (
+#             Offer.objects.prefetch_related("product").select_related("shop").filter(shop__user_id=self.request.user.pk)
+#         )
+#         context["form"] = OfferCreateForm()
+#         return context
