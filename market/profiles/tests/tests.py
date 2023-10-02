@@ -9,9 +9,9 @@ User = get_user_model()
 
 
 FIXTURES = [
-    "fixtures/0-1-groups.json",
-    "fixtures/0-01-users.json",
-    "fixtures/0-04-shops.json",
+    "fixtures/01-users.json",
+    "fixtures/02-groups.json",
+    "fixtures/04-shops.json",
     "fixtures/05-category.json",
     "fixtures/06-tags.json",
     "fixtures/07-products.json",

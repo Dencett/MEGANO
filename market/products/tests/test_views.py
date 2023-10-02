@@ -9,8 +9,8 @@ from shops.models import Shop, Offer
 from products.services.review_services import ReviewServices
 
 FIXTURES = [
-    "fixtures/0-01-groups.json",
     "fixtures/01-users.json",
+    "fixtures/02-groups.json",
     "fixtures/04-shops.json",
     "fixtures/05-category.json",
     "fixtures/06-tags.json",
