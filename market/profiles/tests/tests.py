@@ -180,7 +180,7 @@ class UserHaveShopViewTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.category = Category.objects.create(name="Тестовая категория")
+        cls.category = Category.objects.create(name="Тестовая категория2")
         cls.detail = Detail.objects.create(name="Тестовая характеристика")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.product = Product.objects.create(
@@ -192,7 +192,7 @@ class UserHaveShopViewTestCase(TestCase):
             user=cls.user, product=cls.product, review_content="Тестовая отзыв продукта"
         )
         cls.shop = Shop.objects.create(user=cls.user, name="тестовый магазин", phone="89991002233")
-        cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25)
+        cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25, remains=0)
 
     @classmethod
     def tearDownClass(cls):

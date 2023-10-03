@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from products.models import Product, Category, Detail
+from products.models import Product, Category, Detail, Manufacturer
 from shops.models import Shop
 
 User = get_user_model()
@@ -36,11 +36,13 @@ class ShopViewTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.category = Category.objects.create(name="Тестовая категория")
+        cls.category = Category.objects.create(name="Тестовая категория2")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.product = Product.objects.create(
             name="test product for shop",
             category=cls.category,
+            manufacturer=cls.manufacturer,
         )
         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
 
@@ -58,7 +60,7 @@ class ShopViewTestCase(TestCase):
             email="test-shop-reatailer@mail.com",
             avatar="media/shops/1/avatar/dns.jpg",
         )
-        cls.shop.products.set([cls.product], through_defaults={"price": "1235.99"})
+        cls.shop.products.set([cls.product], through_defaults={"price": "1235.99", "remains": 0})
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -66,6 +68,7 @@ class ShopViewTestCase(TestCase):
         cls.shop.delete()
         cls.product.delete()
         cls.detail.delete()
+        cls.manufacturer
         cls.category.delete()
 
     def setUp(self) -> None:
@@ -104,11 +107,11 @@ class ShopModelTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.category = Category.objects.create(name="Тестовая категория")
+        cls.category = Category.objects.create(name="Тестовая категория2")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.product = Product.objects.create(
-            name="test product for shop",
-            category=cls.category,
+            name="test product for shop", category=cls.category, manufacturer=cls.manufacturer
         )
         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
 
@@ -126,15 +129,16 @@ class ShopModelTestCase(TestCase):
             email="test-shop-reatailer@mail.com",
             avatar="media/shops/1/avatar/dns.jpg",
         )
-        cls.shop.products.set([cls.product], through_defaults={"price": "1235.99"})
+        cls.shop.products.set([cls.product], through_defaults={"price": "1235.99", "remains": 0})
 
     @classmethod
     def tearDownClass(cls) -> None:
         cls.user.delete()
         cls.shop.delete()
         cls.product.delete()
-        cls.detail.delete()
+        cls.manufacturer.delete()
         cls.category.delete()
+        cls.detail.delete()
 
     def test_verbose_name(self):
         shop = ShopModelTestCase.shop
@@ -151,7 +155,6 @@ class ShopModelTestCase(TestCase):
                 self.assertEqual(shop._meta.get_field(field).verbose_name, expected_value)
 
     def test_check_the_database_for_compliance(self):
-        # self.assertEqual(self.shop.pk, 1)
         self.assertEqual(self.shop.name, "Test shop 55")
         self.assertEqual(self.shop.email, "test-shop-reatailer@mail.com")
         self.assertEqual(self.shop.phone, "89006663322")

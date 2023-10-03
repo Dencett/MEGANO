@@ -124,11 +124,13 @@ class ShopModelTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.category = Category.objects.create(name="Тестовая категория")
+        cls.category = Category.objects.create(name="Тестовая категория2")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.product = Product.objects.create(
             name="test product for shop",
             category=cls.category,
+            manufacturer=cls.manufacturer,
         )
         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
 
@@ -146,7 +148,7 @@ class ShopModelTestCase(TestCase):
             email="test-shop-reatailer@mail.com",
             avatar="media/shops/1/avatar/dns.jpg",
         )
-        cls.shop.products.set([cls.product], through_defaults={"price": "1235.99"})
+        cls.shop.products.set([cls.product], through_defaults={"price": "1235.99", "remains": 0})
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -155,6 +157,7 @@ class ShopModelTestCase(TestCase):
         cls.product.delete()
         cls.detail.delete()
         cls.category.delete()
+        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         shop = ShopModelTestCase.shop
