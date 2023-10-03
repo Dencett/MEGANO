@@ -3,7 +3,9 @@ from django.test import TestCase
 from django.http import HttpRequest
 from django.shortcuts import render, reverse
 
-from products.models import Product, Category, Detail, Review, Manufacturer
+import random
+
+from products.models import Product, Category, Detail, Review, Manufacturer, Banner
 from shops.models import Shop, Offer
 
 from products.services.review_services import ReviewServices
@@ -19,8 +21,9 @@ FIXTURES = [
     "fixtures/10-details.json",
     "fixtures/11-productimages.json",
     "fixtures/12-productdetails.json",
+    "fixtures/14-banners.json",
+    "fixtures/14-banners.json",
 ]
-
 
 User = get_user_model()
 
@@ -29,9 +32,22 @@ class HomeViewTest(TestCase):
     fixtures = FIXTURES
 
     def test_example_view(self):
-        template = "base.jinja2"
+        template = "products/home-page.jinja2"
         request = HttpRequest()
-        context = {}
+        context = dict()
+        context["offers"] = Offer.objects.order_by("?")[:8]
+        context["min_price_product"] = Offer.objects.all().order_by("price").first()
+        min_offers = []
+        categories = Category.objects.filter(foreground=True).order_by("?")[:3]
+        if len(categories) > 3:
+            categories = random.choices(categories, k=3)
+        for category in categories:
+            min_product = Offer.objects.filter(product__pk=category.pk).order_by("price").first()
+            min_offers.append(min_product)
+        context["min_offers"] = min_offers
+        context["limited_products"] = Offer.objects.all().order_by("quantity")[:8]
+        banners = Banner.objects.filter(archived=False).order_by("?")[:3]
+        context["banners"] = banners
         response = render(request, template, context)
         self.assertEqual(response.status_code, 200)
 

@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
-from products.models import Product, Detail, ProductDetail, Category, ProductImage, Tag, Review, Manufacturer
+from products.models import Product, Detail, ProductDetail, Category, ProductImage, Tag, Review, Manufacturer, Banner
 
 
 User = get_user_model()
@@ -292,3 +292,35 @@ class ReviewModelTest(TestCase):
         for field, expected_value in field_verboses.items():
             with self.subTest(field=field):
                 self.assertEqual(review._meta.get_field(field).verbose_name, expected_value)
+
+
+class BannerModelTest(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.image_file_name = "test_img.jpg"
+        cls.banner = Banner.objects.create(
+            name="тестовое",
+            description="тестовое",
+            image="img/banner/{image}".format(image=cls.image_file_name),
+        )
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.banner.delete()
+
+    def test_verbose_name(self):
+        banner = self.banner
+        field_verboses = {
+            "name": "наименование",
+            "description": "описание",
+            "archived": "архивировано",
+        }
+        for field, expected_value in field_verboses.items():
+            with self.subTest(field=field):
+                self.assertEqual(banner._meta.get_field(field).verbose_name, expected_value)
+
+    def test_image(self):
+        banner = self.banner
+        path = banner.image.url
+        expected_path = f"/media/img/banner/{self.image_file_name}"
+        self.assertEqual(path, expected_path)

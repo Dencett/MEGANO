@@ -4,10 +4,29 @@ from django.urls import reverse
 from profiles.models import User
 
 
+FIXTURES = [
+    "fixtures/01-users.json",
+    "fixtures/04-shops.json",
+    "fixtures/05-category.json",
+    "fixtures/06-manufacturer.json",
+    "fixtures/07-tags.json",
+    "fixtures/08-products.json",
+    "fixtures/09-offers.json",
+    "fixtures/10-details.json",
+    "fixtures/11-productimages.json",
+    "fixtures/12-productdetails.json",
+    "fixtures/14-banners.json",
+    "fixtures/14-banners.json",
+]
+
+
 class UserLogoutTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
     def setUpClass(cls):
         # создает пользователя
+        super(UserLogoutTestCase, cls).setUpClass()
         cls.credentials = {"username": "bob_test", "password": "qwerty"}
         cls.user = User.objects.create_user(**cls.credentials)
 
@@ -27,8 +46,11 @@ class UserLogoutTestCase(TestCase):
 
 
 class UserLoginTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
     def setUpClass(cls):
+        super(UserLoginTestCase, cls).setUpClass()
         cls.user_login_info = {
             "username": "John-test",
             "email": "jhon@test.com",
