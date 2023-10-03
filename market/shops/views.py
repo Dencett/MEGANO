@@ -50,7 +50,7 @@ class ShopProductsDetail(DetailView):
 
     model = Shop
     template_name = "shops/shop_products.jinja2"
-    context_object_name = "shop_prod"
+    context_object_name = "shop"
 
 
 class ShopUpdateView(UpdateView):
