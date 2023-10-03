@@ -1,9 +1,93 @@
-from typing import Tuple, Any, Dict, Generator
+from typing import Tuple, Any, Dict, Generator, List
 
-from django.db.models import QuerySet, F, Count
+from django.db.models import QuerySet, Count, F, Q
 
-from catalog.common import Params
-from catalog.forms import CatalogFilterForm
+from catalog.common import parse_price
+
+
+class Params:
+    def __init__(self, **kwargs) -> None:
+        self.__items: Dict = kwargs
+
+    def update(self, data: Dict | "Params", **kwargs) -> None:
+        if isinstance(data, Params):
+            self.__items.update(data.__items)
+
+        elif isinstance(data, Dict):
+            self.__items.update(data)
+
+        else:
+            raise TypeError(f"Wrong type data: `{type(data)}`. It's must be {self.__class__.__name__} or dict")
+
+        if kwargs:
+            self.__items.update(**kwargs)
+
+    def get(self, key: Any, default: Any | None = None) -> Any:
+        return self.__items.get(key, default)
+
+    def pop(self, key: Any, default: None = None) -> Any:
+        if key in self.__items:
+            return self.__items.pop(key)
+
+        return default
+
+    def popitems(self, *keys) -> List:
+        result = []
+
+        for key in keys:
+            value = self.pop(key)
+
+            if value:
+                result.append(value)
+
+        return result
+
+    def to_list(self) -> List[str]:
+        if self:
+            return [f"{key}={value}" for key, value in self.__items.items()]
+
+        return []
+
+    def to_dict(self) -> Dict[str, str]:
+        return self.__items
+
+    def to_string(self, first_char: str | None = None) -> str:
+        if self:
+            return first_char + "&".join(self.to_list()) if first_char else "&".join(self.to_list())
+
+        return ""
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.to_list()})"
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
+    def __bool__(self) -> bool:
+        return bool(self.__items)
+
+    def __getitem__(self, item: Any) -> Any:
+        return self.__items.__getitem__(item)
+
+    def __setitem__(self, key: Any, value: Any) -> None:
+        return self.__items.__setitem__(key, value)
+
+    def __add__(self, other) -> "Params":
+        if isinstance(other, Params):
+            self.__items.update(other.__items)
+            return self
+
+        if isinstance(other, dict):
+            self.__items.update(other)
+            return self
+
+        raise ValueError(f"`{other}` must be {self.__class__.__name__} or dict")
+
+    def __iadd__(self, other) -> "Params":
+        return self.__add__(other)
+
+    def __contains__(self, value) -> bool:
+        return value in self.__items
 
 
 class Filter:
@@ -11,113 +95,132 @@ class Filter:
     default_price_to: float = 1000.00
 
     def __init__(self, params: Params) -> None:
-        self.__params = params
+        self.params = params
 
-    def __extract_params_data(self) -> Dict:
-        data = {}
-
-        for field in CatalogFilterForm().fields:
-            param_value = self.__params.get(field)
-
-            if param_value:
-                data[field] = param_value
-
-        return data
-
-    def build_params(self) -> Params:
-        return Params(**self.__extract_params_data())
-
-    @classmethod
-    def parse_price(cls, price: str | None = None) -> Tuple[float, float] | None:
-        if not price:
-            return
-
-        prices = price.split(";")
-
-        if len(prices) != 2:
-            return
-
-        try:
-            return float(prices[0]), float(prices[1])
-
-        except ValueError:
-            return
-
-    def get_context_data(self) -> Dict[str, Any]:
-        data = self.__extract_params_data()
-        prices = self.parse_price(self.__params.get("price"))
-
-        if prices:
-            data["start_price"] = prices[0]
-            data["stop_price"] = prices[1]
-
-        data["default_price_from"] = self.default_price_from
-        data["default_price_to"] = self.default_price_to
-
-        return data
-
-    def __price_filter(self) -> Dict[str, Tuple[float, float]]:
+    def __price_filter(
+        self,
+        start_price: float,
+        stop_price: float,
+        field: str | None = None,
+    ) -> Dict[str, Tuple[float, float]]:
         """
         Offer price filer
         """
-        start_price = self.get_context_data().get("start_price", self.default_price_from)
-        stop_price = self.get_context_data().get("stop_price", self.default_price_to)
+        if not field:
+            field = "price"
 
-        return {"price__range": (start_price, stop_price)}
+        return {f"{field}__range": (start_price, stop_price)}
 
-    def __delivery_filter(self) -> Dict[str, str]:
+    def __delivery_filter(self, field: str | None = None) -> Dict[str, str]:
         """
         Offer delivery filer
         """
-        return {"delivery_method": "REGULAR"}
+        if not field:
+            field = "delivery_method"
 
-    def __title_filter(self) -> Dict[str, str]:
-        """
-        Product title filer
-        """
-        return {"product__about__contains": self.__params.get("title")}
+        return {field: "FREE"}
 
-    def __category_filter(self) -> Dict[str, bool]:
+    def __product_search_filter(
+        self,
+        value: str,
+        fields: List[str] | Tuple[str, str] | None = None,
+    ) -> Q:
+        """
+        Product search filer
+        """
+        if not fields:
+            fields = "about", "name"
+
+        return Q(**{f"product__{fields[0]}__contains": value}) | Q(**{f"product__{fields[1]}__contains": value})
+
+    def __category_available_filter(self) -> Dict[str, bool]:
+        """
+        Category available filter
+        """
+        return {
+            "product__category__is_active": True,
+            "product__category__archived": False,
+        }
+
+    def __category_filter(self, value: str) -> Dict[str, Any]:
         """
         Product category filter
         """
-        return {"product__category__is_active": True, "product__category__archived": False}
+        return {"product__category__pk": value}
 
-    def __remain_filter(self) -> Dict[str, int]:
+    def __remain_filter(self, field: str | None = None) -> Dict[str, int]:
         """
         Offer remain filter
         """
-        return {"remains__gte": 1}
+        if not field:
+            field = "remains"
+
+        return {f"{field}__gte": 1}
+
+    def __tag_filter(self, value: str, field: str | None = None) -> Dict[str, str]:
+        """
+        Tag id filter
+        """
+        if not field:
+            field = "product__tags__pk__contains"
+
+        return {field: value}
 
     def filter_offer(self, queryset: QuerySet) -> QuerySet:
         filter_: Dict[str, Any] = {}
 
-        if "price" in self.__params.items:
-            filter_.update(self.__price_filter())
+        if "price" in self.params:
+            prices = parse_price(self.params.get("price"))
 
-        if "free_delivery" in self.__params.items:
-            filter_.update(self.__delivery_filter())
+            if prices:
+                start_price = prices[0]
+                stop_price = prices[1]
 
-        if "remains" in self.__params.items:
-            filter_.update(self.__remain_filter())
+                filter_.update(self.__price_filter(start_price, stop_price, "price"))
+
+        if "free_delivery" in self.params:
+            filter_.update(self.__delivery_filter("delivery_method"))
+
+        if "remains" in self.params:
+            filter_.update(self.__remain_filter("remains"))
 
         return queryset.filter(**filter_)
 
     def filter_prodict(self, queryset: QuerySet) -> QuerySet:
+        filter_args = []
+
+        search_or_title_value = self.params.get("title", self.params.get("search"))
+
+        if search_or_title_value:
+            filter_args.append(self.__product_search_filter(search_or_title_value))
+
+        return queryset.filter(*filter_args)
+
+    def filter_category(self, queryset: QuerySet) -> QuerySet:
         filter_: Dict[str, Any] = {}
 
-        if "title" in self.__params.items:
-            filter_.update(self.__title_filter())
+        category_id = self.params.get("category_id")
 
-        filter_.update(self.__category_filter())
+        if category_id:
+            filter_.update(self.__category_filter(category_id))
+
+        filter_.update(self.__category_available_filter())
+
+        return queryset.filter(**filter_)
+
+    def filter_tags(self, queryset: QuerySet) -> QuerySet:
+        filter_: Dict[str, Any] = {}
+
+        tag_id = self.params.get("tag_id")
+
+        if tag_id:
+            filter_.update(self.__tag_filter(tag_id))
 
         return queryset.filter(**filter_)
 
 
 class Sorter:
     default_sort = "pk"
-    default_sort_name = "famous"
-    default_sort_desc = "on"
 
     sort_types = {
         "famous": "Популярности",
@@ -126,35 +229,16 @@ class Sorter:
         "recency": "Новизне",
     }
 
-    def __init__(self, params: Params) -> None:
-        self.__params = params
-
-    def build_params(self) -> Params:
-        sort = self.__params.get("sort") or self.default_sort_name
-        sort_desc = "on" if self.__params.get("sort_desc") == "on" else "off"
-
-        return Params(sort=sort, sort_desc=sort_desc)
-
-    def __get_items(self) -> Generator:
+    def get_items(self) -> Generator[Tuple[str, str], None, None]:
         for name, title in self.sort_types.items():
             yield name, title
 
-    def get_context_data(self) -> Dict[str, str]:
-        sort = self.__params.get("sort") or self.default_sort_name
-        sort_desc = self.__params.get("sort_desc") or self.default_sort_desc
-
-        return {
-            "sort": sort,
-            "sort_desc": sort_desc,
-            "sort_items": self.__get_items(),
-        }
-
-    def sort(self, queryset: QuerySet) -> QuerySet:
-        params = self.build_params()
-
-        sort = params.get("sort")
-        desc = params.get("sort_desc")
-
+    def sort(
+        self,
+        queryset: QuerySet,
+        sort: str | None = None,
+        desc: str | None = None,
+    ) -> QuerySet:
         if not sort:
             return queryset.order_by(self.default_sort)
 
