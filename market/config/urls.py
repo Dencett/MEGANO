@@ -23,8 +23,13 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("products.urls")),
     path("profiles/", include("profiles.urls")),
+    path("catalog/", include("catalog.urls")),
     # path("vendors/", include("vendors.urls")),  # Резервирую строчку под приложение продавцов
 ]
 
 if settings.DEBUG:
+    urlpatterns.append(
+        path("__debug__/", include("debug_toolbar.urls")),
+    )
     urlpatterns.extend(static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
+    urlpatterns.extend(static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS))

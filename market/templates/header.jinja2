@@ -6,22 +6,25 @@
                     <div class="row ControlPanel-rowSplit">
                         <div class="row-block hide_700">
                             <ul class="menu menu_img menu_smallImg ControlPanel-menu">
-                                <li class="menu-item"><a class="menu-link" href="#">
-                                    <img src="{{ static('assets/img/icons/socialHeader/tw.svg') }}" alt="tw.svg"/>
-                                </a>
+                                <li class="menu-item">
+                                  <a class="menu-link" href="#">
+                                      <img src="{{ static('assets/img/icons/socialHeader/tw.svg') }}" alt="tw.svg"/>
+                                  </a>
                                 </li>
-                                <li class="menu-item"><a class="menu-link" href="#">
-                                    <img src="{{ static('assets/img/icons/socialHeader/in.svg') }}" alt="in.svg"/>
-                                </a>
+                                <li class="menu-item">
+                                    <a class="menu-link" href="#">
+                                        <img src="{{ static('assets/img/icons/socialHeader/in.svg') }}" alt="in.svg"/>
+                                    </a>
                                 </li>
                                 <li class="menu-item">
                                     <a class="menu-link" href="#">
                                         <img src="{{ static('assets/img/icons/socialHeader/pt.svg') }}" alt="pt.svg"/>
                                     </a>
                                 </li>
-                                <li class="menu-item"><a class="menu-link" href="#">
-                                    <img src="{{ static('assets/img/icons/socialHeader/mail.svg') }}" alt="mail.svg"/>
-                                </a>
+                                <li class="menu-item">
+                                    <a class="menu-link" href="#">
+                                        <img src="{{ static('assets/img/icons/socialHeader/mail.svg') }}" alt="mail.svg"/>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -73,7 +76,7 @@
                         </li>
                         <li class="menu-item">
                             <span class="menu-label menu-label_success">Скидки</span>
-                            <a class="menu-link" href="{{ static('catalog.html') }}">Каталог</a>
+                            <a class="menu-link" href="{{ url('catalog:index') }}">Каталог</a>
                         </li>
                         <li class="menu-item">
                             <a class="menu-link" href="{{ static('comparison.html') }}">Сравнение</a>
@@ -113,24 +116,8 @@
     </div>
     <div class="Header-searchWrap">
         <div class="wrap">
-
-            {% include 'menu.jinja2' %}
-
-            <div class="Header-searchLink">
-                <img src="{{ static('assets/img/icons/search.svg') }}" alt="search.svg"/>
-            </div>
-            <div class="Header-search">
-                <div class="search">
-                    <form class="form form_search" action="#" method="post">
-                        <input class="search-input" id="query" name="query" type="text"
-                               placeholder="NVIDIA GeForce RTX 3060"/>
-                        <button class="search-button" type="submit" name="search" id="search">
-                            <img src="{{ static('assets/img/icons/search.svg') }}" alt="search.svg"/>
-                            Поиск
-                        </button>
-                    </form>
-                </div>
-            </div>
+            {% include "menu.jinja2" %}
+            {% include "search.jinja2" %}
         </div>
     </div>
 </header>

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "products",
     "shops",
     "profiles",
+    "catalog",
 ]
 
 MIDDLEWARE = [
@@ -63,6 +64,18 @@ ROOT_URLCONF = "config.urls"
 
 if DEBUG:
     SHELL_PLUS_PRINT_SQL = True
+
+    INTERNAL_IPS = [
+        "0.0.0.0",
+        "127.0.0.1",
+    ]
+
+    ALLOWED_HOSTS += INTERNAL_IPS
+
+    INSTALLED_APPS += ["debug_toolbar"]
+
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+
 
 TEMPLATES = [
     {
@@ -83,6 +96,7 @@ TEMPLATES = [
             "app_dirname": "templates",
             "context_processors": [
                 "context_processors.menu_context.categories_menu",
+                "context_processors.catalog_context.product_placeholders",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
