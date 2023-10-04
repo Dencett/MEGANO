@@ -7,8 +7,7 @@ class ShopModelTest(TestCase):
     """Класс тестов модели Магазин"""
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpTestData(cls):
         cls.detail = Detail.objects.create(name="тестовая характеристика")
         cls.category = Category.objects.create(name="тестовая категория")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
@@ -18,16 +17,6 @@ class ShopModelTest(TestCase):
         cls.product.details.set([cls.detail])
         cls.shop = Shop.objects.create(name="тестовый магазин")
         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25, remains=12)
-
-    @classmethod
-    def tearDownClass(cls):
-        super().tearDownClass()
-        ShopModelTest.detail.delete()
-        ShopModelTest.product.delete()
-        ShopModelTest.shop.delete()
-        ShopModelTest.offer.delete()
-        cls.category.delete()
-        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         shop = ShopModelTest.shop
@@ -49,8 +38,7 @@ class OfferModelTest(TestCase):
     """Класс тестов модели Предложение магазина"""
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpTestData(cls):
         cls.category = Category.objects.create(name="тестовая категория")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.product = Product.objects.create(
@@ -58,15 +46,6 @@ class OfferModelTest(TestCase):
         )
         cls.shop = Shop.objects.create(name="тестовый магазин")
         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=35, remains=2)
-
-    @classmethod
-    def tearDownClass(cls):
-        super().tearDownClass()
-        OfferModelTest.product.delete()
-        OfferModelTest.shop.delete()
-        OfferModelTest.offer.delete()
-        cls.category.delete()
-        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         offer = OfferModelTest.offer

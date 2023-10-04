@@ -21,7 +21,7 @@ FIXTURES = [
     "fixtures/10-details.json",
     "fixtures/11-productimages.json",
     "fixtures/12-productdetails.json",
-    "fixtures/14-banners.json",
+    "fixtures/13-reviews.json",
     "fixtures/14-banners.json",
 ]
 
@@ -56,7 +56,7 @@ class ProductViewTest(TestCase):
     fixtures = FIXTURES
 
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.category = Category.objects.create(name="Тестовая категория")
         cls.detail = Detail.objects.create(name="Тестовая характеристика")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
@@ -73,17 +73,6 @@ class ProductViewTest(TestCase):
         )
         cls.shop = Shop.objects.create(name="тестовый магазин")
         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25, remains=42)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.offer.delete()
-        cls.shop.delete()
-        cls.review.delete()
-        cls.user.delete()
-        cls.product.delete()
-        cls.detail.delete()
-        cls.category.delete()
-        cls.manufacturer.delete()
 
     def test_product_detail_view(self):
         template = "products/product_details.jinja2"

@@ -7,7 +7,7 @@ class UserProductHistoryTest(TestCase):
     """Класс тестов для записей в истории посещения пользователя"""
 
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.all_info = {
             "username": "John-for-test",
             "phone": "89701112233",
@@ -38,12 +38,6 @@ class UserProductHistoryTest(TestCase):
         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
 
         cls.user.product_in_history.add(cls.product)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
-        cls.product.delete()
-        cls.manufacturer.delete()
 
     def test_create_object(self):
         record = UserProductHistory.objects.filter(user=self.user, product=self.product)[0]
