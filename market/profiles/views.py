@@ -117,7 +117,7 @@ class UserUpdateProfileInfo(UpdateView):
     """View of user information updates"""
 
     model = User
-    template_name = "profiles/user_update_form.jinja2"
+    template_name = "profiles/user_update_form2.jinja2"
     template_name_suffix = "_update_form"
     success_url = reverse_lazy("profiles:about-user")
     fields = [
