@@ -11,6 +11,7 @@ class Command(BaseCommand):
         fixtures_dict = {
             # "contenttypes": "0-contenttypes.json",
             # "auth": "00-groups_and_permissions.json",
+            "user": "01-users.json",
             "shops.shop": "04-shops.json",
             "products.category": "05-category.json",
             "products.manufacturer": "06-manufacturer.json",

@@ -24,6 +24,7 @@ urlpatterns = [
     path("", include("products.urls")),
     path("profiles/", include("profiles.urls")),
     path("catalog/", include("catalog.urls")),
+    path("cart/", include("cart.urls")),
     # path("vendors/", include("vendors.urls")),  # Резервирую строчку под приложение продавцов
 ]
 

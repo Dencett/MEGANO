@@ -1,0 +1,29 @@
+{% extends "base.jinja2" %}
+
+{% block title -%}
+Корзина
+{% endblock %}
+
+{% block middle %}
+<div class="Middle Middle_top">
+        <div class="Section">
+            <div class="wrap">
+                <form class="form Cart" action="#" method="post">
+
+                   блоки с продуктами
+                    {% for cart in cart_list %}
+                     {% include "cart/cart_record.jinja2" %}
+                    {% endfor %}
+                    <div class="Cart-total">
+                        <div class="Cart-block Cart-block_total">
+                            <strong class="Cart-title">Итого:
+                            </strong><span class="Cart-price">200.99$</span>
+                        </div>
+                        <div class="Cart-block"><a class="btn btn_success btn_lg" href="order.html">Оформить заказ</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "shops",
     "profiles",
     "catalog",
+    "cart.apps.CartConfig",
 ]
 
 MIDDLEWARE = [
@@ -140,6 +141,8 @@ CACHES = {
         },
     }
 }
+
+CART_SESSION_ID = "cart"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
