@@ -165,3 +165,5 @@ market/templates/elmir_trash/
 
 #OS
 .DS_Store
+
+local/

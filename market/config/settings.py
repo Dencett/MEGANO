@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "products",
     "shops",
     "profiles",
+    "catalog",
 ]
 
 SHELL_PLUS_PRINT_SQL = False
@@ -97,6 +98,7 @@ TEMPLATES = [
             "app_dirname": "templates",
             "context_processors": [
                 "context_processors.menu_context.categories_menu",
+                "context_processors.catalog_context.product_placeholders",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",

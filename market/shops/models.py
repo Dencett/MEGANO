@@ -60,6 +60,7 @@ class PaymentMethod(models.TextChoices):
 class DeliveryMethod(models.TextChoices):
     """Модель для выбора способа доставки"""
 
+    FREE = "FREE", _("Бесплатная доставка")
     REGULAR = "REGULAR", _("Обычная доставка")
     EXPRESS = "EXPRESS", _("Экспресс доставка")
 

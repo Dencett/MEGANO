@@ -4,12 +4,10 @@
     </header>
     <div class="Section-columnContent">
         <div class="buttons">
-        <a class="btn btn_default btn_sm" href="#">Видео</a>
-        <a class="btn btn_default btn_sm" href="#">Разработка</a>
-        <a class="btn btn_default btn_sm" href="#">Игры</a>
-        <a class="btn btn_default btn_sm" href="#">Asus</a>
-        <a class="btn btn_default btn_sm" href="#">Разработка</a>
-        <a class="btn btn_default btn_sm" href="#">Видео</a>
+        {% for tag in famous_tags %}
+            <a class="btn btn_default btn_sm"
+               href="{{ request.path }}?tag_id={{ tag.pk }}{{ sort_params.to_string('&') }}">{{ tag.name }}</a>
+        {% endfor %}
         </div>
     </div>
 </div>
