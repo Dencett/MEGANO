@@ -3,7 +3,6 @@ from shops.models import Shop, Offer
 from products.models import Product, Detail, Category, Manufacturer
 from django.contrib.auth import get_user_model
 
-
 User = get_user_model()
 
 
@@ -119,11 +118,11 @@ class OfferModelTest(TestCase):
             self.assertIn(name, attr_names)
 
 
-class ShopModelTestCase(TestCase):
+class ShopDataModelTestCase(TestCase):
     """Класс тестов модели Магазин"""
 
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpTestData(cls) -> None:
         cls.category = Category.objects.create(name="Тестовая категория2")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
@@ -150,17 +149,8 @@ class ShopModelTestCase(TestCase):
         )
         cls.shop.products.set([cls.product], through_defaults={"price": "1235.99", "remains": 0})
 
-    @classmethod
-    def tearDownClass(cls) -> None:
-        cls.user.delete()
-        cls.shop.delete()
-        cls.product.delete()
-        cls.detail.delete()
-        cls.category.delete()
-        cls.manufacturer.delete()
-
     def test_verbose_name(self):
-        shop = ShopModelTestCase.shop
+        shop = ShopDataModelTestCase.shop
         field_verboses = {
             "name": "название",
             "about": "Описание магазина",

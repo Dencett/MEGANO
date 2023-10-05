@@ -55,7 +55,7 @@ class ShopProductsDetail(DetailView):
 
 class ShopUpdateView(UpdateView):
     model = Shop
-    fields = ["name", "about", "phone", "email", "avatar", "products"]
+    fields = ["name", "about", "phone", "email", "avatar"]
     template_name = "shops/shop_form.jinja2"
     context_object_name = "shop"
 
