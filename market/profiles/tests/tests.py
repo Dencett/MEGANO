@@ -8,7 +8,25 @@ from shops.models import Shop, Offer
 User = get_user_model()
 
 
+FIXTURES = [
+    "fixtures/01-users.json",
+    "fixtures/04-shops.json",
+    "fixtures/05-category.json",
+    "fixtures/06-manufacturer.json",
+    "fixtures/07-tags.json",
+    "fixtures/08-products.json",
+    "fixtures/09-offers.json",
+    "fixtures/10-details.json",
+    "fixtures/11-productimages.json",
+    "fixtures/12-productdetails.json",
+    "fixtures/13-reviews.json",
+    "fixtures/14-banners.json",
+]
+
+
 class UserLogoutTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
     def setUpTestData(cls):
         # создает пользователя
@@ -27,6 +45,8 @@ class UserLogoutTestCase(TestCase):
 
 
 class UserLoginTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
     def setUpTestData(cls):
         cls.user_login_info = {
@@ -69,6 +89,8 @@ class UserLoginTestCase(TestCase):
 
 
 class UserRegisterTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
     def setUpTestData(cls):
         cls.all_info = {
@@ -115,6 +137,8 @@ class UserRegisterTestCase(TestCase):
 
 
 class UserChangeInformationTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
     def setUpTestData(cls):
         cls.create = {

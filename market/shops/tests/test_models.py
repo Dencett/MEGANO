@@ -11,8 +11,7 @@ class ShopModelTest(TestCase):
     """Класс тестов модели Магазин"""
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpTestData(cls):
         cls.detail = Detail.objects.create(name="тестовая характеристика")
         cls.category = Category.objects.create(name="тестовая категория")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
@@ -59,8 +58,7 @@ class OfferModelTest(TestCase):
     """Класс тестов модели Предложение магазина"""
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpTestData(cls):
         cls.category = Category.objects.create(name="тестовая категория")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.product = Product.objects.create(
