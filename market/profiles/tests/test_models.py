@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.test import TestCase
 from profiles.models import UserProductHistory, User
 from products.models import Product, Category, Detail, Manufacturer
@@ -7,7 +8,7 @@ class UserProductHistoryTest(TestCase):
     """Класс тестов для записей в истории посещения пользователя"""
 
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.all_info = {
             "username": "John-for-test",
             "phone": "89701112233",
@@ -41,9 +42,8 @@ class UserProductHistoryTest(TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.user.delete()
-        cls.product.delete()
-        cls.manufacturer.delete()
+        super().tearDownClass()
+        cache.clear()
 
     def test_create_object(self):
         record = UserProductHistory.objects.filter(user=self.user, product=self.product)[0]
