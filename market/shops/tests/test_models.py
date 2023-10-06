@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.test import TestCase
 from shops.models import Shop, Offer
 from products.models import Product, Detail, Category, Manufacturer
@@ -34,9 +35,9 @@ class ShopModelTest(TestCase):
         ShopModelTest.product.delete()
         ShopModelTest.shop.delete()
         ShopModelTest.offer.delete()
-        cls.category.delete()
-        cls.manufacturer.delete()
-        cls.user.delete()
+        ShopModelTest.category.delete()
+        ShopModelTest.manufacturer.delete()
+        ShopModelTest.user.delete()
 
     def test_verbose_name(self):
         shop = ShopModelTest.shop
@@ -79,9 +80,9 @@ class OfferModelTest(TestCase):
         OfferModelTest.product.delete()
         OfferModelTest.shop.delete()
         OfferModelTest.offer.delete()
-        cls.category.delete()
-        cls.manufacturer.delete()
-        cls.user.delete()
+        OfferModelTest.category.delete()
+        OfferModelTest.manufacturer.delete()
+        OfferModelTest.user.delete()
 
     def test_verbose_name(self):
         offer = OfferModelTest.offer
@@ -122,7 +123,7 @@ class ShopDataModelTestCase(TestCase):
     """Класс тестов модели Магазин"""
 
     @classmethod
-    def setUpTestData(cls) -> None:
+    def setUpTestData(cls):
         cls.category = Category.objects.create(name="Тестовая категория2")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
@@ -148,6 +149,11 @@ class ShopDataModelTestCase(TestCase):
             avatar="media/shops/1/avatar/dns.jpg",
         )
         cls.shop.products.set([cls.product], through_defaults={"price": "1235.99", "remains": 0})
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        cache.clear()
 
     def test_verbose_name(self):
         shop = ShopDataModelTestCase.shop
