@@ -4,16 +4,30 @@ from django.urls import reverse
 from profiles.models import User
 
 
+FIXTURES = [
+    "fixtures/01-users.json",
+    "fixtures/04-shops.json",
+    "fixtures/05-category.json",
+    "fixtures/06-manufacturer.json",
+    "fixtures/07-tags.json",
+    "fixtures/08-products.json",
+    "fixtures/09-offers.json",
+    "fixtures/10-details.json",
+    "fixtures/11-productimages.json",
+    "fixtures/12-productdetails.json",
+    "fixtures/13-reviews.json",
+    "fixtures/14-banners.json",
+]
+
+
 class UserLogoutTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         # создает пользователя
         cls.credentials = {"username": "bob_test", "password": "qwerty"}
         cls.user = User.objects.create_user(**cls.credentials)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
 
     def setUp(self) -> None:
         self.client.login(**self.credentials)
@@ -27,8 +41,10 @@ class UserLogoutTestCase(TestCase):
 
 
 class UserLoginTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.user_login_info = {
             "username": "John-test",
             "email": "jhon@test.com",
@@ -40,10 +56,6 @@ class UserLoginTestCase(TestCase):
             "address": "Bakers streets 148 ap.3",
         }
         cls.user = User.objects.create_user(**cls.user_login_info)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
 
     def setUp(self) -> None:
         self.client.login(
@@ -73,8 +85,10 @@ class UserLoginTestCase(TestCase):
 
 
 class UserRegisterTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.all_info = {
             "username": "John-test",
             "phone": "89701112233",
@@ -95,10 +109,6 @@ class UserRegisterTestCase(TestCase):
             residence=cls.all_info["residence"],
             address=cls.all_info["address"],
         )
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
 
     def setUp(self) -> None:
         self.client.login(**self.user_login_info)
@@ -123,8 +133,10 @@ class UserRegisterTestCase(TestCase):
 
 
 class UserChangeInformationTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.create = {
             "username": "Jhon-test",
             "email": "jhon_test@gmail.com",
@@ -135,10 +147,6 @@ class UserChangeInformationTestCase(TestCase):
             "avatar": "",
         }
         cls.user = User.objects.create_user(**cls.create)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
 
     def setUp(self) -> None:
         self.client.login(email=self.create["email"], password=self.create["password"])

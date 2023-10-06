@@ -5,7 +5,7 @@ from django.http import HttpRequest
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from .models import Category, Detail, Product, ProductDetail, ProductImage, Tag, Review, Manufacturer
+from .models import Category, Detail, Product, ProductDetail, ProductImage, Tag, Review, Banner, Manufacturer
 
 
 class DetailInline(admin.StackedInline):
@@ -267,3 +267,35 @@ class ManufacturerAdmin(admin.ModelAdmin):
             },
         ),
     ]
+
+
+@admin.action(description=_("Архивировать баннер"))
+def mark_archived_banner(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
+    queryset.update(archived=True, modified_at=timezone.now())
+
+
+@admin.action(description=_("Разархивировать баннер"))
+def mark_unarchived_banner(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
+    queryset.update(archived=False, modified_at=timezone.now())
+
+
+@admin.register(Banner)
+class BannerAdmin(admin.ModelAdmin):
+    """Админ Баннер"""
+
+    actions = [
+        mark_archived_category,
+        mark_unarchived_category,
+    ]
+    list_display = (
+        "pk",
+        "name",
+        "description",
+        "image",
+        "archived",
+    )
+    list_display_links = (
+        "pk",
+        "name",
+    )
+    ordering = ("pk",)

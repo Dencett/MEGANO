@@ -56,6 +56,7 @@ class Offer(models.Model):
         verbose_name=_("способ доставки"),
         max_length=128,
     )
+    quantity = models.IntegerField(default=0, verbose_name=_("количество"))
 
     def __str__(self) -> str:
         return f"Предложение (pk={self.pk}, shop={self.shop.name!r}), product={self.product.name!r}"
