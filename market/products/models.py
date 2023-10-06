@@ -206,9 +206,6 @@ class Banner(models.Model):
 
     def delete(self, using=None, keep_parents=False):
         """Удаление файла изображения при удалении экземпляра модели"""
-        try:
-            os.remove(f"{settings.MEDIA_ROOT}/{self.image}")
-        except FileNotFoundError:
-            pass
-        finally:
-            return super().delete(using, keep_parents)
+        path = f"{settings.MEDIA_ROOT}/{self.image}"
+        if os.path.isfile(path):
+            os.remove(path)
