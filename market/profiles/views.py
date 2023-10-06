@@ -16,7 +16,15 @@ from products.services.product_price import product_min_price
 
 
 class AboutUserView(TemplateView):
-    """View class заглушка - информация о пользователе."""
+    """
+    View class - информация о пользователе.
+    Проверяем авторизован ли пользователь и имеет ли пользователь магазин.
+    :context['shop'] (queryset | str): если пользователь имеет магазин,
+      то в переменную возвращается queryset магазинов.
+      Иначе возвращает пустую строку.
+    :context['history'](queryset): если пользователь авторизован,
+      то ему показаны последние 3 просмотренных товара.
+    """
 
     template_name = "profiles/about-user.jinja2"
 
@@ -24,15 +32,12 @@ class AboutUserView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["update_avatar"] = ProfileAvatarUpdateForm()
         context["user_example"] = User.objects.filter(pk=self.request.user.pk).first()
-        # Проверяем имеет ли пользователь магазин
         have_shop = user_have_store(self.request)
-        # Если возвращается 1 или более магазинов
-        # отправим queryset магазинов в переменную
         if len(have_shop) >= 1:
             context["shop"] = have_shop
-        # Если список пуст, вернём пустую строку.
         else:
             context["shop"] = ""
+
         user = self.request.user
         if user.is_authenticated:
             history = get_products_in_user_history(user, number=3)

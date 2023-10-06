@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpRequest
 from django.shortcuts import render
 from django.urls import reverse
@@ -18,17 +18,17 @@ def hello_shop_view(request: HttpRequest) -> HttpRequest:
     return render(request, "shops/hello_view.jinja2", context=context)
 
 
-class ShopDetailsView(PermissionRequiredMixin, DetailView):
+class ShopDetailsView(UserPassesTestMixin, DetailView):
+    """
+    Подробная страница магазина пользователя.
+    Пользователь получает доступ только к своему(своим) магазину.
+    Если магазин не связан с пользователем => 403 Forbidden
+    """
+
     model = Shop
     template_name = "shops/shop_detail.jinja2"
-    permission_required = (
-        "shops.add_shop",
-        "shops.change_shop",
-        "shops.delete_shop",
-        "shops.view_shop",
-    )
 
-    def has_permission(self):
+    def test_func(self):
         return self.get_object().user == self.request.user or self.request.user.is_superuser
 
 
