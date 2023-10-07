@@ -1,7 +1,7 @@
 from products.models import Product
 
 
-def product_min_price(product: Product, product_offers=None):
+def product_min_price_or_none(product: Product, product_offers=None):
     """
     Возвращает минимальную цену товара(Product) серди всех предложений(offer), если передать список предложений,
     то будет искать среди этого списка, иначе будет искать по БД.
@@ -15,6 +15,6 @@ def product_min_price(product: Product, product_offers=None):
     else:
         offers = product.offer_set.all()
         if offers:
-            return product_min_price(product, offers)
+            return product_min_price_or_none(product, offers)
         else:
             return None

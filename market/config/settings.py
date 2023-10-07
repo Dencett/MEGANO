@@ -98,6 +98,7 @@ TEMPLATES = [
             "context_processors": [
                 "context_processors.menu_context.categories_menu",
                 "context_processors.catalog_context.product_placeholders",
+                "context_processors.cart_context.cart_size_context_processor",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -142,7 +143,8 @@ CACHES = {
     }
 }
 
-CART_SESSION_ID = "cart"
+CART_SESSION_KEY = "cart"
+CART_SIZE_SESSION_KEY = "cart_size"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

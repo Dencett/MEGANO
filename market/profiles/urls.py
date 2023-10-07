@@ -1,7 +1,7 @@
-from django.contrib.auth.views import LoginView
 from django.urls import path
 from .views import (
     HomePage,
+    CustomLoginView,
     AboutUserView,
     UserLogoutView,
     UserRegisterView,
@@ -15,7 +15,7 @@ urlpatterns = [
     path("", HomePage.as_view(), name="home-page"),
     path(
         "login/",
-        LoginView.as_view(
+        CustomLoginView.as_view(
             template_name="profiles/login.jinja2",
             redirect_authenticated_user=True,
         ),

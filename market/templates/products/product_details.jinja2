@@ -40,11 +40,18 @@
                             <div class="ProductCard-cart">
                                 <div class="ProductCard-cartElement ProductCard-cartElement_amount">
                                     <div class="Amount Amount_product">
+                                        <form class="Amount Amount_product" action="{{ product.get_absolute_url() }}" method="post" >
                                         <button class="Amount-remove" type="button">
                                         </button>
-                                        <input class="Amount-input form-input" name="amount" type="text" value="1" />
+                                            {% csrf_token %}
+                                            <input class="Amount-input form-input" name="amount" type="text" value="1"/>
+                                            {% for offer in product.offer_set.all() %}
+                                                <input type="submit" id="push-form-offer-{{offer.pk}}" style="display: none;" name="offer_id" value="{{offer.pk}}" />
+                                            {% endfor %}
+
                                         <button class="Amount-add" type="button">
                                         </button>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="ProductCard-cartElement">
@@ -53,6 +60,7 @@
                                         <span class="btn-content">Купить</span>
                                     </a>
                                 </div>
+<!--                                -->
                                 <div id="modal_open" class="my_modal">
                                     <div class="my_modal-dialog">
                                         <div class="my_modal-content">
@@ -108,43 +116,7 @@
                                 <div class="Section-content">
                                     <div class="Orders">
                                         {% for offer in product.offer_set.all() %}
-                                        <div class="Order Order_anons">
-                                            <div class="Order-personal">
-                                                <div class="row">
-                                                    <div class="row-block">
-                                                        <a class="Order-title" href="oneorder.html">
-                                                            {{offer.shop.name}}
-                                                        </a>
-                                                        <div class="ProductCard-cartElement" style="margin-top: 10px;">
-                                                            <a class="btn btn_primary" href="#modal_open">
-                                                                <img class="btn-icon" src="{{ static('assets/img/icons/card/cart_white.svg')}}" alt="cart_white.svg" />
-                                                                <span class="btn-content">Купить</span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row-block">
-                                                        <div class="Order-info Order-info_delivery">
-                                                            <div class="Order-infoType">Тип доставки:
-                                                            </div>
-                                                            <div class="Order-infoContent"> {{offer.get_delivery_method_display()}}
-                                                            </div>
-                                                        </div>
-                                                        <div class="Order-info Order-info_pay">
-                                                            <div class="Order-infoType">Оплата:
-                                                            </div>
-                                                            <div class="Order-infoContent"> {{offer.get_payment_method_display()}}
-                                                            </div>
-                                                        </div>
-                                                        <div class="Order-info">
-                                                            <div class="Order-infoType">Стоимость:
-                                                            </div>
-                                                            <div class="Order-infoContent"><span class="Order-price"> {{offer.price}} ₽</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {% include "products/offer-block.jinja2" %}
                                         {% endfor %}
                                     </div>
                                 </div>
