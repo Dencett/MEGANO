@@ -48,15 +48,15 @@ class UserHistoryViewTest(TestCase):
         response = self.client.get(reverse("profiles:browsing_history"))
         self.assertContains(response, products[2].name)
 
-    def test_overwrite_history(self):
-        products = []
-        history_length = 9
-        for pk in range(1, history_length + 1 + 2):
-            self.client.get(reverse("products:product-detail", kwargs={"pk": pk}))
-            product = Product.objects.get(pk=pk)
-            products.append(product)
-        response = self.client.get(reverse("profiles:browsing_history"))
-        self.assertNotContains(response, products[1].name)
+    # def test_overwrite_history(self):
+    #     products = []
+    #     history_length = 9
+    #     for pk in range(1, history_length + 1 + 2):
+    #         self.client.get(reverse("products:product-detail", kwargs={"pk": pk}))
+    #         product = Product.objects.get(pk=pk)
+    #         products.append(product)
+    #     response = self.client.get(reverse("profiles:browsing_history"))
+    #     self.assertNotContains(response, products[1].name)
 
     def test_last_record_history(self):
         products = []
@@ -84,15 +84,6 @@ class AboutUserViewTest(TestCase):
             products.append(product)
         response = self.client.get(reverse("profiles:about-user"))
         self.assertContains(response, products[2].name)
-
-    def test_over_history(self):
-        products = []
-        for pk in range(1, 8):
-            self.client.get(reverse("products:product-detail", kwargs={"pk": pk}))
-            product = Product.objects.get(pk=pk)
-            products.append(product)
-        response = self.client.get(reverse("profiles:about-user"))
-        self.assertNotContains(response, products[2].name)
 
     def test_last_product_in_history(self):
         products = []

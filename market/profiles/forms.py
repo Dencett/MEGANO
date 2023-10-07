@@ -69,5 +69,19 @@ class UserRegisterForm(BaseUserCreationForm):
         }
 
 
+class ChangeProfileInfoForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "phone",
+            "residence",
+            "address",
+        ]
+
+
 class ProfileAvatarUpdateForm(forms.Form):
     user_avatar = forms.ImageField()

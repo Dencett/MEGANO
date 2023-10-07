@@ -12,6 +12,7 @@ from products.services.review_services import ReviewServices
 
 FIXTURES = [
     "fixtures/01-users.json",
+    "fixtures/02-groups.json",
     "fixtures/04-shops.json",
     "fixtures/05-category.json",
     "fixtures/06-manufacturer.json",
@@ -71,7 +72,7 @@ class ProductViewTest(TestCase):
         cls.review = Review.objects.create(
             user=cls.user, product=cls.product, review_content="Тестовая отзыв продукта"
         )
-        cls.shop = Shop.objects.create(name="тестовый магазин")
+        cls.shop = Shop.objects.create(user=cls.user, name="тестовый магазин")
         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25, remains=42)
 
     def test_product_detail_view(self):

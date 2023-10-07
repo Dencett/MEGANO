@@ -1,7 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from products.models import Product, Category, Review, Detail, Manufacturer
 
-from profiles.models import User
+from shops.models import Shop, Offer
+
+User = get_user_model()
 
 
 FIXTURES = [
@@ -163,3 +167,39 @@ class UserChangeInformationTestCase(TestCase):
         self.assertContains(response, self.user.email)
         self.assertContains(response, self.user.address)
         self.assertContains(response, self.user.residence)
+
+
+class UserHaveShopViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.category = Category.objects.create(name="Тестовая категория2")
+        cls.detail = Detail.objects.create(name="Тестовая характеристика")
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
+        cls.product = Product.objects.create(
+            name="Тестовый продукт", category=cls.category, manufacturer=cls.manufacturer
+        )
+        cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
+        cls.user = User.objects.create(username="Test_user", email="test@test.com", password="Test123!$")
+        cls.review = Review.objects.create(
+            user=cls.user, product=cls.product, review_content="Тестовая отзыв продукта"
+        )
+        cls.shop = Shop.objects.create(user=cls.user, name="тестовый магазин", phone="89991002233")
+        cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25, remains=0)
+
+    def setUp(self) -> None:
+        self.client.force_login(self.user)
+
+    def test_user_get_shop_page(self):
+        response = self.client.get(reverse("shops:shop_detail", kwargs={"pk": self.shop.pk}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "89991002233")
+
+    def test_user_get_shop_update_info(self):
+        response = self.client.get(reverse("shops:shop-update", kwargs={"pk": self.shop.pk}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "тестовый магазин")
+
+    def test_user_get_shop_products_page(self):
+        response = self.client.get(reverse("shops:shop_products", kwargs={"pk": self.shop.pk}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Тестовый продукт")
