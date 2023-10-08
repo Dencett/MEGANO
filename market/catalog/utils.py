@@ -255,7 +255,7 @@ class Sorter:
             return self._sort_by_recency(queryset, desc)
 
     def _sort_by_famous(self, queryset: QuerySet, desc: str) -> QuerySet:
-        return queryset.order_by(self.default_sort)  # TODO: добавить сортировку по популярности
+        return queryset.order_by(self.default_sort)  # fix: добавить сортировку по популярности
 
     def _sort_by_price(self, queryset: QuerySet, desc: str) -> QuerySet:
         if desc == "on":

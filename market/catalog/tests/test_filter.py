@@ -1,3 +1,5 @@
+from typing import Dict
+
 from django.template.response import TemplateResponse
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
@@ -10,31 +12,37 @@ from catalog.views import CatalogListView
 
 
 class FilterChecker:
+    def check_context_exists(self, response: TemplateResponse) -> Dict:
+        object_list = response.context_data["object_list"]
+        self.assertTrue(object_list)
+        # print(object_list)
+        return object_list
+
     def check_filter_by_name(self, response: TemplateResponse, text: str) -> None:
         self.assertContains(response, text)
-        for offer in response.context_data["object_list"]:
+        for offer in self.check_context_exists(response):
             self.assertIn(text, offer.product.name + offer.product.about)
 
     def check_filter_by_price(self, response: TemplateResponse, start_price: float, stop_price: float) -> None:
-        for offer in response.context_data["object_list"]:
+        for offer in self.check_context_exists(response):
             self.assertTrue(start_price < offer.price < stop_price)
 
     def check_filter_by_free_delivery(self, response: TemplateResponse) -> None:
-        for offer in response.context_data["object_list"]:
+        for offer in self.check_context_exists(response):
             self.assertEqual(offer.delivery_method, "FREE")
 
     def check_filter_by_remains(self, response: TemplateResponse) -> None:
-        for offer in response.context_data["object_list"]:
+        for offer in self.check_context_exists(response):
             self.assertTrue(offer.remains > 0)
 
     def check_filter_by_category(self, response: TemplateResponse, category_id: int, category_name: str) -> None:
         self.assertContains(response, category_name)
-        for offer in response.context_data["object_list"]:
+        for offer in self.check_context_exists(response):
             self.assertEqual(category_id, offer.product.category.pk)
 
     def check_filter_by_search(self, response: TemplateResponse, text: str) -> None:
         self.assertContains(response, text)
-        for offer in response.context_data["object_list"]:
+        for offer in self.check_context_exists(response):
             self.assertIn(text, offer.product.name + offer.product.about)
 
 
@@ -164,7 +172,7 @@ class FilterTest(TestCase, FilterChecker):
         request = self.factory.get(self.path, params)
         response: TemplateResponse = CatalogListView.as_view()(request)
 
-        for offer in response.context_data["object_list"]:
+        for offer in self.check_context_exists(response):
             self.assertIn(tag_id, [tag.pk for tag in offer.product.tags.all()])
 
     # @echo_sql
