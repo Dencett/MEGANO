@@ -13,6 +13,7 @@ from catalog.views import CatalogListView
 
 class SortChecker:
     def check_sort(self, result: List, desc: bool = False) -> None:
+        self.assertTrue(result)
         sorted_result = sorted(result, reverse=desc)
         self.assertTrue(result == sorted_result)
 
@@ -31,7 +32,7 @@ class SortTest(TestCase, SortChecker):
 
     # @echo_sql
     def test_sort_by_famous_asc(self) -> None:
-        # TODO: in deploy
+        # fix: in deploy
         pass
 
     # @echo_sql

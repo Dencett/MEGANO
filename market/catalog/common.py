@@ -26,7 +26,7 @@ def parse_price(price: str | None = None) -> Tuple[float, float] | None:
         return
 
 
-def get_famous_tags(count: int = 6) -> List[Tag]:  # TODO: сортировка по популярности
+def get_famous_tags(count: int = 6) -> List[Tag]:  # fix: сортировка по популярности
     cache_key = "famous_tags"
     famous_tags = cache.get(cache_key)
 
