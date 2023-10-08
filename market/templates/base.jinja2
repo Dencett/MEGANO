@@ -42,8 +42,11 @@
 <body class="Site">
     {% include "header.jinja2" %}
 
+    {% block banner %}
+    {% endblock %}
+
     {% block middle %}
-    Content
+        Content
     {% endblock %}
 
     {% include "footer.jinja2" %}

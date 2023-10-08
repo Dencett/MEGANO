@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
-from products.models import Product, Detail, ProductDetail, Category, ProductImage, Tag, Review, Manufacturer
+from products.models import Product, Detail, ProductDetail, Category, ProductImage, Tag, Review, Manufacturer, Banner
 
 
 User = get_user_model()
@@ -11,7 +11,7 @@ class ProductModelTest(TestCase):
     """Класс тестов модели Продукт"""
 
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.category = Category.objects.create(name="Тестовая категория")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
@@ -19,13 +19,6 @@ class ProductModelTest(TestCase):
             name="Тестовый продукт", category=cls.category, manufacturer=cls.manufacturer
         )
         cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.detail.delete()
-        cls.product.delete()
-        cls.category.delete()
-        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         product = ProductModelTest.product
@@ -66,12 +59,8 @@ class ProductModelTest(TestCase):
 
 class TagModelTest(TestCase):
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.tag = Tag.objects.create(name="тестовый тег")
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.tag.delete()
 
     def test_verbose_name(self):
         tag = self.tag
@@ -85,7 +74,7 @@ class TagModelTest(TestCase):
 
 class ProductImageModelTest(TestCase):
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.category = Category.objects.create(name="Тестовая категория")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
         cls.product = Product.objects.create(name="test_product", category=cls.category, manufacturer=cls.manufacturer)
@@ -97,13 +86,6 @@ class ProductImageModelTest(TestCase):
         )
 
         cls.productimage = ProductImage.objects.create(image=img_file, product=cls.product)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.productimage.delete()
-        cls.product.delete()
-        cls.category.delete()
-        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         image = self.productimage
@@ -119,18 +101,15 @@ class ProductImageModelTest(TestCase):
         path = image.image.url
         expected_path = f"/media/img/products/{self.product.name}/{self.image_file_name}"
         self.assertEqual(path, expected_path)
+        self.productimage.delete()
 
 
 class DetailModelTest(TestCase):
     """Класс тестов модели Свойство продукта"""
 
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.detail = Detail.objects.create(name="тестовая характеристика")
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.detail.delete()
 
     def test_verbose_name(self):
         detail = DetailModelTest.detail
@@ -151,7 +130,7 @@ class ProductDetailModelTest(TestCase):
     """Класс тестов модели Значение свойства продукта"""
 
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.category = Category.objects.create(name="Тестовая категория")
         cls.detail = Detail.objects.create(name="тестовая характеристика")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
@@ -163,14 +142,6 @@ class ProductDetailModelTest(TestCase):
             detail=cls.detail,
             value="тестовое значение характеристики",
         )
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.product.delete()
-        cls.detail.delete()
-        cls.product_detail.delete()
-        cls.category.delete()
-        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         product_detail = ProductDetailModelTest.product_detail
@@ -191,17 +162,12 @@ class CategoryModelTest(TestCase):
     """Класс тестов модели Категория продуктов"""
 
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.category = Category.objects.create(
             name="Тестовая категория продукта",
         )
 
         cls.subcategory = Category.objects.create(name="Тестовая подкатегория продукта", parent=cls.category)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.category.delete()
-        cls.subcategory.delete()
 
     def test_verbose_name(self):
         category = CategoryModelTest.category
@@ -217,7 +183,7 @@ class CategoryModelTest(TestCase):
                 self.assertEqual(category._meta.get_field(field).verbose_name, expected_value)
 
     def test_name_max_length(self):
-        category = CategoryModelTest.category
+        category = self.category
         max_length = category._meta.get_field("name").max_length
         self.assertEqual(max_length, 128)
 
@@ -256,7 +222,7 @@ class ReviewModelTest(TestCase):
     """Класс тестов модели Отзывов"""
 
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.category = Category.objects.create(name="Тестовая категория")
         cls.detail = Detail.objects.create(name="Тестовая характеристика")
         cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
@@ -268,15 +234,6 @@ class ReviewModelTest(TestCase):
         cls.review = Review.objects.create(
             user=cls.user, product=cls.product, review_content="Тестовая отзыв продукта"
         )
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.review.delete()
-        cls.user.delete()
-        cls.product.delete()
-        cls.detail.delete()
-        cls.category.delete()
-        cls.manufacturer.delete()
 
     def test_verbose_name(self):
         review = ReviewModelTest.review
@@ -292,3 +249,37 @@ class ReviewModelTest(TestCase):
         for field, expected_value in field_verboses.items():
             with self.subTest(field=field):
                 self.assertEqual(review._meta.get_field(field).verbose_name, expected_value)
+
+
+class BannerModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.image_file_name = "test_img.jpg"
+        img_file = SimpleUploadedFile(
+            name=cls.image_file_name,
+            content=open("products/tests/test_img.jpg", "rb").read(),
+            content_type="image/jpeg",
+        )
+        cls.banner = Banner.objects.create(
+            name="тестовое",
+            description="тестовое",
+            image=img_file,
+        )
+
+    def test_verbose_name(self):
+        banner = self.banner
+        field_verboses = {
+            "name": "наименование",
+            "description": "описание",
+            "archived": "архивировано",
+        }
+        for field, expected_value in field_verboses.items():
+            with self.subTest(field=field):
+                self.assertEqual(banner._meta.get_field(field).verbose_name, expected_value)
+
+    def test_image(self):
+        banner = self.banner
+        path = banner.image.url
+        expected_path = f"/media/img/banner/{self.image_file_name}"
+        self.assertEqual(path, expected_path)
+        self.banner.delete()

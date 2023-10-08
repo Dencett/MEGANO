@@ -14,6 +14,8 @@ FIXTURES = [
     "fixtures/10-details.json",
     "fixtures/11-productimages.json",
     "fixtures/12-productdetails.json",
+    "fixtures/13-reviews.json",
+    "fixtures/14-banners.json",
 ]
 
 

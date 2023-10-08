@@ -1,19 +1,37 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from products.models import Product, Category, Review, Detail, Manufacturer
 
-from profiles.models import User
+from shops.models import Shop, Offer
+
+User = get_user_model()
+
+
+FIXTURES = [
+    "fixtures/01-users.json",
+    "fixtures/04-shops.json",
+    "fixtures/05-category.json",
+    "fixtures/06-manufacturer.json",
+    "fixtures/07-tags.json",
+    "fixtures/08-products.json",
+    "fixtures/09-offers.json",
+    "fixtures/10-details.json",
+    "fixtures/11-productimages.json",
+    "fixtures/12-productdetails.json",
+    "fixtures/13-reviews.json",
+    "fixtures/14-banners.json",
+]
 
 
 class UserLogoutTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         # создает пользователя
         cls.credentials = {"username": "bob_test", "password": "qwerty"}
         cls.user = User.objects.create_user(**cls.credentials)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
 
     def setUp(self) -> None:
         self.client.login(**self.credentials)
@@ -27,8 +45,10 @@ class UserLogoutTestCase(TestCase):
 
 
 class UserLoginTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.user_login_info = {
             "username": "John-test",
             "email": "jhon@test.com",
@@ -40,10 +60,6 @@ class UserLoginTestCase(TestCase):
             "address": "Bakers streets 148 ap.3",
         }
         cls.user = User.objects.create_user(**cls.user_login_info)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
 
     def setUp(self) -> None:
         self.client.login(
@@ -73,8 +89,10 @@ class UserLoginTestCase(TestCase):
 
 
 class UserRegisterTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.all_info = {
             "username": "John-test",
             "phone": "89701112233",
@@ -95,10 +113,6 @@ class UserRegisterTestCase(TestCase):
             residence=cls.all_info["residence"],
             address=cls.all_info["address"],
         )
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
 
     def setUp(self) -> None:
         self.client.login(**self.user_login_info)
@@ -123,8 +137,10 @@ class UserRegisterTestCase(TestCase):
 
 
 class UserChangeInformationTestCase(TestCase):
+    fixtures = FIXTURES
+
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.create = {
             "username": "Jhon-test",
             "email": "jhon_test@gmail.com",
@@ -135,10 +151,6 @@ class UserChangeInformationTestCase(TestCase):
             "avatar": "",
         }
         cls.user = User.objects.create_user(**cls.create)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
 
     def setUp(self) -> None:
         self.client.login(email=self.create["email"], password=self.create["password"])
@@ -155,3 +167,39 @@ class UserChangeInformationTestCase(TestCase):
         self.assertContains(response, self.user.email)
         self.assertContains(response, self.user.address)
         self.assertContains(response, self.user.residence)
+
+
+class UserHaveShopViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.category = Category.objects.create(name="Тестовая категория2")
+        cls.detail = Detail.objects.create(name="Тестовая характеристика")
+        cls.manufacturer = Manufacturer.objects.create(name="tecтовый производитель")
+        cls.product = Product.objects.create(
+            name="Тестовый продукт", category=cls.category, manufacturer=cls.manufacturer
+        )
+        cls.product.details.set([cls.detail], through_defaults={"value": "тестовое значение"})
+        cls.user = User.objects.create(username="Test_user", email="test@test.com", password="Test123!$")
+        cls.review = Review.objects.create(
+            user=cls.user, product=cls.product, review_content="Тестовая отзыв продукта"
+        )
+        cls.shop = Shop.objects.create(user=cls.user, name="тестовый магазин", phone="89991002233")
+        cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25, remains=0)
+
+    def setUp(self) -> None:
+        self.client.force_login(self.user)
+
+    def test_user_get_shop_page(self):
+        response = self.client.get(reverse("shops:shop_detail", kwargs={"pk": self.shop.pk}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "89991002233")
+
+    def test_user_get_shop_update_info(self):
+        response = self.client.get(reverse("shops:shop-update", kwargs={"pk": self.shop.pk}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "тестовый магазин")
+
+    def test_user_get_shop_products_page(self):
+        response = self.client.get(reverse("shops:shop_products", kwargs={"pk": self.shop.pk}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Тестовый продукт")

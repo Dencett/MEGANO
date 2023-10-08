@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     "cart.apps.CartConfig",
 ]
 
+SHELL_PLUS_PRINT_SQL = False
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

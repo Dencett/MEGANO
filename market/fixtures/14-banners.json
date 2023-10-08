@@ -1,0 +1,32 @@
+[
+{
+    "model": "products.banner",
+    "pk": 1,
+    "fields": {
+        "name": "Недельная Распродажа на Озон",
+        "description": "Успейте приобрести товары со скидкой до 50%.",
+        "image": "img/banner/logo_ozon.png",
+        "archived": false
+    }
+},
+{
+    "model": "products.banner",
+    "pk": 2,
+    "fields": {
+        "name": "Осень гаджетов на Wildberries",
+        "description": "Приобретите гаджет вашей мечты! Wildberries совершает сезон гаджетов.",
+        "image": "img/banner/logo_wildberries.png",
+        "archived": false
+    }
+},
+{
+    "model": "products.banner",
+    "pk": 3,
+    "fields": {
+        "name": "iPhone 14 Pro Max",
+        "description": "Приобретите iPhone со скидкой 10%.",
+        "image": "img/banner/preview_1_ysDSjXG.webp",
+        "archived": false
+    }
+}
+]

@@ -1,12 +1,15 @@
-from django.http import HttpRequest, HttpResponse
+import random
+
+from django.shortcuts import render  # noqa F401
 from django.shortcuts import render, redirect  # noqa F401
 from django.views import View
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormView
 from django.urls import reverse
 
-from .models import Product
+from shops.models import Offer
+from .models import Product, Category, Banner
 from .services.review_services import ReviewServices
 from .services.product_price import product_min_price_or_none
 from profiles.services.products_history import make_record_in_history
@@ -15,11 +18,27 @@ from cart.forms import UserOneOfferCARTForm
 from cart.services.cart_service import get_cart
 
 
-class HomeView(View):
+class HomeView(TemplateView):
     """Главная страница магазина"""
 
-    def get(self, request: HttpRequest) -> HttpResponse:
-        return render(request, "base.jinja2")
+    template_name = "products/home-page.jinja2"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["offers"] = Offer.objects.order_by("?")[:8]
+        context["min_price_product"] = Offer.objects.all().order_by("price").first()
+        min_offers = []
+        categories = Category.objects.filter(foreground=True).order_by("?")[:3]
+        if len(categories) > 3:
+            categories = random.choices(categories, k=3)
+        for category in categories:
+            min_product = Offer.objects.filter(product__pk=category.pk).order_by("price").first()
+            min_offers.append(min_product)
+        context["min_offers"] = min_offers
+        context["limited_products"] = Offer.objects.all().order_by("quantity")[:8]
+        banners = Banner.objects.filter(archived=False).order_by("?")[:3]
+        context["banners"] = banners
+        return context
 
 
 class ProductDetailView(DetailView):
@@ -100,8 +119,8 @@ class ProductReviewFormView(SingleObjectMixin, FormView):
 class ProductView(View):
     """
     Представление в котором:
-        - при полечении "GET" запроса возвращается ProductDetailView.as_view
-        - при полечении "POST" запроса возвращается ProductReviewFormView.as_view
+        - при получении "GET" запроса возвращается ProductDetailView.as_view
+        - при получении "POST" запроса возвращается ProductReviewFormView.as_view
     doc: https://docs.djangoproject.com/en/3.2/topics/class-based-views/mixins/#using-formmixin-with-detailview
     """
 

@@ -6,6 +6,7 @@ from .views import (
     UserLogoutView,
     UserRegisterView,
     UserResetPasswordView,
+    UserUpdateProfileInfo,
     UserHistoryView,
 )
 
@@ -25,5 +26,6 @@ urlpatterns = [
     path("about-user/", AboutUserView.as_view(), name="about-user"),
     path("register/", UserRegisterView.as_view(), name="register"),
     path("change_password/", UserResetPasswordView.as_view(), name="change-password"),
+    path("update_info/<int:pk>/", UserUpdateProfileInfo.as_view(), name="update-info"),
     path("history/", UserHistoryView.as_view(), name="browsing_history"),
 ]

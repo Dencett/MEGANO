@@ -4,11 +4,12 @@ from django.contrib.auth import authenticate, login
 from django.db import transaction
 from django.urls import reverse_lazy, reverse
 from django.http.response import HttpResponseRedirect
-from django.views.generic import TemplateView, CreateView, ListView
+from django.views.generic import TemplateView, CreateView, UpdateView, ListView
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 from .forms import UserRegisterForm, ProfileAvatarUpdateForm
 from .models import User
+from profiles.services.have_store import user_have_store
 from products.models import Product
 from .services.products_history import get_products_in_user_history
 from products.services.product_price import product_min_price_or_none
@@ -16,13 +17,28 @@ from cart.services.cart_service import login_cart
 
 
 class AboutUserView(TemplateView):
-    """View class заглушка - информация о пользователе."""
+    """
+    View class - информация о пользователе.
+    Проверяем авторизован ли пользователь и имеет ли пользователь магазин.
+    :context['shop'] (queryset | str): если пользователь имеет магазин,
+      то в переменную возвращается queryset магазинов.
+      Иначе возвращает пустую строку.
+    :context['history'](queryset): если пользователь авторизован,
+      то ему показаны последние 3 просмотренных товара.
+    """
 
     template_name = "profiles/about-user.jinja2"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["update_avatar"] = ProfileAvatarUpdateForm()
+        context["user_example"] = User.objects.filter(pk=self.request.user.pk).first()
+        have_shop = user_have_store(self.request)
+        if len(have_shop) >= 1:
+            context["shop"] = have_shop
+        else:
+            context["shop"] = ""
+
         user = self.request.user
         if user.is_authenticated:
             history = get_products_in_user_history(user, number=3)
@@ -55,7 +71,7 @@ class UserRegisterView(CreateView):
 
     form_class = UserRegisterForm
     template_name = "profiles/register.jinja2"
-    success_url = reverse_lazy("profiles:home-page")
+    success_url = reverse_lazy("products:home-page")
 
     def get(self, request, **kwargs):
         form = UserRegisterForm()
@@ -100,7 +116,26 @@ class UserResetPasswordView(PasswordChangeView):
     """
 
     template_name = "profiles/password_form.jinja2"
-    success_url = reverse_lazy("profiles:home-page")
+    success_url = reverse_lazy("products:home-page")
+
+
+class UserUpdateProfileInfo(UpdateView):
+    """View of user information updates"""
+
+    model = User
+    template_name = "profiles/user_update_form2.jinja2"
+    template_name_suffix = "_update_form"
+    success_url = reverse_lazy("profiles:about-user")
+    fields = [
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "phone",
+        "residence",
+        "address",
+        "avatar",
+    ]
 
 
 class UserHistoryView(UserPassesTestMixin, ListView):

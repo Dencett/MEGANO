@@ -47,8 +47,7 @@ class FilterTest(TestCase, FilterChecker):
         self.factory = RequestFactory()
 
     @classmethod
-    def setUpClass(cls) -> None:
-        super().setUpClass()
+    def setUpTestData(cls) -> None:
         cls.path = reverse("catalog:index")
 
     # @echo_sql
