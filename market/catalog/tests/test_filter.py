@@ -56,6 +56,7 @@ class FilterTest(TestCase, FilterChecker):
 
         params = {"title": title}
         request = self.factory.get(self.path, params)
+        request.session = {}
         response: TemplateResponse = CatalogListView.as_view()(request)
 
         self.check_filter_by_name(response, title)
@@ -81,6 +82,7 @@ class FilterTest(TestCase, FilterChecker):
 
         params = {"price": price, "title": title}
         request = self.factory.get(self.path, params)
+        request.session = {}
         response: TemplateResponse = CatalogListView.as_view()(request)
 
         self.check_filter_by_name(response, title)
@@ -95,6 +97,7 @@ class FilterTest(TestCase, FilterChecker):
 
         params = {"price": price, "title": title, "free_delivery": True}
         request = self.factory.get(self.path, params)
+        request.session = {}
         response: TemplateResponse = CatalogListView.as_view()(request)
 
         self.check_filter_by_name(response, title)
@@ -110,6 +113,7 @@ class FilterTest(TestCase, FilterChecker):
 
         params = {"price": price, "title": title, "free_delivery": True, "remains": True}
         request = self.factory.get(self.path, params)
+        request.session = {}
         response: TemplateResponse = CatalogListView.as_view()(request)
 
         self.check_filter_by_name(response, title)
@@ -134,6 +138,7 @@ class FilterTest(TestCase, FilterChecker):
             "category_id": category_id,
         }
         request = self.factory.get(self.path, params)
+        request.session = {}
         response: TemplateResponse = CatalogListView.as_view()(request)
 
         self.check_filter_by_name(response, title)
@@ -174,6 +179,7 @@ class FilterTest(TestCase, FilterChecker):
 
         params = {"category_id": category_id}
         request = self.factory.get(self.path, params)
+        request.session = {}
         response: TemplateResponse = CatalogListView.as_view()(request)
         self.check_filter_by_category(response, category_id, category_name)
 
@@ -183,6 +189,7 @@ class FilterTest(TestCase, FilterChecker):
 
         params = {"search": search}
         request = self.factory.get(self.path, params)
+        request.session = {}
         response: TemplateResponse = CatalogListView.as_view()(request)
         self.check_filter_by_search(response, search)
 
@@ -194,6 +201,7 @@ class FilterTest(TestCase, FilterChecker):
 
         params = {"category_id": category_id, "search": search}
         request = self.factory.get(self.path, params)
+        request.session = {}
         response: TemplateResponse = CatalogListView.as_view()(request)
 
         self.check_filter_by_search(response, search)

@@ -60,6 +60,7 @@ class FilterTest(TestCase, FilterChecker, SortChecker):
             "desc": desc,
         }
         request = self.factory.get(self.path, params)
+        request.session = {}
         response: TemplateResponse = CatalogListView.as_view()(request)
 
         result = [offer.review_count for offer in response.context_data["object_list"]]
@@ -82,6 +83,7 @@ class FilterTest(TestCase, FilterChecker, SortChecker):
 
         params = {"category_id": category_id, "search": search, "sort": sort, "desc": desc}
         request = self.factory.get(self.path, params)
+        request.session = {}
         response: TemplateResponse = CatalogListView.as_view()(request)
 
         result = [offer.product.manufacturer.modified_at for offer in response.context_data["object_list"]]

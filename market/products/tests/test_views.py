@@ -35,6 +35,7 @@ class HomeViewTest(TestCase):
     def test_example_view(self):
         template = "products/home-page.jinja2"
         request = HttpRequest()
+        request.session = {}
         context = dict()
         context["offers"] = Offer.objects.order_by("?")[:8]
         context["min_price_product"] = Offer.objects.all().order_by("price").first()
@@ -78,6 +79,7 @@ class ProductViewTest(TestCase):
     def test_product_detail_view(self):
         template = "products/product_details.jinja2"
         request = HttpRequest()
+        request.session = {}
         review = ReviewServices(request=request, product=self.product)
         context = dict()
 
