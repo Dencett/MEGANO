@@ -13,7 +13,7 @@ from .services.product_price import product_min_price_or_none
 from profiles.services.products_history import make_record_in_history
 from .forms import ProductReviewForm
 from cart.forms import UserOneOfferCARTForm
-from cart.services.cart_service import get_cart
+from cart.services.cart_service import get_cart_service
 
 
 class HomeView(TemplateView, OffersMixin):
@@ -68,7 +68,7 @@ class ProductAddCart(SingleObjectMixin, FormView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        self.cart = get_cart(request)
+        self.cart = get_cart_service(request)
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):

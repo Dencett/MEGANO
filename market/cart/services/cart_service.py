@@ -6,7 +6,7 @@ from typing import Union
 from cart.models import UserOfferCart
 
 
-class AnonimCart:
+class AnonimCartService:
     def __init__(self, request: HttpRequest):
         self.session = request.session
         session_cart = self.session.get(settings.CART_SESSION_KEY)
@@ -78,7 +78,7 @@ class AnonimCart:
         self.session[settings.CART_SIZE_SESSION_KEY] = "0"
 
 
-class UserCart:
+class UserCartService:
     def __init__(self, request: HttpRequest):
         self.user = request.user
         self.session = request.session
@@ -148,8 +148,8 @@ class UserCart:
         pass
 
 
-def _merge_session_cart_to_user_cart(request: HttpRequest, anonim_cart: AnonimCart):
-    user_cart = UserCart(request)
+def _merge_session_cart_to_user_cart(request: HttpRequest, anonim_cart: AnonimCartService):
+    user_cart = UserCartService(request)
     session_cart_as_dict = anonim_cart.session_cart
     for offer_id, amount in session_cart_as_dict.items():
         user_cart.add_to_cart(int(offer_id), int(amount))
@@ -158,19 +158,20 @@ def _merge_session_cart_to_user_cart(request: HttpRequest, anonim_cart: AnonimCa
     return user_cart
 
 
-def get_cart(request: HttpRequest) -> Union[UserCart, AnonimCart]:
+def get_cart_service(request: HttpRequest) -> Union[UserCartService, AnonimCartService]:
+    """Функция для получения сервиса для работы с корзиной"""
     if request.user.is_anonymous:
-        return AnonimCart(request)
+        return AnonimCartService(request)
     else:
-        return UserCart(request)
+        return UserCartService(request)
 
 
 def login_cart(request: HttpRequest) -> None:
     """Обновление пользовательской корзины при входе пользователя"""
-    anonim_cart = AnonimCart(request)
+    anonim_cart = AnonimCartService(request)
     if anonim_cart.session_cart:
         user_cart = _merge_session_cart_to_user_cart(request, anonim_cart)
     else:
-        user_cart = get_cart(request)
+        user_cart = get_cart_service(request)
     user_cart.get_upd_length()
     return

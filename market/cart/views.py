@@ -3,7 +3,7 @@ from django.views import View
 from django.views.generic import ListView
 
 from shops.models import Offer
-from .services.cart_service import get_cart
+from .services.cart_service import get_cart_service
 
 
 class CartListView(ListView):
@@ -14,7 +14,7 @@ class CartListView(ListView):
     template_name = "cart/cart.jinja2"
 
     def get(self, request, *args, **kwargs):
-        self.cart = get_cart(request).get_cart_as_list()
+        self.cart = get_cart_service(request).get_cart_as_list()
         response = super().get(request, *args, **kwargs)
         return response
 
@@ -40,7 +40,7 @@ class CartListView(ListView):
 
 class RemoveCartView(View):
     def post(self, request, *args, **kwargs):
-        self.cart = get_cart(request)
+        self.cart = get_cart_service(request)
         self.cart.clear()
         return redirect("cart:user_cart")
 

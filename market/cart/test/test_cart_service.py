@@ -64,7 +64,7 @@ class UserCartServiceTest(TestCase):
         request = self.factory.request()
         middleware(request)
         login(request, self.user)
-        cart = cart_service.get_cart(request)
+        cart = cart_service.get_cart_service(request)
         cartlist = cart.get_cart_as_list()
         self.assertIn(record, cartlist)
 
@@ -72,7 +72,7 @@ class UserCartServiceTest(TestCase):
         request = self.factory.request()
         middleware(request)
         login(request, self.user)
-        cart = cart_service.get_cart(request)
+        cart = cart_service.get_cart_service(request)
         offer_id = 4
         amount = 2
         cart.add_to_cart(offer_id, amount=amount)
@@ -83,7 +83,7 @@ class UserCartServiceTest(TestCase):
         request = self.factory.request()
         middleware(request)
         login(request, self.user)
-        cart = cart_service.get_cart(request)
+        cart = cart_service.get_cart_service(request)
         offer_id = 4
         amount = 2
         UserOfferCart(user=self.user, offer_id=offer_id, amount=amount).save()
@@ -93,7 +93,7 @@ class UserCartServiceTest(TestCase):
 
     def test_delete_UserCart(self):
         request = self.request
-        cart = cart_service.get_cart(request)
+        cart = cart_service.get_cart_service(request)
         offer_id = 4
         amount = 2
         UserOfferCart(user=self.user, offer_id=offer_id, amount=amount).save()
@@ -103,7 +103,7 @@ class UserCartServiceTest(TestCase):
 
     def test_clear_UserCart(self):
         request = self.request
-        cart = cart_service.get_cart(request)
+        cart = cart_service.get_cart_service(request)
         offer_id = 4
         amount = 2
         UserOfferCart(user=self.user, offer_id=offer_id, amount=amount).save()
@@ -126,17 +126,17 @@ class AnonimCartServiceTest(TestCase):
         self.request = middleware(self.factory.request())
 
     def test_get_AnonimCart(self):
-        cart = cart_service.get_cart(self.request)
-        self.assertIsInstance(cart, cart_service.AnonimCart)
+        cart = cart_service.get_cart_service(self.request)
+        self.assertIsInstance(cart, cart_service.AnonimCartService)
 
     def test_get_AnonimCart_authenticated_user(self):
         user = User.objects.get(pk=1)
         login(self.request, user)
-        cart = cart_service.get_cart(self.request)
-        self.assertNotIsInstance(cart, cart_service.AnonimCart)
+        cart = cart_service.get_cart_service(self.request)
+        self.assertNotIsInstance(cart, cart_service.AnonimCartService)
 
     def test_add_AnonimCart(self):
-        cart = cart_service.get_cart(self.request)
+        cart = cart_service.get_cart_service(self.request)
         offer = Offer.objects.get(pk=2)
         cart.add_to_cart(offer.pk)
         session_cart = self.request.session["cart"]
@@ -145,7 +145,7 @@ class AnonimCartServiceTest(TestCase):
         self.assertDictEqual(session_cart, expected_cart)
 
     def test_re_add_AnonimCart(self):
-        cart = cart_service.get_cart(self.request)
+        cart = cart_service.get_cart_service(self.request)
         offer = Offer.objects.get(pk=2)
         cart.add_to_cart(offer.pk, 1)
         amount = "5"
@@ -156,7 +156,7 @@ class AnonimCartServiceTest(TestCase):
         self.assertDictEqual(session_cart, expected_cart)
 
     def test_add_one_more_offer_AnonimCart(self):
-        cart = cart_service.get_cart(self.request)
+        cart = cart_service.get_cart_service(self.request)
         offer_list = [Offer.objects.get(pk=i) for i in range(1, 15, 5)]
         for offer in offer_list:
             cart.add_to_cart(offer.pk)
@@ -166,7 +166,7 @@ class AnonimCartServiceTest(TestCase):
 
     def test_delete_offer_AnonimCart(self):
         self.request.session["cart"] = {"10": "5", "1": "3"}
-        cart = cart_service.get_cart(self.request)
+        cart = cart_service.get_cart_service(self.request)
         cart.remove_from_cart(10)
         session_cart = self.request.session["cart"]
         expected_cart = {"1": "3"}
@@ -174,14 +174,14 @@ class AnonimCartServiceTest(TestCase):
 
     def test_clear_AnonimCart(self):
         self.request.session["cart"] = {"10": "5", "1": "3"}
-        cart = cart_service.get_cart(self.request)
+        cart = cart_service.get_cart_service(self.request)
         cart.clear()
         session_cart = self.request.session["cart"]
         expected_cart = {}
         self.assertDictEqual(session_cart, expected_cart)
 
     def test_session_cart_size(self):
-        cart = cart_service.get_cart(self.request)
+        cart = cart_service.get_cart_service(self.request)
         cart.add_to_cart(5, 5)
         cart.add_to_cart(3, 1)
         cart_size = self.request.session["cart_size"]
@@ -190,7 +190,7 @@ class AnonimCartServiceTest(TestCase):
 
     def test_clear_cart_size(self):
         self.request.session["cart"] = {"10": "5", "1": "3"}
-        cart = cart_service.get_cart(self.request)
+        cart = cart_service.get_cart_service(self.request)
         cart.clear()
         cart_size = self.request.session["cart_size"]
         expected_cart_size = "0"
