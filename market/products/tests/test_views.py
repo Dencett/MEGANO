@@ -46,7 +46,7 @@ class HomeViewTest(TestCase):
             min_product = Offer.objects.filter(product__pk=category.pk).order_by("price").first()
             min_offers.append(min_product)
         context["min_offers"] = min_offers
-        context["limited_products"] = Offer.objects.all().order_by("quantity")[:8]
+        context["limited_products"] = Offer.objects.all().order_by("remains")[:8]
         banners = Banner.objects.filter(archived=False).order_by("?")[:3]
         context["banners"] = banners
         response = render(request, template, context)
