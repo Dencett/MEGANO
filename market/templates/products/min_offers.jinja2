@@ -1,8 +1,6 @@
 <div class="wrap">
     <div class="BannersHome">
-        <h2>{{ min_offers }}</h2>
         {% for min_offer in min_offers %}
-            <h2>{{ min_offer }}</h2>
             <a class="BannersHomeBlock" href="{{ url('products:product-detail', pk=min_offer.product.pk ) }}">
                 <div class="BannersHomeBlock-row">
                     <div class="BannersHomeBlock-block">
