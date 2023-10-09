@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from django.conf import settings
 from typing import Union
 
-from cart.models import UserOfferCART
+from cart.models import UserOfferCart
 
 
 class AnonimCart:
@@ -34,7 +34,7 @@ class AnonimCart:
         if not self.session_cart:
             return cart
         for offer_pk, amount in self.session_cart.items():
-            record = UserOfferCART(offer_id=int(offer_pk), amount=amount)
+            record = UserOfferCart(offer_id=int(offer_pk), amount=amount)
             cart.append(record)
         return cart
 
@@ -46,16 +46,16 @@ class AnonimCart:
         except KeyError:
             return
 
-    def add_to_cart(self, offer_id: int, amount=1):
+    def add_to_cart(self, offer_id: int, amount: Union[int, str] = 1):
         current_amount = int(self.session_cart.get(str(offer_id), "0"))
-        self.session_cart[str(offer_id)] = str(current_amount + amount)
+        self.session_cart[str(offer_id)] = str(current_amount + int(amount))
         self._change_session_cart_length(amount=amount)
         self._save_cart()
 
     def change_amount(self, offer_id: int, amount: int):
         current_amount = self.session_cart.get(str(offer_id))
         if not current_amount:
-            raise UserOfferCART.DoesNotExict("Такого предложения не найдено в корзине")
+            raise UserOfferCart.DoesNotExict("Такого предложения не найдено в корзине")
         self._change_session_cart_length(amount=current_amount, add=False)
         self._change_session_cart_length(amount=amount)
         self.session_cart[str(offer_id)] = str(amount)
@@ -96,24 +96,24 @@ class UserCart:
         self.session.modified = True
 
     def get_cart_as_list(self) -> list:
-        return list(UserOfferCART.objects.filter(user=self.user).all())
+        return list(UserOfferCart.objects.filter(user=self.user).all())
 
     def remove_from_cart(self, offer_id: int):
         try:
-            cart_record = UserOfferCART.objects.get(user=self.user, offer_id=offer_id)
+            cart_record = UserOfferCart.objects.get(user=self.user, offer_id=offer_id)
             current_amount = cart_record.amount
             self._change_session_cart_length(current_amount, add=False)
             cart_record.delete()
-        except UserOfferCART.DoesNotExist:
+        except UserOfferCart.DoesNotExist:
             return
-        except UserOfferCART.MultipleObjectsReturned:
-            cart_records = UserOfferCART.objects.filter(user=self.user, offer_id=offer_id)
-            current_amount = UserOfferCART.objects.filter(user=self.user, offer_id=offer_id).count("amount")
+        except UserOfferCart.MultipleObjectsReturned:
+            cart_records = UserOfferCart.objects.filter(user=self.user, offer_id=offer_id)
+            current_amount = UserOfferCart.objects.filter(user=self.user, offer_id=offer_id).count("amount")
             self._change_session_cart_length(current_amount, add=False)
             cart_records.delete()
 
     def add_to_cart(self, offer_id: int, amount=1):
-        cart_record, created = UserOfferCART.objects.get_or_create(user=self.user, offer_id=offer_id)
+        cart_record, created = UserOfferCart.objects.get_or_create(user=self.user, offer_id=offer_id)
         if not created:
             cart_record.amount += amount
             cart_record.save()
@@ -124,7 +124,7 @@ class UserCart:
                 self.change_amount(offer_id, amount)
 
     def change_amount(self, offer_id: int, amount: int):
-        cart_record = UserOfferCART.objects.get(user=self.user, offer_id=offer_id)
+        cart_record = UserOfferCart.objects.get(user=self.user, offer_id=offer_id)
         current_amount = cart_record.amount
         cart_record.amount = amount
         self._change_session_cart_length(current_amount, add=False)
@@ -132,7 +132,7 @@ class UserCart:
         self._change_session_cart_length(amount)
 
     def get_upd_length(self) -> int:
-        length = UserOfferCART.objects.filter(user=self.user).aggregate(Sum("amount")).get("amount__sum", 0)
+        length = UserOfferCart.objects.filter(user=self.user).aggregate(Sum("amount")).get("amount__sum", 0)
         self.session[settings.CART_SIZE_SESSION_KEY] = str(length)
         return length
 
@@ -140,7 +140,7 @@ class UserCart:
         return int(self.session[settings.CART_SIZE_SESSION_KEY])
 
     def clear(self):
-        queryset = UserOfferCART.objects.filter(user=self.user).all()
+        queryset = UserOfferCart.objects.filter(user=self.user).all()
         queryset.delete()
         self.session[settings.CART_SIZE_SESSION_KEY] = "0"
 
