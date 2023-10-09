@@ -84,7 +84,6 @@ class Offer(models.Model):
         verbose_name=_("способ доставки"),
         max_length=128,
     )
-    quantity = models.IntegerField(default=0, verbose_name=_("количество"))
 
     class Meta:
         verbose_name = _("предложение магазина")

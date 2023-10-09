@@ -1,5 +1,3 @@
-import random
-
 from django.shortcuts import render  # noqa F401
 from django.shortcuts import render, redirect  # noqa F401
 from django.views import View
@@ -8,8 +6,8 @@ from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormView
 from django.urls import reverse
 
-from shops.models import Offer
-from .models import Product, Category, Banner
+from .mixins import OffersMixin
+from .models import Product
 from .services.review_services import ReviewServices
 from .services.product_price import product_min_price_or_none
 from profiles.services.products_history import make_record_in_history
@@ -18,26 +16,22 @@ from cart.forms import UserOneOfferCARTForm
 from cart.services.cart_service import get_cart
 
 
-class HomeView(TemplateView):
+class HomeView(TemplateView, OffersMixin):
     """Главная страница магазина"""
 
     template_name = "products/home-page.jinja2"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["offers"] = Offer.objects.order_by("?")[:8]
-        context["min_price_product"] = Offer.objects.all().order_by("price").first()
-        min_offers = []
-        categories = Category.objects.filter(foreground=True).order_by("?")[:3]
-        if len(categories) > 3:
-            categories = random.choices(categories, k=3)
-        for category in categories:
-            min_product = Offer.objects.filter(product__pk=category.pk).order_by("price").first()
-            min_offers.append(min_product)
-        context["min_offers"] = min_offers
-        context["limited_products"] = Offer.objects.all().order_by("quantity")[:8]
-        banners = Banner.objects.filter(archived=False).order_by("?")[:3]
-        context["banners"] = banners
+        context.update(
+            {
+                "offers": self.get_offers(),
+                "min_price_product": self.get_min_price_product(),
+                "limited_products": self.get_limited_products(),
+                "banners": self.get_banners(),
+                "min_offers": self.get_min_offers(),
+            }
+        )
         return context
 
 
