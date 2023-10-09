@@ -133,10 +133,8 @@ class Category(models.Model):
     )
 
     def get_absolute_url(self):
-        # TODO в разработке: будет добавлен после готовности каталога
-        # """ Method returns a string that can be used to refer to the object over HTTP """
-        # return reverse("catalog:category-detail", kwargs={"pk": self.pk})
-        pass
+        """Method returns a string that can be used to refer to the object over HTTP"""
+        return reverse("catalog:index") + f"?category_id={self.pk}"
 
     def get_icon_name(self) -> str:
         """

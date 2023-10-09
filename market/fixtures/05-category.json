@@ -10,6 +10,7 @@
         "archived": false,
         "is_active": true,
         "parent": null,
+        "foreground": true,
         "icon": "img/icons/categories/mobile-phones/mob_icon.svg"
     }
 },
@@ -24,6 +25,7 @@
         "archived": false,
         "is_active": true,
         "parent": null,
+        "foreground": true,
         "icon": "img/icons/categories/computers/ps-icon.svg"
     }
 },
@@ -38,6 +40,7 @@
         "archived": false,
         "is_active": true,
         "parent": 2,
+        "foreground": true,
         "icon": "img/icons/categories/laptops/laptops-icon.svg"
     }
 },
@@ -52,6 +55,7 @@
         "archived": false,
         "is_active": true,
         "parent": 2,
+        "foreground": false,
         "icon": "img/icons/categories/tablets/tablets_icon.svg"
     }
 },
@@ -66,6 +70,7 @@
         "archived": false,
         "is_active": true,
         "parent": 2,
+        "foreground": false,
         "icon": "img/icons/categories/monoblocks/monoblock-icon.svg"
     }
 },
@@ -80,6 +85,7 @@
         "archived": false,
         "is_active": true,
         "parent": null,
+        "foreground": false,
         "icon": "img/icons/categories/tvs/tv-icon.svg"
     }
 },
@@ -94,6 +100,7 @@
         "archived": false,
         "is_active": true,
         "parent": null,
+        "foreground": false,
         "icon": "img/icons/categories/cameras/camera-icon.svg"
     }
 },
@@ -108,6 +115,7 @@
         "archived": false,
         "is_active": true,
         "parent": null,
+        "foreground": false,
         "icon": "img/icons/categories/household-appliances/househould-appliance-icon.svg"
     }
 },
@@ -122,6 +130,7 @@
         "archived": false,
         "is_active": true,
         "parent": 8,
+        "foreground": true,
         "icon": "img/icons/categories/microwaves/microwave-icon.svg"
     }
 },
@@ -136,6 +145,7 @@
         "archived": false,
         "is_active": true,
         "parent": 8,
+        "foreground": true,
         "icon": "img/icons/categories/washing-machines/washer-icon.svg"
     }
 },
@@ -150,6 +160,7 @@
         "archived": false,
         "is_active": true,
         "parent": 8,
+        "foreground": false,
         "icon": "img/icons/categories/stoves/stove-icon.svg"
     }
 },
@@ -164,6 +175,7 @@
         "archived": false,
         "is_active": true,
         "parent": null,
+        "foreground": true,
         "icon": "img/icons/categories/electronics/electronics-icon.svg"
     }
 },
@@ -178,6 +190,7 @@
         "archived": false,
         "is_active": true,
         "parent": 12,
+        "foreground": false,
         "icon": "img/icons/categories/headphones/hp-icon.svg"
     }
 },
@@ -192,6 +205,7 @@
         "archived": false,
         "is_active": true,
         "parent": 12,
+        "foreground": true,
         "icon": "img/icons/categories/loud-speackers/loadspeaker-icon.svg"
     }
 },
@@ -206,6 +220,7 @@
         "archived": false,
         "is_active": true,
         "parent": null,
+        "foreground": false,
         "icon": "img/icons/categories/accessories/accessories_icon.svg"
     }
 },
@@ -220,6 +235,7 @@
         "archived": false,
         "is_active": true,
         "parent": null,
+        "foreground": true,
         "icon": ""
     }
 }
