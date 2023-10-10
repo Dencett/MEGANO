@@ -1,0 +1,34 @@
+<div class="Cart-product">
+    <div class="Cart-block Cart-block_row">
+        <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="#"><img class="Cart-img" src="{{cart.offer.product.preview.url}}" alt="product_preview.jpg"></a>
+        </div>
+        <div class="Cart-block Cart-block_info"><a class="Cart-title" href="#">{{cart.offer.product.name}}</a>
+            <div class="Cart-desc">{{cart.offer.product.about}}
+            </div>
+        </div>
+        <div class="Cart-block Cart-block_price">
+            <div class="Cart-price">{{cart.offer.price}}
+            </div>
+            Магазин: {{cart.offer.shop.name }}
+        </div>
+    </div>
+    <div class="Cart-block Cart-block_row">
+        <div class="Cart-block Cart-block_seller">
+            <!-- - var options = setOptions(items, ['value', 'selected', 'disabled']);-->
+
+        </div>
+        <div class="Cart-block Cart-block_amount">
+            <div class="Cart-amount">
+                <div class="Amount">
+                    <button class="Amount-remove" type="button">
+                    </button>
+                    <input class="Amount-input form-input" name="amount" type="text" value="{{cart.amount}}">
+                    <button class="Amount-add" type="button">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="Cart-block Cart-block_delete"><a class="Cart-delete" href="#"><img src="{{static('assets/img/icons/card/delete.svg')}}" alt="delete.svg"></a>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 from django.contrib.auth.models import Group
-from django.contrib.auth.views import LogoutView, PasswordChangeView
+from django.contrib.auth.views import LogoutView, PasswordChangeView, LoginView
 from django.contrib.auth import authenticate, login
 from django.db import transaction
 from django.urls import reverse_lazy, reverse
@@ -12,7 +12,8 @@ from .models import User
 from profiles.services.have_store import user_have_store
 from products.models import Product
 from .services.products_history import get_products_in_user_history
-from products.services.product_price import product_min_price
+from products.services.product_price import product_min_price_or_none
+from cart.services.cart_service import login_cart
 
 
 class AboutUserView(TemplateView):
@@ -42,7 +43,7 @@ class AboutUserView(TemplateView):
         if user.is_authenticated:
             history = get_products_in_user_history(user, number=3)
             context["history"] = history
-        context["price"] = product_min_price
+        context["price"] = product_min_price_or_none
         return context
 
     def post(self, request):
@@ -141,7 +142,7 @@ class UserHistoryView(UserPassesTestMixin, ListView):
     template_name = "profiles/product-history.jinja2"
     model = Product
     context_object_name = "history"
-    extra_context = {"price": product_min_price}
+    extra_context = {"price": product_min_price_or_none}
 
     def get_queryset(self):
         user = self.request.user
@@ -149,3 +150,11 @@ class UserHistoryView(UserPassesTestMixin, ListView):
 
     def test_func(self):
         return self.request.user.is_authenticated
+
+
+class CustomLoginView(LoginView):
+    def post(self, request, *args, **kwargs):
+        answer = super().post(request, *args, **kwargs)
+        if self.request.user.is_authenticated:
+            login_cart(self.request)
+        return answer

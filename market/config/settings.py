@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "shops",
     "profiles",
     "catalog",
+    "cart",
 ]
 
 SHELL_PLUS_PRINT_SQL = False
@@ -142,6 +143,9 @@ CACHES = {
         },
     }
 }
+
+CART_SESSION_KEY = "cart"
+CART_SIZE_SESSION_KEY = "cart_size"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
