@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "profiles",
     "catalog",
     "cart",
+    "comparison",
 ]
 
 SHELL_PLUS_PRINT_SQL = False
@@ -100,6 +101,7 @@ TEMPLATES = [
             "context_processors": [
                 "context_processors.menu_context.categories_menu",
                 "context_processors.catalog_context.product_placeholders",
+                "context_processors.comparison_context.comparison_items",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -198,3 +200,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = reverse_lazy("products:home-page")
 LOGIN_URL = reverse_lazy("profiles:login")
+
+COMPARISON_SESSION_ID = "comparison"
