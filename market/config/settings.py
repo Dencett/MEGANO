@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "shops",
     "profiles",
     "catalog",
-    "cart.apps.CartConfig",
+    "cart",
 ]
 
 SHELL_PLUS_PRINT_SQL = False
