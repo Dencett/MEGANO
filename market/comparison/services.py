@@ -1,4 +1,4 @@
-from typing import Dict, Any, Set
+from typing import Dict, Any, List
 from django.conf import settings
 from products.models import Product, ProductDetail
 from django.http import HttpRequest
@@ -32,7 +32,7 @@ class ComparisonService:
                 "detail": {},
                 "name": product.name,
                 "category": product.category.name,
-                "preview": product.preview.url,
+                "preview": (product.preview.url if product.preview else ""),
                 "created_at": str(timezone.now()),
             }
 
@@ -85,7 +85,7 @@ class ComparisonService:
         return valid_list
 
     @classmethod
-    def get_common_diff_details(cls, details_to_compare: Set[str], valid_list: Dict[str, Any]):
+    def get_common_diff_details(cls, details_to_compare: List[str], valid_list: Dict[str, Any]):
         """
         Получение списка общих и отличающихся характеристик товара
         :param details_to_compare: список уникальных характеристик
@@ -105,7 +105,7 @@ class ComparisonService:
         return common_attribute, different_attribute
 
     @classmethod
-    def compare(cls, details_to_compare: Set[str], valid_list: Dict[str, Any]) -> Dict[str, Any]:
+    def compare(cls, details_to_compare: List[str], valid_list: Dict[str, Any]) -> Dict[str, Any]:
         """
         Сравнения характеристик товара.
         Если характеристика товара отсутсутвует, добавляет ее со значением 'x'.
@@ -125,18 +125,20 @@ class ComparisonService:
         return valid_list
 
     @classmethod
-    def get_all_unique_details(cls, valid_list: Dict[str, Any], max_products: int = MAX_PRODUCTS) -> set:
+    def get_all_unique_details(cls, valid_list: Dict[str, Any], max_products: int = MAX_PRODUCTS) -> List[str]:
         """
         Получение уникальных характеристик доступных к сравнению товаров
         :param max_products: максимально число товаров для сравнения
         :param valid_list:  список доступных товаров
         :return:
         """
-        return set(
-            str(productdetail.detail.name)
-            for productdetail in ProductDetail.objects.select_related("detail", "product")
-            .filter(product_id__in=list(valid_list.keys())[:max_products])
-            .distinct("detail__name")
+        return sorted(
+            (
+                str(productdetail.detail.name)
+                for productdetail in ProductDetail.objects.select_related("detail", "product")
+                .filter(product_id__in=list(valid_list.keys())[:max_products])
+                .distinct("detail__name")
+            )
         )
 
     def __str__(self) -> str:
