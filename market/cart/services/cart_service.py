@@ -61,12 +61,32 @@ class AnonimCartService:
         self.session_cart[str(offer_id)] = str(amount)
         self._save_cart()
 
-    def get_length(self):
+    def update_cart(self, data: dict):
+        """
+
+        :param data: is dict where key = offer_id; value = amount
+        :return:
+        """
+        new_data = {}
+        cart_size = 0
+        for k, v in data.items():
+            if v > 0:
+                new_data[str(k)] = str(v)
+                cart_size += v
+        self.session[settings.CART_SESSION_KEY] = new_data
+        self.session[settings.CART_SIZE_SESSION_KEY] = str(cart_size)
+        self._save_cart()
+
+    def get_upd_length(self):
         length = 0
         for amount in self.session_cart.values():
             length += int(amount)
         self.session[settings.CART_SIZE_SESSION_KEY] = str(length)
         self._save_cart()
+        return length
+
+    def get_offers_len(self) -> int:
+        length = len(self.session_cart)
         return length
 
     def __len__(self):
@@ -85,6 +105,7 @@ class UserCartService:
         session_cart_length = self.session.get(settings.CART_SIZE_SESSION_KEY)
         if not session_cart_length:
             self.session[settings.CART_SIZE_SESSION_KEY] = "0"
+            self._save_cart()
         self.session_cart_length = self.session[settings.CART_SIZE_SESSION_KEY]
 
     def _change_session_cart_length(self, amount: Union[str, int], add: bool = True):
@@ -96,7 +117,7 @@ class UserCartService:
         self.session.modified = True
 
     def get_cart_as_list(self) -> list:
-        return list(UserOfferCart.objects.filter(user=self.user).all())
+        return list(UserOfferCart.objects.filter(user=self.user))
 
     def remove_from_cart(self, offer_id: int):
         try:
@@ -104,6 +125,7 @@ class UserCartService:
             current_amount = cart_record.amount
             self._change_session_cart_length(current_amount, add=False)
             cart_record.delete()
+            self._save_cart()
         except UserOfferCart.DoesNotExist:
             return
         except UserOfferCart.MultipleObjectsReturned:
@@ -130,11 +152,35 @@ class UserCartService:
         self._change_session_cart_length(current_amount, add=False)
         cart_record.save()
         self._change_session_cart_length(amount)
+        self._save_cart()
+
+    def update_cart(self, data: dict):
+        current_cart = self.get_cart_as_list()
+        remove_list = []
+        update_list = []
+        for cart_record in current_cart:
+            if cart_record.offer_id in data:
+                amount = data[cart_record.offer_id]
+                if amount <= 0:
+                    remove_list.append(cart_record.pk)
+                elif amount != cart_record.amount:
+                    cart_record.amount = amount
+                    update_list.append(cart_record)
+        if update_list or remove_list:
+            if update_list:
+                UserOfferCart.objects.bulk_update(update_list, ["amount"])
+            if remove_list:
+                UserOfferCart.objects.filter(id__in=remove_list).delete()
+            self.get_upd_length()
 
     def get_upd_length(self) -> int:
         length = UserOfferCart.objects.filter(user=self.user).aggregate(Sum("amount")).get("amount__sum", 0)
         self.session[settings.CART_SIZE_SESSION_KEY] = str(length)
+        self._save_cart()
         return length
+
+    def get_offers_len(self) -> int:
+        return UserOfferCart.objects.filter(user=self.user).count()
 
     def __len__(self):
         return int(self.session[settings.CART_SIZE_SESSION_KEY])
@@ -143,9 +189,10 @@ class UserCartService:
         queryset = UserOfferCart.objects.filter(user=self.user).all()
         queryset.delete()
         self.session[settings.CART_SIZE_SESSION_KEY] = "0"
+        self._save_cart()
 
     def _save_cart(self):
-        pass
+        self.session.modified = True
 
 
 def _merge_session_cart_to_user_cart(request: HttpRequest, anonim_cart: AnonimCartService):

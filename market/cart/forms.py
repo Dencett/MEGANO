@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.widgets import HiddenInput
 
 
 class UserOneOfferCARTForm(forms.Form):
@@ -14,5 +15,11 @@ class UserManyOffersCARTForm(forms.Form):
     def __init__(self, number: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for i in range(number):
-            self.fields["amount_i"] = forms.IntegerField(min_value=0)
-            self.fields["offer_id_i"] = forms.IntegerField()
+            self.fields[f"amount[{i}]"] = forms.IntegerField(min_value=0)
+            self.fields[f"offer_id[{i}]"] = forms.IntegerField()
+
+
+class UserOneOfferCARTDeleteForm(forms.Form):
+    """Форма для удаления"""
+
+    offer_id = forms.IntegerField(min_value=0, widget=HiddenInput())
