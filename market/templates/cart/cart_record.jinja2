@@ -25,7 +25,7 @@
                     <button class="Amount-remove" type="button">
                     </button>
                     <input type="hidden" name="offer_id[{{iter_count}}]" value="{{ cart.offer.pk }}">
-                    <input class="Amount-input form-input" name="amount[{{iter_count}}]" type="number" style="appearance: textfield; height: 100%; " min="0" max="999"   value="{{cart.amount}}">
+                    <input class="Amount-input form-input" name="amount[{{iter_count}}]" type="number" style="appearance: textfield; height: 100%; " min="0" max="999"  required  value="{{cart.amount}}">
                     <button class="Amount-add" type="button">
                     </button>
                 </div>

@@ -1,10 +1,10 @@
 from django.shortcuts import redirect
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, FormView
 from django.http import Http404, HttpResponse
 
 from shops.models import Offer
-from .forms import UserOneOfferCARTForm
+from .forms import UserOneOfferCARTForm, NewForm
 from .services.cart_service import get_cart_service
 from .forms import UserOneOfferCARTDeleteForm, UserManyOffersCARTForm
 
@@ -31,7 +31,7 @@ class CartListView(ListView):
             self.cart.update_cart(data)
             return self.get(request, *args, **kwargs)
         else:
-            return HttpResponse(form.errors)
+            return HttpResponse(form.errors.as_ul(), status=400)
 
     def get_queryset(self):
         user = self.request.user
@@ -105,3 +105,12 @@ class CartView(View):
         action = request.POST.get("action")
         view = choice.get(action)
         return view(request, *args, **kwargs)
+
+
+class NewTestView(FormView):
+    form_class = NewForm
+    template_name = "cart/new.jinja2"
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        return response

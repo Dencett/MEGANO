@@ -1,6 +1,8 @@
 from django import forms
 from django.forms.widgets import HiddenInput
 
+from cart.models import UserOfferCart
+
 
 class UserOneOfferCARTForm(forms.Form):
     """Форма"""
@@ -23,3 +25,12 @@ class UserOneOfferCARTDeleteForm(forms.Form):
     """Форма для удаления"""
 
     offer_id = forms.IntegerField(min_value=0, widget=HiddenInput())
+
+
+class NewForm(forms.ModelForm):
+    class Meta:
+        model = UserOfferCart
+        fields = (
+            "offer",
+            "amount",
+        )

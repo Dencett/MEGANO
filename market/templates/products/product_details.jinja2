@@ -52,7 +52,7 @@
                                             {% csrf_token %}
                                             <input class="Amount-input form-input" name="amount" type="text" value="1"/>
                                             {% for offer in product.offer_set.all() %}
-                                                <input type="submit" id="push-form-offer-{{offer.pk}}" style="display: none;" name="offer_id" value="{{offer.pk}}" />
+                                                <input type="submit" id="push-form-offer-{{offer.pk}}" style="display: none;" name="offer" value="{{offer.pk}}" />
                                             {% endfor %}
 
                                         <button class="Amount-add" type="button">

@@ -146,8 +146,6 @@ CACHES = {
     }
 }
 
-CART_SESSION_KEY = "cart"
-CART_SIZE_SESSION_KEY = "cart_size"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -202,3 +200,30 @@ LOGIN_REDIRECT_URL = reverse_lazy("products:home-page")
 LOGIN_URL = reverse_lazy("profiles:login")
 
 COMPARISON_SESSION_ID = "comparison"
+
+CART_SESSION_KEY = "cart"
+CART_SIZE_SESSION_KEY = "cart_size"
+CART_PRICE_SESSION_KEY = "cart_price"
+
+
+LOGGING = {
+    "version": 1,
+    "filters": {
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+        }
+    },
+    "loggers": {
+        "django.db.backends": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+        }
+    },
+}
