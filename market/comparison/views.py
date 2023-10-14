@@ -21,7 +21,6 @@ class ComparisonTemplateView(FormMixin, TemplateView):
         valid_list = comparison.get_valid_products_list()
         unique_details = comparison.get_all_unique_details(valid_list=valid_list)
         common, diff = comparison.get_common_diff_details(details_to_compare=unique_details, valid_list=valid_list)
-        print(comparison.compare(details_to_compare=unique_details, valid_list=valid_list))
 
         if len(valid_list) == 0:
             context["error"] = _("Нет товаров для сравнения")
