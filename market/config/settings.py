@@ -204,26 +204,3 @@ COMPARISON_SESSION_ID = "comparison"
 CART_SESSION_KEY = "cart"
 CART_SIZE_SESSION_KEY = "cart_size"
 CART_PRICE_SESSION_KEY = "cart_price"
-
-
-LOGGING = {
-    "version": 1,
-    "filters": {
-        "require_debug_true": {
-            "()": "django.utils.log.RequireDebugTrue",
-        },
-    },
-    "handlers": {
-        "console": {
-            "level": "DEBUG",
-            "filters": ["require_debug_true"],
-            "class": "logging.StreamHandler",
-        }
-    },
-    "loggers": {
-        "django.db.backends": {
-            "level": "DEBUG",
-            "handlers": ["console"],
-        }
-    },
-}
