@@ -1,18 +1,18 @@
 from django.shortcuts import redirect
 from django.views import View
-from django.views.generic import ListView, FormView
+from django.views.generic import TemplateView
 from django.http import Http404, HttpResponse
+from django.utils.translation import gettext_lazy as _
 
 from shops.models import Offer
-from .forms import UserOneOfferCARTForm, NewForm
+from .forms import UserOneOfferCARTForm
 from .services.cart_service import get_cart_service
 from .forms import UserOneOfferCARTDeleteForm, UserManyOffersCARTForm
 
 
-class CartListView(ListView):
+class CartListView(TemplateView):
     """Корзина пользователя"""
 
-    model = Offer
     cart_name_in_context = "cart_list"
     template_name = "cart/cart.jinja2"
 
@@ -96,21 +96,22 @@ class CartView(View):
     doc: https://docs.djangoproject.com/en/3.2/topics/class-based-views/mixins/#using-formmixin-with-detailview
     """
 
+    BUTTONS = (
+        _("Удалить корзину"),
+        _("Обновить корзину"),
+        _("Оформить заказ"),
+    )
+
     def get(self, request, *args, **kwargs):
         view = CartListView.as_view()
-        return view(request, *args, **kwargs)
+        return view(request, *args, buttons=self.BUTTONS, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        choice = {"Удалить корзину": RemoveCartView.as_view(), "Обновить корзину": CartListView.as_view()}
+        choice = {
+            self.BUTTONS[0]: RemoveCartView.as_view(),  # Удалить корзину
+            self.BUTTONS[1]: CartListView.as_view(),  # Обновить корзину
+            self.BUTTONS[2]: CartListView.as_view(),  # Оформить заказ
+        }
         action = request.POST.get("action")
         view = choice.get(action)
-        return view(request, *args, **kwargs)
-
-
-class NewTestView(FormView):
-    form_class = NewForm
-    template_name = "cart/new.jinja2"
-
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        return response
+        return view(request, *args, buttons=self.BUTTONS, **kwargs)

@@ -24,7 +24,7 @@ class AnonimCartService:
 
         session_cart_price = self.session.get(settings.CART_PRICE_SESSION_KEY)
         if not session_cart_price:
-            self.session[settings.CART_PRICE_SESSION_KEY] = "0"
+            self.session[settings.CART_PRICE_SESSION_KEY] = "0.00"
         self.session_cart_price = self.session[settings.CART_PRICE_SESSION_KEY]
 
     def _save_cart(self):
@@ -40,9 +40,9 @@ class AnonimCartService:
     def _change_session_cart_price(self, money: Union[str, float], add: bool = True):
         cart_price = float(self.session[settings.CART_PRICE_SESSION_KEY])
         if add:
-            self.session[settings.CART_PRICE_SESSION_KEY] = str(cart_price + float(money))
+            self.session[settings.CART_PRICE_SESSION_KEY] = "{:.2f}".format(cart_price + float(money))
         else:
-            self.session[settings.CART_PRICE_SESSION_KEY] = str(cart_price - float(money))
+            self.session[settings.CART_PRICE_SESSION_KEY] = "{:.2f}".format(cart_price - float(money))
 
     def get_cart_as_list(self):
         cart = []
@@ -111,7 +111,7 @@ class AnonimCartService:
         self.session[settings.CART_PRICE_SESSION_KEY] = str(sum_price)
         self._save_cart()
 
-    def get_price(self):
+    def get_upd_price(self):
         self._update_price()
         return self.session[settings.CART_PRICE_SESSION_KEY]
 
@@ -134,7 +134,7 @@ class AnonimCartService:
         self.session_cart.clear()
         self._save_cart()
         self.session[settings.CART_SIZE_SESSION_KEY] = "0"
-        self.session[settings.CART_PRICE_SESSION_KEY] = "0"
+        self.session[settings.CART_PRICE_SESSION_KEY] = "0.00"
 
 
 class UserCartService:
@@ -149,7 +149,7 @@ class UserCartService:
 
         session_cart_price = self.session.get(settings.CART_PRICE_SESSION_KEY)
         if not session_cart_price:
-            self.session[settings.CART_PRICE_SESSION_KEY] = "0"
+            self.session[settings.CART_PRICE_SESSION_KEY] = "0.00"
             self._save_cart()
         self.session_cart_price = self.session[settings.CART_PRICE_SESSION_KEY]
 
@@ -164,16 +164,16 @@ class UserCartService:
     def _change_session_cart_price(self, money: Union[str, float], add: bool = True):
         cart_price = float(self.session[settings.CART_PRICE_SESSION_KEY])
         if add:
-            self.session[settings.CART_PRICE_SESSION_KEY] = str(cart_price + float(money))
+            self.session[settings.CART_PRICE_SESSION_KEY] = "{:.2f}".format(cart_price + float(money))
         else:
-            self.session[settings.CART_PRICE_SESSION_KEY] = str(cart_price - float(money))
+            self.session[settings.CART_PRICE_SESSION_KEY] = "{:.2f}".format(cart_price - float(money))
 
     def get_cart_as_list(self) -> list:
         return list(UserOfferCart.objects.filter(user=self.user))
 
     def remove_from_cart(self, offer_id: int):
         try:
-            cart_record = UserOfferCart.objects.get(user=self.user, offer_id=offer_id).select_related("offer")
+            cart_record = UserOfferCart.objects.select_related("offer").get(user=self.user, offer_id=offer_id)
             current_amount = cart_record.amount
             self._change_session_cart_length(current_amount, add=False)
             self._change_session_cart_price(cart_record.offer.price * current_amount, add=False)
@@ -190,17 +190,15 @@ class UserCartService:
             cart_records.delete()
 
     def add_to_cart(self, offer_id: int, amount=1):
-        cart_record, created = UserOfferCart.objects.get_or_create(user=self.user, offer_id=offer_id)
-        if not created:
+        try:
+            cart_record = UserOfferCart.objects.get(user=self.user, offer_id=offer_id)
             cart_record.amount += amount
             cart_record.save()
-            # self._change_session_cart_length(amount)
-            # self._change_session_cart_price(cart_record.offer.price * cart_record.amount)
-        # else:
+        except UserOfferCart.DoesNotExist:
+            cart_record = UserOfferCart(user=self.user, offer_id=offer_id, amount=amount)
+            cart_record.save()
         self._change_session_cart_length(cart_record.amount)
         self._change_session_cart_price(cart_record.offer.price * cart_record.amount)
-        # if int(amount) > 1:
-        #     self.change_amount(offer_id, amount)
 
     def change_amount(self, offer_id: int, amount: int):
         cart_record = UserOfferCart.objects.get(user=self.user, offer_id=offer_id).select_related("offer")
@@ -236,12 +234,16 @@ class UserCartService:
         sum_price = 0
         sum_price = (
             UserOfferCart.objects.select_related("offer")
-            .annotate(sum_price=F("amount") * F("offer__price"))
+            .annotate(sum_price=(F("amount") + 0) * F("offer__price"))
             .aggregate(Sum("sum_price"))
             .get("sum_price__sum")
         )
         self.session[settings.CART_PRICE_SESSION_KEY] = str(sum_price)
         self._save_cart()
+
+    def get_upd_price(self):
+        self._update_price()
+        return self.session[settings.CART_PRICE_SESSION_KEY]
 
     def get_upd_length(self) -> int:
         length = UserOfferCart.objects.filter(user=self.user).aggregate(Sum("amount")).get("amount__sum")
@@ -261,7 +263,7 @@ class UserCartService:
         queryset = UserOfferCart.objects.filter(user=self.user).all()
         queryset.delete()
         self.session[settings.CART_SIZE_SESSION_KEY] = "0"
-        self.session[settings.CART_PRICE_SESSION_KEY] = "0"
+        self.session[settings.CART_PRICE_SESSION_KEY] = "0.00"
         self._save_cart()
 
     def _save_cart(self):
@@ -275,6 +277,7 @@ def _merge_session_cart_to_user_cart(request: HttpRequest, anonim_cart: AnonimCa
         user_cart.add_to_cart(int(offer_id), int(amount))
     anonim_cart.clear()
     user_cart.get_upd_length()
+    user_cart.get_upd_price()
     return user_cart
 
 
