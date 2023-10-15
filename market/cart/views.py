@@ -1,15 +1,18 @@
 from django.shortcuts import redirect
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import TemplateView
+from django.http import Http404, HttpResponse
+from django.utils.translation import gettext_lazy as _
 
 from shops.models import Offer
+from .forms import UserOneOfferCARTForm
 from .services.cart_service import get_cart_service
+from .forms import UserOneOfferCARTDeleteForm, UserManyOffersCARTForm
 
 
-class CartListView(ListView):
+class CartListView(TemplateView):
     """Корзина пользователя"""
 
-    model = Offer
     cart_name_in_context = "cart_list"
     template_name = "cart/cart.jinja2"
 
@@ -17,6 +20,18 @@ class CartListView(ListView):
         self.cart = get_cart_service(request).get_cart_as_list()
         response = super().get(request, *args, **kwargs)
         return response
+
+    def post(self, request, *args, **kwargs):
+        self.cart = get_cart_service(request)
+        number = self.cart.get_offers_len()
+        form = UserManyOffersCARTForm(self.cart.get_offers_len(), request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            data = {form_data[f"offer_id[{i}]"]: form_data[f"amount[{i}]"] for i in range(number)}
+            self.cart.update_cart(data)
+            return self.get(request, *args, **kwargs)
+        else:
+            return HttpResponse(form.errors.as_ul(), status=400)
 
     def get_queryset(self):
         user = self.request.user
@@ -44,6 +59,34 @@ class RemoveCartView(View):
         self.cart.clear()
         return redirect("cart:user_cart")
 
+    def get(self, request, *args, **kwargs):
+        raise Http404
+
+
+class RemoveOneCartView(View):
+    def get(self, request, *args, **kwargs):
+        form = UserOneOfferCARTDeleteForm(request.GET)
+        if form.is_valid():
+            self.cart = get_cart_service(request)
+            self.cart.remove_from_cart(**form.cleaned_data)
+        return redirect("cart:user_cart")
+        # raise Http404
+
+
+class AddCartFromProduct(View):
+    def get(self, request, *args, **kwargs):
+        raise Http404
+
+    def post(self, request, *args, **kwargs):
+        form = UserOneOfferCARTForm(request.POST)
+        self.url = request.META["HTTP_REFERER"]
+        self.cart = get_cart_service(request)
+        if form.is_valid():
+            self.cart.add_to_cart(**form.cleaned_data)
+            return redirect(self.url + "#modal_open")
+        else:
+            return redirect(self.url)
+
 
 class CartView(View):
     """
@@ -53,12 +96,22 @@ class CartView(View):
     doc: https://docs.djangoproject.com/en/3.2/topics/class-based-views/mixins/#using-formmixin-with-detailview
     """
 
+    BUTTONS = (
+        _("Удалить корзину"),
+        _("Обновить корзину"),
+        _("Оформить заказ"),
+    )
+
     def get(self, request, *args, **kwargs):
         view = CartListView.as_view()
-        return view(request, *args, **kwargs)
+        return view(request, *args, buttons=self.BUTTONS, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        choice = {"Удалить корзину": RemoveCartView.as_view()}
+        choice = {
+            self.BUTTONS[0]: RemoveCartView.as_view(),  # Удалить корзину
+            self.BUTTONS[1]: CartListView.as_view(),  # Обновить корзину
+            self.BUTTONS[2]: CartListView.as_view(),  # Оформить заказ
+        }
         action = request.POST.get("action")
         view = choice.get(action)
-        return view(request, *args, **kwargs)
+        return view(request, *args, buttons=self.BUTTONS, **kwargs)

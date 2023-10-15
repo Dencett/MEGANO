@@ -109,7 +109,13 @@
                         </span>
                     </a>
                     <div class="CartBlock-block">
-                        <span class="CartBlock-price">0.00$</span>
+                        <span class="CartBlock-price">
+                            {% if request.session.cart_price %}
+                                {{request.session.cart_price}}₽
+                            {% else %}
+                                0.00₽
+                            {% endif %}
+                        </span>
                     </div>
                     <a class="CartBlock-block" href="{{ url('comparison:comparison') }}">
                         <img class="CartBlock-img" src="{{ static('assets/img/icons/card/change.svg') }}" alt="comp.svg"/>
