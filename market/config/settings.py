@@ -83,7 +83,7 @@ if DEBUG:
 
 TEMPLATES = [
     {
-        "BACKEND": "django_jinja.backend.Jinja2",
+        "BACKEND": "django_jinja.jinja2.Jinja2",
         "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -146,8 +146,6 @@ CACHES = {
     }
 }
 
-CART_SESSION_KEY = "cart"
-CART_SIZE_SESSION_KEY = "cart_size"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -202,3 +200,7 @@ LOGIN_REDIRECT_URL = reverse_lazy("products:home-page")
 LOGIN_URL = reverse_lazy("profiles:login")
 
 COMPARISON_SESSION_ID = "comparison"
+
+CART_SESSION_KEY = "cart"
+CART_SIZE_SESSION_KEY = "cart_size"
+CART_PRICE_SESSION_KEY = "cart_price"

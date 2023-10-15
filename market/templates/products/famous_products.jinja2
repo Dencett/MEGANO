@@ -14,13 +14,18 @@
                     <div class="Card-category">{{ offer.product.category.name }}
                     </div>
                     <div class="Card-hover">
-                        <a class="Card-btn" href="#">
-                            <img src="{{ static('assets/img/icons/card/cart.svg') }}" alt="cart.svg" />
-                        </a>
+                         <form action="{{ url('cart:add_cart') }}" method="post">
+                             {% csrf_token %}
+                             <input type="hidden" name="offer_id" value="{{ offer.pk }}">
+                             <input type="hidden" name="amount" value="1">
+                             <button class="Card-btn" type="submit" onmouseover="this.style.backgroundColor='#d2e7ff';" onmouseout="this.style.backgroundColor='#ebebeb';">
+                                 <img src="{{ static('assets/img/icons/card/cart.svg') }}" alt="cart.svg"/>
+                             </button>
+                         </form>
                          <form action="{{ url('comparison:comparison_add') }}" method="post">
                             {% csrf_token %}
                             <input type="hidden" id="product_id" name="product_id" value="{{ offer.product.pk }}">
-                            <button class="Card-btn" type="submit">
+                            <button class="Card-btn" type="submit" onmouseover="this.style.backgroundColor='#d2e7ff';" onmouseout="this.style.backgroundColor='#ebebeb';">
                                 <img src="{{ static('assets/img/icons/card/change.svg') }}" alt="change.svg"/>
                             </button>
                         </form>

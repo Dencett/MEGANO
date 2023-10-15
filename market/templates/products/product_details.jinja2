@@ -46,13 +46,13 @@
                             <div class="ProductCard-cart">
                                 <div class="ProductCard-cartElement ProductCard-cartElement_amount">
                                     <div class="Amount Amount_product">
-                                        <form class="Amount Amount_product" action="{{ product.get_absolute_url() }}" method="post" >
+                                        <form class="Amount Amount_product" action="{{ url('cart:add_cart') }}" method="post" >
                                         <button class="Amount-remove" type="button">
                                         </button>
                                             {% csrf_token %}
                                             <input class="Amount-input form-input" name="amount" type="text" value="1"/>
                                             {% for offer in product.offer_set.all() %}
-                                                <input type="submit" id="push-form-offer-{{offer.pk}}" style="display: none;" name="offer_id" value="{{offer.pk}}" />
+                                                <input type="submit" id="push-form-offer-{{offer.pk}}" style="display: none;" name="offer" value="{{offer.pk}}" />
                                             {% endfor %}
 
                                         <button class="Amount-add" type="button">

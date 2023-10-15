@@ -12,8 +12,6 @@ from .services.review_services import ReviewServices
 from .services.product_price import product_min_price_or_none
 from profiles.services.products_history import make_record_in_history
 from .forms import ProductReviewForm
-from cart.forms import UserOneOfferCARTForm
-from cart.services.cart_service import get_cart_service
 
 
 class HomeView(TemplateView, OffersMixin):
@@ -61,25 +59,6 @@ class ProductDetailView(DetailView):
         return response
 
 
-class ProductAddCart(SingleObjectMixin, FormView):
-    model = Product
-    form_class = UserOneOfferCARTForm
-    template_name = "base.jinja2"
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.cart = get_cart_service(request)
-        return super().post(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        self.cart.add_to_cart(**form.cleaned_data)
-        # form.instance.save()
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse("products:product-detail", kwargs={"pk": self.object.pk}) + "#modal_open"
-
-
 class ProductReviewFormView(SingleObjectMixin, FormView):
     """Валидация формы и дальнейшие действия по созданию экземпляра класса "Review"
     c примесью SingleObjectMixin для получения и использования 'object' в get_success_url() при переадресации.
@@ -123,9 +102,9 @@ class ProductView(View):
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if "amount" in request.POST:
-            view = ProductAddCart.as_view()
-            # view = ProductDetailView.as_view()
-            return view(request, *args, **kwargs)
+        # if "amount" in request.POST:
+        #     view = ProductAddCart.as_view()
+        #     # view = ProductDetailView.as_view()
+        #     return view(request, *args, **kwargs)
         view = ProductReviewFormView.as_view()
         return view(request, *args, **kwargs)
