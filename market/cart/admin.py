@@ -1,3 +1,11 @@
+from cart.models import UserOfferCart
 from django.contrib import admin  # noqa
 
-# Register your models here.
+
+@admin.register(UserOfferCart)
+class UserOfferCartAdmin(admin.ModelAdmin):
+    list_display = [
+        "offer",
+        "user",
+        "amount",
+    ]

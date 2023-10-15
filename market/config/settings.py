@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "catalog",
     "cart",
     "comparison",
+    "orders",
 ]
 
 SHELL_PLUS_PRINT_SQL = False
@@ -66,19 +67,19 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-if DEBUG:
-    SHELL_PLUS_PRINT_SQL = True
+# if DEBUG:
+#     SHELL_PLUS_PRINT_SQL = True
 
-    INTERNAL_IPS = [
-        "0.0.0.0",
-        "127.0.0.1",
-    ]
+INTERNAL_IPS = [
+    "0.0.0.0",
+    "127.0.0.1",
+]
 
-    ALLOWED_HOSTS += INTERNAL_IPS
+ALLOWED_HOSTS += INTERNAL_IPS
 
-    INSTALLED_APPS += ["debug_toolbar"]
+INSTALLED_APPS += ["debug_toolbar"]
 
-    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
 
 TEMPLATES = [
