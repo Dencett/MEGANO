@@ -152,6 +152,23 @@ class UserCartServiceTest(TestCase):
         price = service.get_upd_price()
         self.assertEqual(price, str(expected_price))
 
+    def test_cart_to_history_UserCart(self):
+        cart_list = [
+            UserOfferCart(user=self.user, offer_id=1, amount=1, is_active=True),
+            UserOfferCart(user=self.user, offer_id=5, amount=2, is_active=True),
+            UserOfferCart(user=self.user, offer_id=10, amount=3, is_active=True),
+        ]
+        UserOfferCart.objects.bulk_create(cart_list)
+        service = cart_service.get_cart_service(self.request)
+        service.append_cart_to_history()
+        cart = service.get_cart_as_list()
+        self.assertEqual(cart, [])
+        self.assertEqual(self.request.session["cart_size"], str(0))
+        self.assertEqual(self.request.session["cart_price"], "0.00")
+        length = len(UserOfferCart.objects.filter(user=self.user))
+        expected_len = 3
+        self.assertEqual(length, expected_len)
+
 
 class AnonimCartServiceTest(TestCase):
     fixtures = get_fixtures_list()

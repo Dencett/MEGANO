@@ -353,6 +353,9 @@ class UserCartService:
         for records in cart_records:
             records.is_active = False
         UserOfferCart.objects.bulk_update(cart_records, ["is_active"])
+        self.session[settings.CART_SIZE_SESSION_KEY] = "0"
+        self.session[settings.CART_PRICE_SESSION_KEY] = "0.00"
+        self._save_cart()
 
 
 def _merge_session_cart_to_user_cart(request: HttpRequest, anonim_cart: AnonimCartService):
