@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "orders",
 ]
 
-SHELL_PLUS_PRINT_SQL = False
+# SHELL_PLUS_PRINT_SQL = False
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -67,8 +67,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-# if DEBUG:
-#     SHELL_PLUS_PRINT_SQL = True
+if DEBUG:
+    SHELL_PLUS_PRINT_SQL = True
 
 INTERNAL_IPS = [
     "0.0.0.0",

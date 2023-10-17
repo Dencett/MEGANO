@@ -5,7 +5,7 @@ from django.contrib import admin  # noqa
 @admin.register(UserOfferCart)
 class UserOfferCartAdmin(admin.ModelAdmin):
     list_display = [
-        "offer",
+        # "offer",
         "user",
         "amount",
     ]
