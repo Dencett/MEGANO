@@ -7,8 +7,9 @@ from orders.views import (
     OrderStepOneView,
     OrderStepTwoView,
     OrderStepThreeView,
-    OrderHistoryListView,
+    # OrderHistoryListView,
     UserOrderListView,
+    OrderCreateView,
 )
 
 app_name = "orders"
@@ -21,7 +22,8 @@ urlpatterns = [
     path("step_two/", OrderStepTwoView.as_view(), name="view_step_two"),
     path("step_three/", OrderStepThreeView.as_view(), name="view_step_three"),
     path("step_four/", OrderStepThreeView.as_view(), name="view_step_four"),
-    path("history/", OrderHistoryListView.as_view(), name="history"),
+    # path("history/", OrderHistoryListView.as_view(), name="history"),
     path("detail/<int:pk>/", OrderDetailView.as_view(), name="detail_order"),
     path("user/order_list/", UserOrderListView.as_view(), name="user_order_list"),
+    path("create/", OrderCreateView.as_view(), name="create"),
 ]

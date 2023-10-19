@@ -2,7 +2,7 @@ from cart.models import UserOfferCart
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, FormView
+from django.views.generic import ListView, DetailView, FormView, CreateView
 from orders.forms import OrderStepTwoForm, OrderStepThreeForm, OrderFastRegistrationAnonymousUser
 
 
@@ -146,3 +146,28 @@ class UserOrderListView(ListView):
     def get_queryset(self):
         queryset = Order.objects.prefetch_related("carts").filter(carts__user__pk=self.request.user.pk)
         return queryset
+
+
+class OrderCreateView(CreateView):
+
+    """Тестовый вью класс - удалить"""
+
+    model = Order
+    template_name = "orders/order_test_create.jinja2"
+    fields = [
+        # "created_at",
+        "city",
+        "address",
+        "user",
+        "order",
+        "delivery_type",
+        "payment_type",
+        "status",
+        "total_price",
+    ]
+
+
+# user = залогиненый
+# продукты {
+#     [product]: [1,3,2,4]
+# }
