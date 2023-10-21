@@ -56,6 +56,28 @@ class OrderStepOneView(UserRegisterView):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
+    # def post(self, request, *args, **kwargs):
+    #     if self.request.method == "POST":
+    #         form = OrderFastRegistrationAnonymousUser(self.request.POST)
+    #         if form.is_valid():
+    # first_name = form.cleaned_data.get("first_name")
+    # last_name = form.cleaned_data.get("last_name")
+    # phone = form.cleaned_data.get("phone")
+    # username = form.cleaned_data.get("username")
+    # password = form.cleaned_data.get("password1")
+    # email = form.cleaned_data.get("email")
+
+    # user = User.objects.create(
+    #     first_name=first_name,
+    #     last_name=last_name,
+    #     phone=phone,
+    #     username=username,
+    #     password=password,
+    #     email=email,
+    # )
+    # return redirect(reverse_lazy("orders:base"))
+    # return OrderFastRegistrationAnonymousUser()
+
     def form_valid(self, form):
         response = super().form_valid(form)
 

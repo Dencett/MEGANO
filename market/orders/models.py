@@ -100,14 +100,14 @@ class OrderDetail(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="details")
 
     class Meta:
-        verbose_name = _("запись корзины")
-        verbose_name_plural = _("записи корзины")
+        verbose_name = _("заказ пользователя")
+        verbose_name_plural = _("заказы пользователя")
 
     def __str__(self):
         return f"Товар {self.offer.product.name}"
 
-    # def get_coast(self):
-    #     return self.offer.price * self.quantity
+    def get_coast(self):
+        return self.offer.price * self.quantity
 
 
 # a user
