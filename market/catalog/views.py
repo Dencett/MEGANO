@@ -101,7 +101,9 @@ class CatalogListView(ListView):
 
 
 class CatalogFilteredView(View):
-    site_settings = SiteSettings.load()
+    @property
+    def site_settings(self) -> SiteSettings:
+        return SiteSettings.load()
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:  # noqa
         form = CatalogFilterForm(request.POST)

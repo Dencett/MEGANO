@@ -6,7 +6,7 @@
         "default_price_from": "10.00",
         "default_price_to": "1000.00",
         "default_sort": "pk",
-        "default_sort_type": "FAMOUS",
+        "default_sort_type": "famous",
         "default_sort_desc": "on",
         "paginate_by": 8,
         "pagination_on_each_side": 2,
