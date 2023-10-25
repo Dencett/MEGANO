@@ -91,9 +91,6 @@ class Params:
 
 
 class Filter:
-    default_price_from: float = 10.00
-    default_price_to: float = 1000.00
-
     def __init__(self, params: Params) -> None:
         self.params = params
 
@@ -235,12 +232,13 @@ class Sorter:
 
     def sort(
         self,
+        default_sort: str,
         queryset: QuerySet,
         sort: str | None = None,
         desc: str | None = None,
     ) -> QuerySet:
         if not sort:
-            return queryset.order_by(self.default_sort)
+            return queryset.order_by(default_sort)
 
         if sort == "famous":
             return self._sort_by_famous(queryset, desc)

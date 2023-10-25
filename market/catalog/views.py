@@ -11,6 +11,7 @@ from catalog.utils import Params
 from catalog.forms import CatalogFilterForm
 from products.models import Tag
 from shops.models import Offer
+from site_settings.models import SiteSettings
 
 
 class CatalogListView(ListView):
@@ -18,9 +19,10 @@ class CatalogListView(ListView):
 
     template_name = "catalog/catalog.jinja2"
     context_object_name = "object_list"
-    paginate_by = 8
-    pagination_on_each_side = 2
-    pagination_on_ends = 1
+
+    @property
+    def site_settings(self) -> SiteSettings:
+        return SiteSettings.load()
 
     def get_queryset(self) -> QuerySet:
         fields = [
@@ -51,7 +53,7 @@ class CatalogListView(ListView):
 
         queryset = Offer.objects.select_related(*select_related_fields)
         params = Params(**self.request.GET.dict())
-        context_proc = CatalogContextProcessor(self.request, {}, params)
+        context_proc = CatalogContextProcessor(self.request, {}, params, self.site_settings)
 
         tag_id = params.get("tag_id")
 
@@ -62,6 +64,9 @@ class CatalogListView(ListView):
         queryset = self._sort(queryset, context_proc)
 
         return queryset.only(*fields)
+
+    def get_paginate_by(self, queryset: QuerySet) -> int:
+        return self.site_settings.paginate_by
 
     def __get_tags_prefetch(self, tag_id: str) -> Prefetch:
         fields = ["pk", "name"]
@@ -77,7 +82,7 @@ class CatalogListView(ListView):
     def _sort(self, queryset: QuerySet, proc: CatalogContextProcessor) -> QuerySet:
         sort_ = proc.params.get("sort")
         desc_ = proc.params.get("desc")
-        return proc.sorter.sort(queryset, sort_, desc_)
+        return proc.sorter.sort(self.site_settings.default_sort, queryset, sort_, desc_)
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(object_list=object_list, **kwargs)
@@ -86,6 +91,7 @@ class CatalogListView(ListView):
             self.request,
             context,
             Params(**self.request.GET.dict()),
+            self.site_settings,
         )
         context_proc.set_filter_context()
         context_proc.set_pagination_context()
@@ -95,11 +101,18 @@ class CatalogListView(ListView):
 
 
 class CatalogFilteredView(View):
+    site_settings = SiteSettings.load()
+
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:  # noqa
         form = CatalogFilterForm(request.POST)
         form.is_valid()
 
-        context_proc = CatalogContextProcessor(request, {}, Params(**request.GET.dict()))
+        context_proc = CatalogContextProcessor(
+            request,
+            {},
+            Params(**request.GET.dict()),
+            self.site_settings,
+        )
         context_proc.set_filter_context(form.cleaned_data)
         context_proc.set_context()
 

@@ -6,24 +6,21 @@ from catalog.common import get_famous_tags, parse_price
 from catalog.utils import Params, Sorter, Filter
 from context_processors.menu_context import get_categories_list
 from products.models import Category
+from site_settings.models import SiteSettings
 
 
 class CatalogContextProcessor:
-    pagination_on_each_side: int = 2
-    pagination_on_ends: int = 1
-
-    default_sort_name = "famous"
-    default_desc = "on"
-
     def __init__(
         self,
         request: HttpRequest,
         context: Dict[str, Any],
         raw_params: Params,
+        site_settings: SiteSettings,
     ) -> None:
         self.request = request
         self.context = context
         self.__params = raw_params
+        self.site_settings = site_settings
 
         self.sorter = Sorter()
         self.filter = Filter(raw_params)
@@ -124,8 +121,8 @@ class CatalogContextProcessor:
             sort_params - Params
         """
         context_data = {
-            "sort": self.__params.get("sort") or self.default_sort_name,
-            "desc": self.__params.get("desc") or self.default_desc,
+            "sort": self.__params.get("sort") or self.site_settings.default_sort_type,
+            "desc": self.__params.get("desc") or self.site_settings.default_sort_desc,
             "sort_items": self.sorter.get_items(),
         }
 
@@ -160,8 +157,8 @@ class CatalogContextProcessor:
             self.context["start_price"] = prices[0]
             self.context["stop_price"] = prices[1]
 
-        self.context["default_price_from"] = self.filter.default_price_from
-        self.context["default_price_to"] = self.filter.default_price_to
+        self.context["default_price_from"] = self.site_settings.default_price_from
+        self.context["default_price_to"] = self.site_settings.default_price_to
 
     def set_filter_context(self, data: Dict[str, Any] | None = None) -> None:
         """
@@ -204,12 +201,12 @@ class CatalogContextProcessor:
 
         return self.context["paginator"].get_elided_page_range(
             number=page_number,
-            on_each_side=self.pagination_on_each_side,
-            on_ends=self.pagination_on_ends,
+            on_each_side=self.site_settings.pagination_on_each_side,
+            on_ends=self.site_settings.pagination_on_ends,
         )
 
     def __get_current_category(self, category_id: str) -> Category:
-        categories_list = get_categories_list()
+        categories_list = get_categories_list(self.request)
 
         for category in categories_list:
             if str(category.pk) == category_id:
