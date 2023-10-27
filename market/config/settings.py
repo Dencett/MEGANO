@@ -14,6 +14,8 @@ from pathlib import Path
 
 from django.urls import reverse_lazy
 from dotenv import dotenv_values
+from queue import Queue
+from threading import Lock
 
 import dj_database_url
 
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
     "django_jinja",
     "django_extensions",
     "products",
@@ -50,6 +53,8 @@ INSTALLED_APPS = [
     "catalog",
     "cart",
     "comparison",
+    "pay_API",
+    "payapp",
 ]
 
 SHELL_PLUS_PRINT_SQL = False
@@ -204,3 +209,6 @@ COMPARISON_SESSION_ID = "comparison"
 CART_SESSION_KEY = "cart"
 CART_SIZE_SESSION_KEY = "cart_size"
 CART_PRICE_SESSION_KEY = "cart_price"
+
+PAY_QUEUE = Queue()
+PAY_QUEUE_LOCK = Lock()
