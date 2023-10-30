@@ -5,17 +5,21 @@ from django.utils.translation import gettext_lazy as _
 
 
 class SingletonModel(models.Model):
+    """Одноэлементный класс модели"""
+
     cache_key = "site_settings"
 
     class Meta:
         abstract = True
 
     def save(self, *args, **kwargs) -> None:
+        """Сохранение экземпляра модели"""
         self.__class__.objects.exclude(id=self.id).delete()
         super(SingletonModel, self).save(*args, **kwargs)
 
     @classmethod
     def load(cls) -> "SingletonModel":
+        """Получение экземпляра модели"""
         try:
             site_settings = cache.get(cls.cache_key)
 
@@ -33,6 +37,8 @@ class SingletonModel(models.Model):
 
 
 class SortTypeMethod(models.TextChoices):
+    """Класс типов сортировки"""
+
     FAMOUS = "famous", _("По популярности")
     PRICE = "price", _("По цене")
     REVIEW = "review", _("По отзывам")
@@ -40,11 +46,15 @@ class SortTypeMethod(models.TextChoices):
 
 
 class SortDesc(models.TextChoices):
+    """Класс состояние сортировки по убыванию"""
+
     ON = "on", _("Включена")
     OFF = "off", _("Выключена")
 
 
 class SiteSettings(SingletonModel):
+    """Модель настроек сайта"""
+
     # Prices
     default_price_from = models.DecimalField(
         verbose_name=_("Дефолтная цена от"),

@@ -5,6 +5,8 @@ from site_settings.models import SiteSettings
 
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
+    """Админка настроек сайта"""
+
     change_form_template = "settings/settings.html"
 
     list_display = (

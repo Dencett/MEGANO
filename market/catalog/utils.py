@@ -6,10 +6,13 @@ from catalog.common import parse_price
 
 
 class Params:
+    """Класс для работы с параметрами URL"""
+
     def __init__(self, **kwargs) -> None:
         self.__items: Dict = kwargs
 
     def update(self, data: Dict | "Params", **kwargs) -> None:
+        """Обновление объекта класса"""
         if isinstance(data, Params):
             self.__items.update(data.__items)
 
@@ -23,15 +26,19 @@ class Params:
             self.__items.update(**kwargs)
 
     def get(self, key: Any, default: Any | None = None) -> Any:
+        """Получение значения по ключу"""
         return self.__items.get(key, default)
 
     def pop(self, key: Any, default: None = None) -> Any:
+        """Получение значения по ключу и его удаление"""
+
         if key in self.__items:
             return self.__items.pop(key)
 
         return default
 
     def popitems(self, *keys) -> List:
+        """Получение значения по ключам и их удаление"""
         result = []
 
         for key in keys:
@@ -43,15 +50,18 @@ class Params:
         return result
 
     def to_list(self) -> List[str]:
+        """Преобразование в список"""
         if self:
             return [f"{key}={value}" for key, value in self.__items.items()]
 
         return []
 
     def to_dict(self) -> Dict[str, str]:
+        """Преобразование в словарь"""
         return self.__items
 
     def to_string(self, first_char: str | None = None) -> str:
+        """Преобразование в словарь"""
         if self:
             return first_char + "&".join(self.to_list()) if first_char else "&".join(self.to_list())
 
@@ -91,6 +101,8 @@ class Params:
 
 
 class Filter:
+    """Класс для фильтрации"""
+
     def __init__(self, params: Params) -> None:
         self.params = params
 
@@ -100,18 +112,14 @@ class Filter:
         stop_price: float,
         field: str | None = None,
     ) -> Dict[str, Tuple[float, float]]:
-        """
-        Offer price filer
-        """
+        """Фильтр по цене"""
         if not field:
             field = "price"
 
         return {f"{field}__range": (start_price, stop_price)}
 
     def __delivery_filter(self, field: str | None = None) -> Dict[str, str]:
-        """
-        Offer delivery filer
-        """
+        """Фильтр по методу доставки"""
         if not field:
             field = "delivery_method"
 
@@ -122,48 +130,39 @@ class Filter:
         value: str,
         fields: List[str] | Tuple[str, str] | None = None,
     ) -> Q:
-        """
-        Product search filer
-        """
+        """Фильтр по товару"""
         if not fields:
             fields = "about", "name"
 
         return Q(**{f"product__{fields[0]}__contains": value}) | Q(**{f"product__{fields[1]}__contains": value})
 
     def __category_available_filter(self) -> Dict[str, bool]:
-        """
-        Category available filter
-        """
+        """Фильтр доступности категории"""
         return {
             "product__category__is_active": True,
             "product__category__archived": False,
         }
 
     def __category_filter(self, value: str) -> Dict[str, Any]:
-        """
-        Product category filter
-        """
+        """Фильтр по категории"""
         return {"product__category__pk": value}
 
     def __remain_filter(self, field: str | None = None) -> Dict[str, int]:
-        """
-        Offer remain filter
-        """
+        """Фильтр по остатку"""
         if not field:
             field = "remains"
 
         return {f"{field}__gte": 1}
 
     def __tag_filter(self, value: str, field: str | None = None) -> Dict[str, str]:
-        """
-        Tag id filter
-        """
+        """Фильтр по тегам"""
         if not field:
             field = "product__tags__pk__contains"
 
         return {field: value}
 
     def filter_offer(self, queryset: QuerySet) -> QuerySet:
+        """Фильтрация заказа"""
         filter_: Dict[str, Any] = {}
 
         if "price" in self.params:
@@ -184,6 +183,7 @@ class Filter:
         return queryset.filter(**filter_)
 
     def filter_prodict(self, queryset: QuerySet) -> QuerySet:
+        """Фильтрация товара"""
         filter_args = []
 
         search_or_title_value = self.params.get("title", self.params.get("search"))
@@ -194,6 +194,7 @@ class Filter:
         return queryset.filter(*filter_args)
 
     def filter_category(self, queryset: QuerySet) -> QuerySet:
+        """Фильтрация категории"""
         filter_: Dict[str, Any] = {}
 
         category_id = self.params.get("category_id")
@@ -206,6 +207,7 @@ class Filter:
         return queryset.filter(**filter_)
 
     def filter_tags(self, queryset: QuerySet) -> QuerySet:
+        """Фильтрация тегов"""
         filter_: Dict[str, Any] = {}
 
         tag_id = self.params.get("tag_id")
@@ -217,6 +219,8 @@ class Filter:
 
 
 class Sorter:
+    """Класс для сортировки"""
+
     default_sort = "pk"
 
     sort_types = {
@@ -227,6 +231,7 @@ class Sorter:
     }
 
     def get_items(self) -> Generator[Tuple[str, str], None, None]:
+        """Получение названий и заголовков типов сортировки"""
         for name, title in self.sort_types.items():
             yield name, title
 
@@ -237,6 +242,7 @@ class Sorter:
         sort: str | None = None,
         desc: str | None = None,
     ) -> QuerySet:
+        """Функция сортировки"""
         if not sort:
             return queryset.order_by(default_sort)
 
@@ -253,9 +259,11 @@ class Sorter:
             return self._sort_by_recency(queryset, desc)
 
     def _sort_by_famous(self, queryset: QuerySet, desc: str) -> QuerySet:
+        """Сортировки по популярности"""
         return queryset.order_by(self.default_sort)  # fix: добавить сортировку по популярности
 
     def _sort_by_price(self, queryset: QuerySet, desc: str) -> QuerySet:
+        """Сортировки по цене"""
         if desc == "on":
             param = F("price").desc()
         else:
@@ -264,6 +272,7 @@ class Sorter:
         return queryset.order_by(param)
 
     def _sort_by_review(self, queryset: QuerySet, desc: str) -> QuerySet:
+        """Сортировки по отзывам"""
         if desc == "on":
             param = F("review_count").desc()
         else:
@@ -272,6 +281,7 @@ class Sorter:
         return queryset.annotate(review_count=Count(F("product__review"))).order_by(param)
 
     def _sort_by_recency(self, queryset: QuerySet, desc: str) -> QuerySet:
+        """Сортировки по новизне"""
         if desc == "on":
             param = F("product__manufacturer__modified_at").desc()
         else:

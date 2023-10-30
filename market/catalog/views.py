@@ -22,9 +22,11 @@ class CatalogListView(ListView):
 
     @property
     def site_settings(self) -> SiteSettings:
+        """Получение настроек"""
         return SiteSettings.load()
 
     def get_queryset(self) -> QuerySet:
+        """Создание запроса"""
         fields = [
             "pk",
             "price",
@@ -66,25 +68,30 @@ class CatalogListView(ListView):
         return queryset.only(*fields)
 
     def get_paginate_by(self, queryset: QuerySet) -> int:
+        """Получение лимита пагинации"""
         return self.site_settings.paginate_by
 
     def __get_tags_prefetch(self, tag_id: str) -> Prefetch:
+        """Получение тегов"""
         fields = ["pk", "name"]
         queryset = Tag.objects.filter(pk=tag_id).only(*fields)
         return Prefetch("product__tags", queryset=queryset)
 
     def _filter(self, queryset: QuerySet, proc: CatalogContextProcessor) -> QuerySet:
+        """Фильтрация запроса"""
         queryset = proc.filter.filter_offer(queryset)
         queryset = proc.filter.filter_category(queryset)
         queryset = proc.filter.filter_tags(queryset)
         return proc.filter.filter_prodict(queryset)
 
     def _sort(self, queryset: QuerySet, proc: CatalogContextProcessor) -> QuerySet:
+        """Сортировка запроса"""
         sort_ = proc.params.get("sort")
         desc_ = proc.params.get("desc")
         return proc.sorter.sort(self.site_settings.default_sort, queryset, sort_, desc_)
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
+        """Формирование контекста"""
         context = super().get_context_data(object_list=object_list, **kwargs)
 
         context_proc = CatalogContextProcessor(
@@ -103,9 +110,11 @@ class CatalogListView(ListView):
 class CatalogFilteredView(View):
     @property
     def site_settings(self) -> SiteSettings:
+        """Получение настроек"""
         return SiteSettings.load()
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:  # noqa
+        """Обработка POST запроса"""
         form = CatalogFilterForm(request.POST)
         form.is_valid()
 
@@ -129,10 +138,14 @@ class CatalogFilteredView(View):
 
 
 class CatalogHomeView(View):
+    """Класс маршрутизации запросов к каталогу"""
+
     def get(self, request, *args, **kwargs):
+        """Обработка GET запроса"""
         view = CatalogListView.as_view()
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """Обработка POST запроса"""
         view = CatalogFilteredView.as_view()
         return view(request, *args, **kwargs)

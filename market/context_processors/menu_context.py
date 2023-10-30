@@ -8,6 +8,7 @@ from site_settings.models import SiteSettings
 
 
 def get_categories_list(request: HttpRequest) -> List[Category]:
+    """Получение списка категорий"""
     try:
         timeout = request.site_settings.categories_list_cache_timeout
     except AttributeError:
