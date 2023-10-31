@@ -1,23 +1,13 @@
-from cart.models import UserOfferCart
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, FormView, CreateView
+from django.views.generic import ListView, DetailView, FormView
 from orders.forms import OrderStepTwoForm, OrderStepThreeForm, OrderFastRegistrationAnonymousUser
 
-
-from orders.models import Order
+from orders.models import Order, OrderDetail
+from orders.services.services import OrderDetailCreate
+from profiles.models import User
 from profiles.views import UserRegisterView
-
-
-class OrderListView(LoginRequiredMixin, ListView):
-    model = Order
-    template_name = "orders/order_history.jinja2"
-    context_object_name = "orders"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
 
 
 class OrderDetailView(DetailView):
@@ -32,17 +22,12 @@ def view_test_page(request):
     return render(request, "orders/order_base.jinja2", context=context)
 
 
-def order_step_one(request):
-    context = {"title": "Проверка лички нахой блять!"}
-    return render(request, "orders/order_step_one.jinja2", context=context)
+class OrderStepOneView(LoginRequiredMixin, UserRegisterView):
+    """
+    Отображение первого шага заказа.
+    Если пользователь зарегистрирован перенаправляет его сразу на следующий шаг.
+    """
 
-
-def order_step_two(request):
-    context = {"title": "Тут перешли на следующий шаг 2"}
-    return render(request, "orders/order_step_two.jinja2", context=context)
-
-
-class OrderStepOneView(UserRegisterView):
     template_name = "orders/order_step_one.jinja2"
     success_url = reverse_lazy("order:order_step_2")
     form_class = OrderFastRegistrationAnonymousUser
@@ -56,40 +41,19 @@ class OrderStepOneView(UserRegisterView):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
-    # def post(self, request, *args, **kwargs):
-    #     if self.request.method == "POST":
-    #         form = OrderFastRegistrationAnonymousUser(self.request.POST)
-    #         if form.is_valid():
-    # first_name = form.cleaned_data.get("first_name")
-    # last_name = form.cleaned_data.get("last_name")
-    # phone = form.cleaned_data.get("phone")
-    # username = form.cleaned_data.get("username")
-    # password = form.cleaned_data.get("password1")
-    # email = form.cleaned_data.get("email")
-
-    # user = User.objects.create(
-    #     first_name=first_name,
-    #     last_name=last_name,
-    #     phone=phone,
-    #     username=username,
-    #     password=password,
-    #     email=email,
-    # )
-    # return redirect(reverse_lazy("orders:base"))
-    # return OrderFastRegistrationAnonymousUser()
-
     def form_valid(self, form):
         response = super().form_valid(form)
-
         return response
 
 
 class OrderStepTwoView(FormView):
+    """Отображает страницу второго шага заказа"""
+
     form_class = OrderStepTwoForm
     template_name = "orders/order_step_two.jinja2"
 
     def form_valid(self, form):
-        self.request.session["delivery"] = form.cleaned_data.get("delivery_type")
+        self.request.session["delivery_type"] = form.cleaned_data.get("delivery_type")
         self.request.session["city"] = form.cleaned_data.get("city")
         self.request.session["address"] = form.cleaned_data.get("address")
 
@@ -97,8 +61,8 @@ class OrderStepTwoView(FormView):
 
     def get_initial(self):
         initial = super().get_initial()
-        if self.request.session.get("delivery"):
-            initial["delivery_type"] = self.request.session.get("delivery")
+        if self.request.session.get("delivery_type"):
+            initial["delivery_type"] = self.request.session.get("delivery_type")
 
         if self.request.session.get("city"):
             initial["city"] = self.request.session.get("city")
@@ -119,77 +83,72 @@ class OrderStepThreeView(LoginRequiredMixin, FormView):
     template_name = "orders/order_step_three.jinja2"
 
     def form_valid(self, form):
-        self.request.session["payment"] = form.cleaned_data["payment_type"]
+        self.request.session["payment_type"] = form.cleaned_data["payment_type"]
         return super().form_valid(form)
 
     def get_initial(self):
         initial = super().get_initial()
-        if self.request.session.get("payment"):
-            initial["payment_type"] = self.request.session.get("payment")
+        if self.request.session.get("payment_type"):
+            initial["payment_type"] = self.request.session.get("payment_type")
         return initial
 
     def get_success_url(self):
+        OrderDetailCreate(self.request).created_order_details_product()
+
+        # fixme как удалять корзину из сессии
+        self.request.session["cart"] = None
+        self.request.session["cart_size"] = None
+        self.request.session["cart_price"] = None
         return reverse("orders:view_step_four")
 
 
+class OrderStepFourView(ListView):
+    """View - class для отображения четвёртого шага заказа."""
+
+    model = OrderDetail
+    template_name = "orders/order_step_four.jinja2"
+    context_object_name = "products"
+
+    def get_queryset(self):
+        order = Order.objects.filter(user__pk=self.request.user.pk).first()
+        queryset = order.details.all()
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context["total"] = self.get_total_price()
+        return context
+
+    def get_total_price(self):
+        """Метод получения общей цены заказа"""
+        price = 0
+        for product in self.get_queryset():
+            product_price = product.offer.price * product.quantity
+            price += product_price
+        return price
+
+
 class OrderHistoryListView(ListView):
-    model = UserOfferCart
+    """View - class для отображения истории заказов пользователя."""
+
+    model = Order
     template_name = "orders/order_history.jinja2"
     context_object_name = "orders"
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["history"] = Order.objects.filter(carts__user__user_id=self.request.user.pk)
-        return context
-
-
-def orders_db_test_view(request):
-    orders = Order.objects.all()
-    order = Order.objects.first()
-    client = order.carts
-    context = {
-        "orders": orders,
-        "order_first": order,
-        # "carts": UserOfferCart.objects.all(),
-        "sum_price": order.products_summ_price(),
-        "client": client,
-    }
-
-    return render(request, "orders/order_test_view.jinja2", context=context)
-
-
-class UserOrderListView(ListView):
-    """Страница отображения заказов пользователя"""
-
-    model = Order
-    template_name = "orders/user_order_list.jinja2"
-    context_object_name = "order"
-
     def get_queryset(self):
-        queryset = Order.objects.prefetch_related("carts").filter(carts__user__pk=self.request.user.pk)
+        user = User.objects.get(pk=self.request.user.pk)
+        queryset = (
+            Order.objects.filter(user=user)
+            .select_related("user")
+            .prefetch_related(
+                "details",
+                "details__offer",
+                "details__offer__product",
+            )
+        )
         return queryset
 
-
-class OrderCreateView(CreateView):
-
-    """Тестовый вью класс - удалить"""
-
-    model = Order
-    template_name = "orders/order_test_create.jinja2"
-    fields = [
-        # "created_at",
-        "city",
-        "address",
-        "user",
-        "order",
-        "delivery_type",
-        "payment_type",
-        "status",
-        "total_price",
-    ]
-
-
-# user = залогиненый
-# продукты {
-#     [product]: [1,3,2,4]
-# }
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["history"] = self.get_queryset()
+        return context

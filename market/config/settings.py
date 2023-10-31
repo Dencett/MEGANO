@@ -68,7 +68,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "config.urls"
 
 if DEBUG:
-    SHELL_PLUS_PRINT_SQL = True
+    SHELL_PLUS_PRINT_SQL = False
 
 INTERNAL_IPS = [
     "0.0.0.0",
