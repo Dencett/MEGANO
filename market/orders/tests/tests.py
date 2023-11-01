@@ -2,7 +2,7 @@ from django.test import TestCase  # noqa
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
-from catalog.tests.utils import get_fixtures_list, echo_sql
+from catalog.tests.utils import get_fixtures_list, echo_sql  # noqa
 from orders.models import Order
 
 
@@ -36,7 +36,7 @@ class OrderCreateTestCase(TestCase):
         self.user.delete()
         self.order.delete()
 
-    @echo_sql
+    # @echo_sql
     def test_create_order(self):
         order = Order.objects.last()
         self.assertEqual(self.order.order_number, 1)
