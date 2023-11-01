@@ -5,6 +5,8 @@ from profiles.models import User
 
 
 class Order(models.Model):
+    """Класс модели таблицы заказов"""
+
     DELIVERY_TYPE_DICT = {
         "usually": "обычная доставка",
         "express": "экспресс-доставка",
@@ -66,7 +68,7 @@ class Order(models.Model):
         default=PAYMENT_TYPES[0],
         verbose_name=_("способ оплаты"),
     )
-    order_number = models.PositiveIntegerField(default=1)
+    order_number = models.PositiveIntegerField(default=1, verbose_name=_("номер заказа"))
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=STATUS_CREATED, verbose_name="status")
     # total_price = models.DecimalField(
     #     max_digits=12,
@@ -103,9 +105,21 @@ class Order(models.Model):
 
 
 class OrderDetail(models.Model):
-    offer = models.ForeignKey(to="shops.Offer", on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
-    user_order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="details")
+    """
+    Класс модели деталей заказа
+    (предложения и продукты загружаемые из корзины)
+    """
+
+    offer = models.ForeignKey(
+        to="shops.Offer",
+        on_delete=models.CASCADE,
+        verbose_name=_("Предложение"),
+        help_text=_("Выбрать желаемый товар по специальной цене от магазина"),
+    )
+    quantity = models.PositiveIntegerField(default=1, verbose_name=_("Количество товара"))
+    user_order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name="details", verbose_name=_("Номер заказа пользователя")
+    )
 
     class Meta:
         verbose_name = _("заказ пользователя")

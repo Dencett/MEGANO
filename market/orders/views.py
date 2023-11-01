@@ -95,7 +95,6 @@ class OrderStepThreeView(LoginRequiredMixin, FormView):
     def get_success_url(self):
         OrderDetailCreate(self.request).created_order_details_product()
 
-        # fixme как удалять корзину из сессии
         self.request.session["cart"] = None
         self.request.session["cart_size"] = None
         self.request.session["cart_price"] = None
