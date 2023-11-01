@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_jinja",
     "django_extensions",
+    "site_settings",
     "products",
     "shops",
     "profiles",
@@ -99,6 +100,7 @@ TEMPLATES = [
             "match_regex": None,
             "app_dirname": "templates",
             "context_processors": [
+                "context_processors.settings_context.site_settings",
                 "context_processors.menu_context.categories_menu",
                 "context_processors.catalog_context.product_placeholders",
                 "context_processors.comparison_context.comparison_items",
