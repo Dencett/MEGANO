@@ -457,5 +457,32 @@
         "detail": 24,
         "value": "2160x1440"
     }
+},
+{
+    "model": "products.productdetail",
+    "pk": 56,
+    "fields": {
+        "product": 16,
+        "detail": 1,
+        "value": "6"
+    }
+},
+{
+    "model": "products.productdetail",
+    "pk": 57,
+    "fields": {
+        "product": 16,
+        "detail": 16,
+        "value": "100"
+    }
+},
+{
+    "model": "products.productdetail",
+    "pk": 58,
+    "fields": {
+        "product": 16,
+        "detail": 17,
+        "value": "20000"
+    }
 }
 ]

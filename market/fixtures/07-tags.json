@@ -131,5 +131,47 @@
     "fields": {
         "name": "realme"
     }
+},
+{
+    "model": "products.tag",
+    "pk": 20,
+    "fields": {
+        "name": "DEXP"
+    }
+},
+{
+    "model": "products.tag",
+    "pk": 21,
+    "fields": {
+        "name": "ASUS"
+    }
+},
+{
+    "model": "products.tag",
+    "pk": 22,
+    "fields": {
+        "name": "Canon"
+    }
+},
+{
+    "model": "products.tag",
+    "pk": 23,
+    "fields": {
+        "name": "JBL"
+    }
+},
+{
+    "model": "products.tag",
+    "pk": 24,
+    "fields": {
+        "name": "LG"
+    }
+},
+{
+    "model": "products.tag",
+    "pk": 25,
+    "fields": {
+        "name": "Nikon"
+    }
 }
 ]
