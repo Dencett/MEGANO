@@ -4,12 +4,13 @@ from django.db.models import QuerySet
 
 from products.models import Banner, Category
 from shops.models import Offer
+from site_settings.models import SiteSettings
 
 
 class OffersMixin:
-    offer_limit = 8
-    banner_limit = 3
-    foreground_category_limit = 3
+    @property
+    def site_settings(self) -> SiteSettings:
+        return SiteSettings.load()
 
     def get_offers_queryset(
         self,
@@ -38,7 +39,7 @@ class OffersMixin:
         return Offer.objects.select_related(*select_related_fields).filter(**filter_).only(*fields).order_by(ordering)
 
     def get_offers(self) -> QuerySet:
-        return self.get_offers_queryset(ordering="?")[: self.offer_limit]
+        return self.get_offers_queryset(ordering="?")[: self.site_settings.offer_limit]
 
     def get_min_price_product(self) -> QuerySet:
         return self.get_offers_queryset(ordering="price").first()
@@ -47,9 +48,12 @@ class OffersMixin:
         return self.get_offers_queryset(
             ordering="remains",
             filter_={"remains__gte": 1},
-        )[: self.offer_limit]
+        )[: self.site_settings.offer_limit]
 
-    def get_banners(self, limit: int = banner_limit) -> QuerySet:
+    def get_banners(self, limit: int | None = None) -> QuerySet:
+        if not limit:
+            limit = self.site_settings.banner_limit
+
         fields = [
             "name",
             "description",
@@ -59,7 +63,10 @@ class OffersMixin:
 
         return Banner.objects.filter(archived=False).only(*fields).order_by("?")[:limit]
 
-    def get_foreground_category(self, limit: int = foreground_category_limit) -> QuerySet:
+    def get_foreground_category(self, limit: int | None = None) -> QuerySet:
+        if not limit:
+            limit = self.site_settings.foreground_category_limit
+
         fields = ["foreground"]
 
         return Category.objects.filter(foreground=True).order_by("?").only(*fields).values_list("id")[:limit]
