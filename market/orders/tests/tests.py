@@ -51,7 +51,7 @@ class UserHistoryOrdersListViewTestCase(TestCase):
     fixtures = get_fixtures_list()
 
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         cls.all_info = {
             "username": "John-test",
             "phone": "89701112233",
@@ -63,7 +63,7 @@ class UserHistoryOrdersListViewTestCase(TestCase):
             "email": "jhon@test.com",
             "password": "JohnTest1234",
         }
-
+        # Создание пользователя
         cls.user = User.objects.create_user(
             username=cls.all_info["username"],
             email=cls.user_login_info["email"],
@@ -97,7 +97,7 @@ class UserHistoryOrdersListViewTestCase(TestCase):
     def test_order_contains_delivery_type(self):
         response = self.client.get(reverse("orders:history"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "обычная доставка")
+        self.assertContains(response, "обычная доставка".title())
 
     def test_contains_payment_type(self):
         response = self.client.get(reverse("orders:history"))
