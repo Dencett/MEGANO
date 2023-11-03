@@ -29,13 +29,6 @@ class OrderDetailModelTestCase(TestCase):
         cls.order = Order.objects.create(**order_data)
         cls.order_detail = OrderDetail.objects.create(offer=cls.offer, quantity=2, user_order=cls.order)
 
-    @classmethod
-    def tearDownClass(cls) -> None:
-        cls.user.delete()
-        cls.order.delete()
-        cls.offer.delete()
-        cls.order_detail.delete()
-
     def test_details(self):
         order_detail = OrderDetailModelTestCase.order_detail
 
@@ -69,11 +62,6 @@ class OrderModelTestCase(TestCase):
             user=cls.user,
         )
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()
-        cls.order.delete()
-
     def test_details(self):
         order = OrderModelTestCase.order
         field_verboses = {
@@ -90,7 +78,6 @@ class OrderModelTestCase(TestCase):
             with self.subTest(field=field):
                 self.assertEqual(order._meta.get_field(field).verbose_name, expected_value)
 
-    # @echo_sql
     def test_default_delivery_type(self):
         order = OrderModelTestCase.order
         default = order._meta.get_field("delivery_type").default

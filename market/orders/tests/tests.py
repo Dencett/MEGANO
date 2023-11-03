@@ -12,15 +12,16 @@ User = get_user_model()
 class OrderCreateTestCase(TestCase):
     """Тест создания заказа"""
 
-    def setUp(self) -> None:
-        self.user = User.objects.create(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create(
             email="test_user@mail.com",
             username="test_user",
             password="qwerty1234",
         )
 
         some_data = {
-            "user": self.user,
+            "user": cls.user,
             "city": "test city",
             "address": "test address",
             "delivery_type": "Новый заказ",
@@ -28,15 +29,11 @@ class OrderCreateTestCase(TestCase):
             # "order_number": ,
             "status": "created",
         }
-        self.order = Order.objects.create(**some_data)
+        cls.order = Order.objects.create(**some_data)
 
+    def setUp(self) -> None:
         self.client.login(email="test_user@mail.com", password="qwerty1234")
 
-    def tearDown(self) -> None:
-        self.user.delete()
-        self.order.delete()
-
-    # @echo_sql
     def test_create_order(self):
         order = Order.objects.last()
         self.assertEqual(self.order.order_number, 1)
@@ -84,11 +81,6 @@ class UserHistoryOrdersListViewTestCase(TestCase):
         }
         # Создание заказа
         cls.order = Order.objects.create(**cls.order_data)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.user.delete()  # Удалить пользователя после теста
-        cls.order.delete()  # Удалить заказ после теста
 
     def setUp(self) -> None:
         self.client.login(**self.user_login_info)
