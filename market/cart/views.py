@@ -113,5 +113,7 @@ class CartView(View):
             self.BUTTONS[2]: CartListView.as_view(),  # Оформить заказ
         }
         action = request.POST.get("action")
+        if action == self.BUTTONS[2]:
+            return redirect("orders:view_step_one")
         view = choice.get(action)
         return view(request, *args, buttons=self.BUTTONS, **kwargs)
