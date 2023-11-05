@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     "cart",
     "comparison",
     "orders",
-    "pay_API",
+    "api_payments",
     "payapp",
 ]
 
@@ -215,3 +215,4 @@ CART_PRICE_SESSION_KEY = "cart_price"
 
 PAY_QUEUE = Queue()
 PAY_QUEUE_LOCK = Lock()
+PAY_URL = reverse_lazy("api_payments:pays")

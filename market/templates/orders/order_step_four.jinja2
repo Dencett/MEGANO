@@ -13,7 +13,9 @@
 
 {% block order_content %}
 <!--мы на четвёртой странице-->
-<form class="form" action="#" method="post">
+{# {{ user=products.first().user_order.user }} #}
+{% set order_info=products.first().user_order %}
+<form class="form" action="{{url('payapp:my_pay', order_info.pk)}}" method="get">
     <div class="Order-block Order-block_OPEN" id="step1">
         <header class="Section-header Section-header_sm">
             <h2 class="Section-title">Шаг 4. Подтверждение заказа
@@ -31,8 +33,7 @@
                             <div class="Order-infoType">ФИО:
                             </div>
 <!-- ============================username ================================-->
-                            {# {{ user=products.first().user_order.user }} #}
-                            {% set order_info=products.first().user_order %}
+
                             <div class="Order-infoContent">{{ user.first_name }} {{ user.last_name }}
                             </div>
                         </div>

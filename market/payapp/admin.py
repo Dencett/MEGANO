@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import TestOrder, OrderPayStatus
+from .models import OrderPayStatus
 
 # Register your models here.
 
@@ -7,5 +7,4 @@ from .models import TestOrder, OrderPayStatus
 # class TestOrderAdmin(admin.ModelAdmin):
 #
 
-admin.site.register(TestOrder)
 admin.site.register(OrderPayStatus)

@@ -1,14 +1,18 @@
 import time
+import json
 from threading import Thread, Lock
 import requests
 from queue import Queue
+from orders.services.services import get_order_total_price
+from orders.models import Order
 
 
 class PayThread(Thread):
-    def __init__(self, queue: Queue, lock: Lock, *args, **kwargs):
+    def __init__(self, queue: Queue, lock: Lock, url: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.queue_lock = lock
         self.queue: Queue = queue
+        self.url = url
 
     def run(self):
         if not self.queue_lock.locked():
@@ -17,23 +21,26 @@ class PayThread(Thread):
                 while not self.queue.empty():
                     count += 1
                     order, bank_account, record = self.queue.get()
-                    params = {"identify_number": order.number, "cart_number": bank_account, "price": order.price}
-                    print(f"params = {params}")
-                    response = requests.request("POST", url="http://127.0.0.1:8000/api/meganopay/", data=params)
+                    order_price = get_order_total_price(order)
+                    params = {"identify_number": order.pk, "cart_number": bank_account, "price": order_price}
+                    response = requests.request("POST", url=self.url, data=params)
                     time.sleep(2)
-                    print(f"count={count} response={response.text} status={response.status_code}")
                     if response.status_code == 200:
-                        self.set_status_to_order(order=order)
+                        self.set_status_paid_to_order(order=order)
                     self.register_pay_response(record=record, answer_from_api=response.text)
+                    return
 
         else:
-            print(f"finish {self.name}")
             return
 
     def register_pay_response(self, record, answer_from_api):
-        record.answer_from_api = answer_from_api
+        record.answer_from_api = json.loads(answer_from_api)
         record.save()
 
-    def set_status_to_order(self, order):
-        order.status_payed = True
+    def set_status_paid_to_order(self, order: Order):
+        order.status = Order.STATUS_PAID
+        order.save()
+
+    def set_status_not_paid_to_order(self, order: Order):
+        order.status = Order.STATUS_NOT_PAID
         order.save()
