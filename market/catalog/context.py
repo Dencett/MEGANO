@@ -6,24 +6,23 @@ from catalog.common import get_famous_tags, parse_price
 from catalog.utils import Params, Sorter, Filter
 from context_processors.menu_context import get_categories_list
 from products.models import Category
+from site_settings.models import SiteSettings
 
 
 class CatalogContextProcessor:
-    pagination_on_each_side: int = 2
-    pagination_on_ends: int = 1
-
-    default_sort_name = "famous"
-    default_desc = "on"
+    """Класс для формирования контекста в приложение кталога"""
 
     def __init__(
         self,
         request: HttpRequest,
         context: Dict[str, Any],
         raw_params: Params,
+        site_settings: SiteSettings,
     ) -> None:
         self.request = request
         self.context = context
         self.__params = raw_params
+        self.site_settings = site_settings
 
         self.sorter = Sorter()
         self.filter = Filter(raw_params)
@@ -34,6 +33,7 @@ class CatalogContextProcessor:
 
     def set_context(self) -> None:
         """
+        Назначение ключей контекста
         Context keys:
             params - Params\n
             sort_params - Params\n
@@ -66,6 +66,7 @@ class CatalogContextProcessor:
 
     def __set_params_context(self) -> None:
         """
+        Назначение ключа параметров контекста
         Context keys:
             params - Params\n
         """
@@ -84,6 +85,7 @@ class CatalogContextProcessor:
 
     def set_pagination_context(self) -> None:
         """
+        Назначение диапазона пагинатора
         Context keys:
             pagination_range - Generator[str, None, None]
         """
@@ -91,6 +93,7 @@ class CatalogContextProcessor:
 
     def __set_tags_context(self) -> None:
         """
+        Назначение тегов
         Context keys:
             famous_tags - List[Tag]\n
             tag_params - Params
@@ -102,6 +105,7 @@ class CatalogContextProcessor:
 
     def __set_category_context(self) -> None:
         """
+        Назначение категорий
         Context keys:
             category_params - Params
         Optional context keys:
@@ -117,6 +121,7 @@ class CatalogContextProcessor:
 
     def __set_sort_context(self) -> None:
         """
+        Назначение сортировки
         Context keys:
             sort_items - Generator[Tuple[str, str], None, None]\n
             sort - String\n
@@ -124,8 +129,8 @@ class CatalogContextProcessor:
             sort_params - Params
         """
         context_data = {
-            "sort": self.__params.get("sort") or self.default_sort_name,
-            "desc": self.__params.get("desc") or self.default_desc,
+            "sort": self.__params.get("sort") or self.site_settings.default_sort_type,
+            "desc": self.__params.get("desc") or self.site_settings.default_sort_desc,
             "sort_items": self.sorter.get_items(),
         }
 
@@ -137,6 +142,7 @@ class CatalogContextProcessor:
 
     def __set_search_context(self) -> None:
         """
+        Назначение поиска
         Optional context keys:
             search - String
         """
@@ -147,6 +153,7 @@ class CatalogContextProcessor:
 
     def __set_price_context(self) -> None:
         """
+        Назначение цены
         Context keys:
             default_price_from - Float\n
             default_price_to - Float\n
@@ -160,11 +167,12 @@ class CatalogContextProcessor:
             self.context["start_price"] = prices[0]
             self.context["stop_price"] = prices[1]
 
-        self.context["default_price_from"] = self.filter.default_price_from
-        self.context["default_price_to"] = self.filter.default_price_to
+        self.context["default_price_from"] = self.site_settings.default_price_from
+        self.context["default_price_to"] = self.site_settings.default_price_to
 
     def set_filter_context(self, data: Dict[str, Any] | None = None) -> None:
         """
+        Назначение фильтра
         Context keys:
             filter_params - Params
         Optional context keys:
@@ -197,6 +205,7 @@ class CatalogContextProcessor:
         self.context.update(context_data)
 
     def __get_pagination_range(self) -> Generator[str, None, None]:
+        """Получение диапазона пагинатора"""
         page_number = self.request.GET.get("page")
 
         if not page_number:
@@ -204,16 +213,18 @@ class CatalogContextProcessor:
 
         return self.context["paginator"].get_elided_page_range(
             number=page_number,
-            on_each_side=self.pagination_on_each_side,
-            on_ends=self.pagination_on_ends,
+            on_each_side=self.site_settings.pagination_on_each_side,
+            on_ends=self.site_settings.pagination_on_ends,
         )
 
     def __get_current_category(self, category_id: str) -> Category:
-        categories_list = get_categories_list()
+        """Получение текущей категории"""
+        categories_list = get_categories_list(self.request)
 
         for category in categories_list:
             if str(category.pk) == category_id:
                 return category
 
     def __build_sort_params(self, data: Dict[str, Any]) -> Params:
+        """Сборки параметров сортировки"""
         return Params(sort=data["sort"], desc="on" if data["desc"] == "on" else "off")
