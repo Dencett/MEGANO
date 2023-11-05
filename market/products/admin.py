@@ -88,6 +88,7 @@ class CategoryAdmin(admin.ModelAdmin):
         "modified_at",
         "is_active",
         "archived",
+        "foreground",
     )
     list_display_links = (
         "pk",
@@ -111,6 +112,7 @@ class CategoryAdmin(admin.ModelAdmin):
                     "name",
                     "parent",
                     "slug",
+                    "foreground",
                 ),
             },
         ),

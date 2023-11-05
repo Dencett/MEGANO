@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "catalog",
     "cart",
     "comparison",
+    "importdata",
 ]
 
 SHELL_PLUS_PRINT_SQL = False
@@ -204,3 +205,27 @@ COMPARISON_SESSION_ID = "comparison"
 CART_SESSION_KEY = "cart"
 CART_SIZE_SESSION_KEY = "cart_size"
 CART_PRICE_SESSION_KEY = "cart_price"
+
+
+# Celery configuration
+
+# configure the location of Redis database:
+CELERY_BROKER_URL = config["REDIS_URL"]
+# configure storing the state and returning values of tasks in Redis
+CELERY_RESULT_BACKEND = config["REDIS_URL"]
+
+
+# Django Email
+# https://docs.djangoproject.com/en/4.2/topics/email/
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_USER_SSL = False
+# EMAIL_HOST_USER =
+# EMAIL_HOST_PASSWORD =
+
+
+IMPORT_FOLDER = "import_folder"

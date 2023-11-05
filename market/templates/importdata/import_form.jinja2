@@ -1,0 +1,7 @@
+<div>
+   <form action="" method="post" accept-charset="utf-8">
+       {{ form.as_p() }}
+       {% csrf_token %}
+       <p><input type="submit" value="Continue &rarr;"></p>
+   </form>
+</div>
