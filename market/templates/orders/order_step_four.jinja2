@@ -1,0 +1,133 @@
+{% extends 'orders/order_base.jinja2' %}
+
+
+{% block title %}
+Заказ товара. Шаг 2
+{% endblock %}
+
+
+{% block step_four %}
+{% include "profiles/activate_menu.jinja2" %}
+{% endblock %}
+
+
+{% block order_content %}
+<!--мы на четвёртой странице-->
+<form class="form" action="#" method="post">
+    <div class="Order-block Order-block_OPEN" id="step1">
+        <header class="Section-header Section-header_sm">
+            <h2 class="Section-title">Шаг 4. Подтверждение заказа
+
+            </h2>
+        </header>
+        <div class="Order-infoBlock">
+
+
+            <div class="Order-personal">
+
+                <div class="row">
+                    <div class="row-block">
+                        <div class="Order-info">
+                            <div class="Order-infoType">ФИО:
+                            </div>
+<!-- ============================username ================================-->
+                            {# {{ user=products.first().user_order.user }} #}
+                            {% set order_info=products.first().user_order %}
+                            <div class="Order-infoContent">{{ user.first_name }} {{ user.last_name }}
+                            </div>
+                        </div>
+<!-- ============================ телефон ================================-->
+                        <div class="Order-info">
+                            <div class="Order-infoType">Телефон:
+                            </div>
+                            <div class="Order-infoContent">{{ user.phone }}
+                            </div>
+                        </div>
+<!-- ============================ email ================================-->
+                        <div class="Order-info">
+                            <div class="Order-infoType">E-mail:
+                            </div>
+                            <div class="Order-infoContent">{{ user.email }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-block">
+                        <div class="Order-info Order-info_delivery">
+                            <div class="Order-infoType">Тип доставки:
+                            </div>
+<!--============================ тип доставки ================================-->
+                            <div class="Order-infoContent">{{ order_info.DELIVERY_TYPE_DICT[order_info.delivery_type].title() }}
+                            </div>
+                        </div>
+                        <div class="Order-info">
+                            <div class="Order-infoType">Город:
+                            </div>
+                            <div class="Order-infoContent"> {{ order_info.city }}
+                            </div>
+                        </div>
+                        <div class="Order-info">
+                            <div class="Order-infoType">Адрес:
+                            </div>
+                            <div class="Order-infoContent">{{ order_info.address }}
+                            </div>
+                        </div>
+                        <div class="Order-info Order-info_pay">
+                            <div class="Order-infoType">Оплата:
+                            </div>
+                            <div class="Order-infoContent"> {{ order_info.PAYMENT_TYPES_DICT[order_info.payment_type].title() }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--=================== Список товаров ==============================-->
+
+            <div class="Cart Cart_order">
+                {% for prod in products %}
+<!--=================== Карта товара  ==============================-->
+                <div class="Cart-product">
+                    <div class="Cart-block Cart-block_row">
+                        <div class="Cart-block Cart-block_pict">
+                            <a class="Cart-pict" href="{{ url( 'products:product-detail', pk=prod.offer.product.pk)}}">
+                                <img class="Cart-img" src="{{ prod.offer.product.preview.url }}" alt="{{ prod.offer.product.name}}" />
+                            </a>
+                        </div>
+                        <div class="Cart-block Cart-block_info"><a class="Cart-title" href="#">{{ prod.offer.product.name }}</a>
+                            <div class="Cart-desc">{{ prod.offer.product.description[:80] }} ...
+                            </div>
+                        </div>
+                        <div class="Cart-block Cart-block_price">
+                            <div class="Cart-price">{{ prod.offer.price }}$
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Cart-block Cart-block_row">
+                        <div class="Cart-block Cart-block_amount"> {{ prod.quantity }} шт.
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+<!--=================== Карта товара  ==============================-->
+
+
+
+<!--=================== Итоговая цена товаров ==============================-->
+                <div class="Cart-total">
+                    <div class="Cart-block Cart-block_total">
+                        <strong class="Cart-title">Итого:
+                        </strong><span class="Cart-price"> {{ total }} $</span>
+                    </div>
+                    <div class="Cart-block">
+                        <button class="btn btn_primary btn_lg" type="submit">Оплатить
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+<!--=================== Итоговая цена товаров ==============================-->
+<!--=================== Список товаров ==============================-->
+        </div>
+    </div>
+</form>
+
+{% endblock %}

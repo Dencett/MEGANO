@@ -9,7 +9,13 @@ from cart.models import UserOfferCart
 from shops.models import Offer
 
 
+class AnonimServiceException(Exception):
+    pass
+
+
 class AnonimCartService:
+    """Сервис корзины для анонимного пользователя. Все записи, цена и кол-во товара хранятся в сессии"""
+
     def __init__(self, request: HttpRequest):
         self.session = request.session
         session_cart = self.session.get(settings.CART_SESSION_KEY)
@@ -45,6 +51,7 @@ class AnonimCartService:
             self.session[settings.CART_PRICE_SESSION_KEY] = "{:.2f}".format(cart_price - float(money))
 
     def get_cart_as_list(self):
+        """Получает список из UserOfferCart без атрибута user на основании сессии"""
         cart = []
         if not self.session_cart:
             return cart
@@ -53,7 +60,19 @@ class AnonimCartService:
             cart.append(record)
         return cart
 
+    def get_cart_as_dict(self):
+        """Получает список из UserOfferCart без атрибута user на основании сессии"""
+        cart = []
+        if not self.session_cart:
+            return cart
+        return cart
+
     def remove_from_cart(self, offer_id: int):
+        """
+        Удаляет одну запись(Offer) активной корзины
+        :param offer_id: Offer.pk - ID модели Offer
+        :return:
+        """
         try:
             current_amount = self.session_cart.pop(str(offer_id))
 
@@ -66,6 +85,12 @@ class AnonimCartService:
             return
 
     def add_to_cart(self, offer_id: int, amount: Union[int, str] = 1):
+        """
+        Добавляет к существующей корзине запись, если такая запись уже существует добавляет количество.
+        :param offer_id:
+        :param amount:
+        :return:
+        """
         current_amount = int(self.session_cart.get(str(offer_id), "0"))
         self.session_cart[str(offer_id)] = str(current_amount + int(amount))
         self._change_session_cart_length(amount=amount)
@@ -74,6 +99,12 @@ class AnonimCartService:
         self._save_cart()
 
     def change_amount(self, offer_id: int, amount: int):
+        """
+        Изменяет количество в существующей записи корзине
+        :param offer_id:
+        :param amount:
+        :return:
+        """
         current_amount = self.session_cart.get(str(offer_id))
         if not current_amount:
             raise UserOfferCart.DoesNotExict("Такого предложения не найдено в корзине")
@@ -87,8 +118,8 @@ class AnonimCartService:
 
     def update_cart(self, data: dict):
         """
-
-        :param data: is dict where key = offer_id; value = amount
+        Изменяет анонимную корзину согласно переданному словарю. Данные предыдущей корзины удаляться.
+        :param data:  is dict where key = offer_id; value = amount например data = {Offer.pk: amount, ... }
         :return:
         """
         new_data = {}
@@ -112,10 +143,12 @@ class AnonimCartService:
         self._save_cart()
 
     def get_upd_price(self):
+        """Обновляет цену для всей корзины на основе данных из БД и возвращает это значение"""
         self._update_price()
         return self.session[settings.CART_PRICE_SESSION_KEY]
 
     def get_upd_length(self):
+        """Обновляет кол-во товара для всей корзины на основе данных в сессии и возвращает это значение"""
         length = 0
         for amount in self.session_cart.values():
             length += int(amount)
@@ -124,20 +157,37 @@ class AnonimCartService:
         return length
 
     def get_offers_len(self) -> int:
+        """Возвращает количество записей в корзине сессии"""
         length = len(self.session_cart)
         return length
 
     def __len__(self):
+        """Возвращает значение равное кол-ву товара хранимое в сессии session['cart_size"]"""
         return int(self.session[settings.CART_SIZE_SESSION_KEY])
 
     def clear(self):
+        """Удаляет и обнуляет анонимную корзину"""
         self.session_cart.clear()
         self._save_cart()
         self.session[settings.CART_SIZE_SESSION_KEY] = "0"
         self.session[settings.CART_PRICE_SESSION_KEY] = "0.00"
 
+    def append_cart_to_history(self):
+        """Не применимо к анонимной корзине. функция для сохранения записей корзины в истории"""
+        raise AnonimServiceException(
+            "Такой метод недопустим для анонимной корзины",
+        )
+
 
 class UserCartService:
+    """
+    Класс для сервиса пользовательской корзины.
+    Кол-во товара и цена активной корзины хранятся в сессии.
+    Записи корзины хранятся в БД модель UserOfferCart.
+    если поле записи is_active = True, то запись попадает в текущую корзину пользователя. иначе записи хранятся,
+    как журнал на записи которого ссылается модель Заказа.
+    """
+
     def __init__(self, request: HttpRequest):
         self.user = request.user
         self.session = request.session
@@ -169,11 +219,15 @@ class UserCartService:
             self.session[settings.CART_PRICE_SESSION_KEY] = "{:.2f}".format(cart_price - float(money))
 
     def get_cart_as_list(self) -> list:
-        return list(UserOfferCart.objects.filter(user=self.user))
+        """Возвращает список с активными записями корзины из БД"""
+        return list(UserOfferCart.objects.filter(user=self.user, is_active=True).select_related("offer"))
 
     def remove_from_cart(self, offer_id: int):
+        """Удаляет активную запись корзины c полученным Offer.id"""
         try:
-            cart_record = UserOfferCart.objects.select_related("offer").get(user=self.user, offer_id=offer_id)
+            cart_record = UserOfferCart.objects.select_related("offer").get(
+                user=self.user, offer_id=offer_id, is_active=True
+            )
             current_amount = cart_record.amount
             self._change_session_cart_length(current_amount, add=False)
             self._change_session_cart_price(cart_record.offer.price * current_amount, add=False)
@@ -182,7 +236,9 @@ class UserCartService:
         except UserOfferCart.DoesNotExist:
             return
         except UserOfferCart.MultipleObjectsReturned:
-            cart_records = UserOfferCart.objects.filter(user=self.user, offer_id=offer_id).select_related("offer")
+            cart_records = UserOfferCart.objects.filter(
+                user=self.user, offer_id=offer_id, is_active=True
+            ).select_related("offer")
             current_amount = sum([record.amount for record in cart_records])
             current_price = sum([record.offer.price * record.amount for record in cart_records])
             self._change_session_cart_length(current_amount, add=False)
@@ -190,27 +246,42 @@ class UserCartService:
             cart_records.delete()
 
     def add_to_cart(self, offer_id: int, amount=1):
+        """Добавляет к существующей активной записи корзины на основе offer_id количество amount,
+        или создает запись с соответствующим offer; amount
+        """
         try:
-            cart_record = UserOfferCart.objects.get(user=self.user, offer_id=offer_id)
+            cart_record = UserOfferCart.objects.get(user=self.user, offer_id=offer_id, is_active=True)
             cart_record.amount += amount
             cart_record.save()
         except UserOfferCart.DoesNotExist:
-            cart_record = UserOfferCart(user=self.user, offer_id=offer_id, amount=amount)
+            cart_record = UserOfferCart(user=self.user, offer_id=offer_id, amount=amount, is_active=True)
             cart_record.save()
         self._change_session_cart_length(cart_record.amount)
         self._change_session_cart_price(cart_record.offer.price * cart_record.amount)
 
     def change_amount(self, offer_id: int, amount: int):
-        cart_record = UserOfferCart.objects.get(user=self.user, offer_id=offer_id).select_related("offer")
+        """
+        Изменяет количество для уже существующей активной записи корзины на основе offer_id
+        :param offer_id:
+        :param amount:
+        :return:
+        """
+        cart_record = UserOfferCart.objects.get(user=self.user, offer_id=offer_id, is_active=True).select_related(
+            "offer"
+        )
         current_amount = cart_record.amount
         cart_record.amount = int(amount)
         self._change_session_cart_length(amount - current_amount)
         self._change_session_cart_price(cart_record.offer.price * (amount - current_amount))
         cart_record.save()
-        # self._change_session_cart_length(amount)
         self._save_cart()
 
     def update_cart(self, data: dict):
+        """
+        Изменяет активную корзину пользователя согласно переданному словарю. Данные предыдущей корзины удаляться.
+        :param data:  is dict where key = offer_id; value = amount например data = {Offer.pk: amount, ... }
+        :return:
+        """
         current_cart = self.get_cart_as_list()
         remove_list = []
         update_list = []
@@ -231,9 +302,9 @@ class UserCartService:
             self._update_price()
 
     def _update_price(self):
-        sum_price = 0
         sum_price = (
-            UserOfferCart.objects.select_related("offer")
+            UserOfferCart.objects.filter(user=self.user, is_active=True)
+            .select_related("offer")
             .annotate(sum_price=(F("amount") + 0) * F("offer__price"))
             .aggregate(Sum("sum_price"))
             .get("sum_price__sum")
@@ -242,11 +313,15 @@ class UserCartService:
         self._save_cart()
 
     def get_upd_price(self):
+        """Обновляет цену для всей корзины на основе данных из БД и возвращает это значение"""
         self._update_price()
         return self.session[settings.CART_PRICE_SESSION_KEY]
 
     def get_upd_length(self) -> int:
-        length = UserOfferCart.objects.filter(user=self.user).aggregate(Sum("amount")).get("amount__sum")
+        """Обновляет кол-во товара для всей корзины на основе данных БД и возвращает это значение"""
+        length = (
+            UserOfferCart.objects.filter(user=self.user, is_active=True).aggregate(Sum("amount")).get("amount__sum")
+        )
         if not length:
             length = 0
         self.session[settings.CART_SIZE_SESSION_KEY] = str(length)
@@ -254,13 +329,16 @@ class UserCartService:
         return length
 
     def get_offers_len(self) -> int:
-        return UserOfferCart.objects.filter(user=self.user).count()
+        """Возвращает количество активных записей в корзине"""
+        return UserOfferCart.objects.filter(user=self.user, is_active=True).count()
 
     def __len__(self):
+        """Возвращает значение равное кол-ву товара в корзине хранимое в сессии session['cart_size"]"""
         return int(self.session[settings.CART_SIZE_SESSION_KEY])
 
     def clear(self):
-        queryset = UserOfferCart.objects.filter(user=self.user).all()
+        """Удаляет все активные записи корзины, обнуляет корзину"""
+        queryset = UserOfferCart.objects.filter(user=self.user, is_active=True).all()
         queryset.delete()
         self.session[settings.CART_SIZE_SESSION_KEY] = "0"
         self.session[settings.CART_PRICE_SESSION_KEY] = "0.00"
@@ -268,6 +346,22 @@ class UserCartService:
 
     def _save_cart(self):
         self.session.modified = True
+
+    def append_cart_to_history(self, cart_records: list = None):
+        """
+        Сохраняет активных записей корзины в не активные, эти записи дальше используются для хранения модели ЗАКАЗА.
+        Если не передан параметр cart_records, то переводит все активные записи текущего пользователя.
+        :param cart_records: список [UserOfferCart, ]
+        :return:
+        """
+        if not cart_records:
+            cart_records = self.get_cart_as_list()
+        for records in cart_records:
+            records.is_active = False
+        UserOfferCart.objects.bulk_update(cart_records, ["is_active"])
+        self.session[settings.CART_SIZE_SESSION_KEY] = "0"
+        self.session[settings.CART_PRICE_SESSION_KEY] = "0.00"
+        self._save_cart()
 
 
 def _merge_session_cart_to_user_cart(request: HttpRequest, anonim_cart: AnonimCartService):
@@ -282,19 +376,25 @@ def _merge_session_cart_to_user_cart(request: HttpRequest, anonim_cart: AnonimCa
 
 
 def get_cart_service(request: HttpRequest) -> Union[UserCartService, AnonimCartService]:
-    """Функция для получения сервиса для работы с корзиной"""
-    if request.user.is_anonymous:
-        return AnonimCartService(request)
-    else:
-        return UserCartService(request)
+    """Функция для получения сервиса для работы с корзиной. Если пользователь анонимный,
+    то возвращает сервис для Анонимной корзины работающий на сессиях. Иначе возвращает сервис для корзины пользователя,
+    работающий через БД.
+    """
+    # if request.user.is_anonymous:
+    #     return AnonimCartService(request)
+    # else:
+    #     return UserCartService(request)
+
+    return AnonimCartService(request)
 
 
 def login_cart(request: HttpRequest) -> None:
-    """Обновление пользовательской корзины при входе пользователя"""
-    anonim_cart = AnonimCartService(request)
-    if anonim_cart.session_cart:
-        user_cart = _merge_session_cart_to_user_cart(request, anonim_cart)
-    else:
-        user_cart = get_cart_service(request)
-    user_cart.get_upd_length()
+    """Обновление пользовательской корзины при входе пользователя, все записи анонимной корзины мигрируют в
+    пользовательскую корзину"""
+    # anonim_cart = AnonimCartService(request)
+    # if anonim_cart.session_cart:
+    #     user_cart = _merge_session_cart_to_user_cart(request, anonim_cart)
+    # else:
+    #     user_cart = get_cart_service(request)
+    # user_cart.get_upd_length()
     return

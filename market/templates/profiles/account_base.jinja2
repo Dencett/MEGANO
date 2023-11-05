@@ -28,7 +28,7 @@
                                     <a class="menu-link" href="{{ url('profiles:update-info', pk=user.pk) }}">Профиль</a>
                                 </li>
                                 <li class="{% block history_order %} menu-item {% endblock %}">
-                                    <a class="menu-link" href="historyorder.html">История заказов</a>
+                                    <a class="menu-link" href="{{ url('orders:history') }}">История заказов</a>
                                 </li>
                                 <li class="{% block history_product %} menu-item {% endblock %}">
                                     <a class="menu-link" href="{{ url('profiles:browsing_history') }}">История просмотра</a>

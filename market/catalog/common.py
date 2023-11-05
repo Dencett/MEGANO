@@ -7,9 +7,7 @@ from products.models import Tag
 
 
 def parse_price(price: str | None = None) -> Tuple[float, float] | None:
-    """
-    Return: (Start price, stop price) or None
-    """
+    """Функция преобразования цены из строки в кортеж чисел"""
 
     if not price:
         return
@@ -27,6 +25,7 @@ def parse_price(price: str | None = None) -> Tuple[float, float] | None:
 
 
 def get_famous_tags(count: int = 6) -> List[Tag]:  # fix: сортировка по популярности
+    """Функция получения популярных тегов"""
     cache_key = "famous_tags"
     famous_tags = cache.get(cache_key)
 

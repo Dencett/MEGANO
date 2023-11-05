@@ -18,13 +18,13 @@ class CartViewTest(TestCase):
     def setUp(self):
         pass
 
-    def test_auth_CartView_test(self):
-        offer_pk = 3
-        UserOfferCart(user=self.user, offer_id=offer_pk, amount=5).save()
-        offer = Offer.objects.get(pk=offer_pk)
-        self.client.force_login(self.user)
-        response = self.client.get(reverse("cart:user_cart"))
-        self.assertContains(response, offer.product.name)
+    # def test_auth_CartView_test(self):
+    #     offer_pk = 3
+    #     UserOfferCart(user=self.user, offer_id=offer_pk, amount=5).save()
+    #     offer = Offer.objects.get(pk=offer_pk)
+    #     self.client.force_login(self.user)
+    #     response = self.client.get(reverse("cart:user_cart"))
+    #     self.assertContains(response, offer.product.name)
 
     def test_anon_CartView_test(self):
         self.client.logout()

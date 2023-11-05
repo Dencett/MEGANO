@@ -44,16 +44,18 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_jinja",
     "django_extensions",
+    "site_settings",
     "products",
     "shops",
     "profiles",
     "catalog",
     "cart",
     "comparison",
+    "orders",
     "importdata",
 ]
 
-SHELL_PLUS_PRINT_SQL = False
+# SHELL_PLUS_PRINT_SQL = False
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -68,18 +70,18 @@ MIDDLEWARE = [
 ROOT_URLCONF = "config.urls"
 
 if DEBUG:
-    SHELL_PLUS_PRINT_SQL = True
+    SHELL_PLUS_PRINT_SQL = False
 
-    INTERNAL_IPS = [
-        "0.0.0.0",
-        "127.0.0.1",
-    ]
+INTERNAL_IPS = [
+    "0.0.0.0",
+    "127.0.0.1",
+]
 
-    ALLOWED_HOSTS += INTERNAL_IPS
+ALLOWED_HOSTS += INTERNAL_IPS
 
-    INSTALLED_APPS += ["debug_toolbar"]
+INSTALLED_APPS += ["debug_toolbar"]
 
-    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
 
 TEMPLATES = [
@@ -100,6 +102,7 @@ TEMPLATES = [
             "match_regex": None,
             "app_dirname": "templates",
             "context_processors": [
+                "context_processors.settings_context.site_settings",
                 "context_processors.menu_context.categories_menu",
                 "context_processors.catalog_context.product_placeholders",
                 "context_processors.comparison_context.comparison_items",
