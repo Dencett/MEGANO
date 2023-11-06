@@ -20,13 +20,13 @@
         </div>
         <div class="Section">
             <div class="wrap">
-                <form class="form Payment" action="{{url('payapp:acc', order_pk)}}" method="post">
+                <form class="form Payment" action="{{url('payapp:account_validate', order_pk)}}" method="post">
                     {% csrf_token %}
                     <div class="Payment-card">
                         <div class="form-group">
                             <label class="form-label">Номер карты
                             </label>
-                            <input class="form-input Payment-bill" id="numero1" name="banc_account" type="text" placeholder="9999 9999" data-mask="9999 9999">
+                            <input class="form-input Payment-bill" id="numero1" name="banc_account" type="text" >
                         </div>
                     </div>
                     {% if button %}
@@ -39,5 +39,6 @@
         </div>
     </div>
 
+<!--placeholder="9999 9999" data-mask="9999 9999"-->
 <!-- data-mask="9999 9999" data-validate="require pay" -->
 {% endblock %}

@@ -3,8 +3,9 @@ from threading import Lock
 from django.conf import settings
 
 from payapp.services.pay_processor import PayThread
-from payapp.models import OrderPayStatus
 from orders.models import Order
+from payapp.forms import BancAccountForm
+from payapp.models import OrderPayStatus
 
 
 def pay_order(order: Order, bank_account: int, host_name: str) -> None:
@@ -19,3 +20,10 @@ def pay_order(order: Order, bank_account: int, host_name: str) -> None:
     order.save()
     pay_queue.put(task, block=True)
     PayThread(pay_queue, lock, url).start()
+
+
+def invalid_form(order: Order, form: BancAccountForm) -> None:
+    order.status = Order.STATUS_NOT_PAID
+    order.save()
+    record = OrderPayStatus(order=order, answer_from_api={"error": form.errors})
+    record.save()

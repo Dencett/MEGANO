@@ -137,10 +137,10 @@ class ComparisonServiceOtherCase(TestCase):
         cls.product_1.details.set([*cls.details_1], through_defaults={"value": "тестовое значение"})
 
         cls.product_2 = Product.objects.create(
-            name="Тестовый продукт", category=cls.category, manufacturer=cls.manufacturer
+            name="Тестовый продукт 2", category=cls.category, manufacturer=cls.manufacturer
         )
 
-        cls.product_2.details.set([*cls.details_2], through_defaults={"value": "тестовое значение"})
+        cls.product_2.details.set([*cls.details_2], through_defaults={"value": "тестовое значение 2"})
 
     def setUp(self) -> None:
         self.request = RequestFactory().get("/")
