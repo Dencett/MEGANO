@@ -5,6 +5,7 @@ from orders.models import Order, OrderDetail
 from profiles.models import User
 from shops.models import Offer
 from config import settings
+from django.db.models import F, Sum
 
 
 class OrderServices:
@@ -80,3 +81,14 @@ class OrderDetailCreate:
         for offer, value in self.session.items():
             add_offer = Offer.objects.get(pk=offer)
             OrderDetail.objects.create(offer=add_offer, quantity=value, user_order=order)
+
+
+def get_order_total_price(order: Order):
+    total_price = (
+        OrderDetail.objects.filter(user_order=order)
+        .select_related("offer")
+        .annotate(sum_price=(F("quantity") + 0) * F("offer__price"))
+        .aggregate(Sum("sum_price"))
+        .get("sum_price__sum")
+    )
+    return total_price
