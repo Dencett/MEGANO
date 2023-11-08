@@ -254,6 +254,7 @@ class ReviewModelTest(TestCase):
 class BannerModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
+        cls.category = Category.objects.create(name="Тестовая категория")
         cls.image_file_name = "test_img.jpg"
         img_file = SimpleUploadedFile(
             name=cls.image_file_name,
@@ -261,9 +262,7 @@ class BannerModelTest(TestCase):
             content_type="image/jpeg",
         )
         cls.banner = Banner.objects.create(
-            name="тестовое",
-            description="тестовое",
-            image=img_file,
+            name="тестовое", description="тестовое", image=img_file, category=cls.category
         )
 
     def test_verbose_name(self):
@@ -272,6 +271,9 @@ class BannerModelTest(TestCase):
             "name": "наименование",
             "description": "описание",
             "archived": "архивировано",
+            "category": "категория товаров",
+            "product": "товар",
+            "offer": "предложение магазина",
         }
         for field, expected_value in field_verboses.items():
             with self.subTest(field=field):

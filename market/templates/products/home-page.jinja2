@@ -17,7 +17,16 @@ Home page
                                         <span class="text_primary">{{ banner.name }}</span>
                                     </strong>
                                     <div class="Slider-text">{{ banner.description }}</div>
-                                    <div class="Slider-footer"><a class="btn btn_primary" href="#">Get Started</a>
+                                    <div class="Slider-footer">
+                                        {% if banner.category %}
+                                            <a class="btn btn_primary" href="{{ url ('catalog:index') }}?category_id={{ banner.category.pk }}">Начать</a>
+                                        {% elif banner.product %}
+                                            <a class="btn btn_primary" href="{{ url ('catalog:index') }}?sort=famous&desc=on&search={{ banner.product.name }}">Начать</a>
+                                        {% elif banner.offer %}
+                                            <a class="btn btn_primary" href="{{ url('products:product-detail', pk=offer.product.pk ) }}">Начать</a>
+                                        {% else %}
+                                            <a class="btn btn_primary" href="#">Начать</a>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row-block">

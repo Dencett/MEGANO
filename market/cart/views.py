@@ -110,7 +110,6 @@ class CartView(View):
         choice = {
             self.BUTTONS[0]: RemoveCartView.as_view(),  # Удалить корзину
             self.BUTTONS[1]: CartListView.as_view(),  # Обновить корзину
-            self.BUTTONS[2]: CartListView.as_view(),  # Оформить заказ
         }
         action = request.POST.get("action")
         if action == self.BUTTONS[2]:

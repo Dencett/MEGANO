@@ -197,10 +197,29 @@ class Banner(models.Model):
         verbose_name = _("баннер")
         verbose_name_plural = _("баннеры")
 
+        constraints = [
+            models.CheckConstraint(  # type: ignore
+                check=models.Q(category__isnull=False, product__isnull=True, offer__isnull=True)
+                | models.Q(category__isnull=True, product__isnull=False, offer__isnull=True)
+                | models.Q(category__isnull=True, product__isnull=True, offer__isnull=False),
+                name="category_or_product_or_offer",
+                violation_error_message="Должно быть заполнено только одно поле.",
+            ),
+        ]
+
     name = models.CharField(max_length=512, verbose_name=_("наименование"))
     description = models.TextField(blank=True, max_length=512, verbose_name="описание")
     image = models.ImageField(null=True, blank=True, upload_to=banner_directory_path)
     archived = models.BooleanField(default=False, verbose_name=_("архивировано"))
+    category = models.ForeignKey(
+        null=True, blank=True, on_delete=models.PROTECT, to="products.category", verbose_name="категория товаров"
+    )
+    product = models.ForeignKey(
+        null=True, blank=True, on_delete=models.PROTECT, to="products.product", verbose_name="товар"
+    )
+    offer = models.ForeignKey(
+        null=True, blank=True, on_delete=models.PROTECT, to="shops.offer", verbose_name="предложение магазина"
+    )
 
     def __str__(self) -> str:
         return f"Баннер (pk={self.pk}, name={self.name!r})"
