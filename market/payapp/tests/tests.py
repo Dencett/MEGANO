@@ -41,7 +41,8 @@ class PayappOrderPayStatusTest(TestCase):
             "address": "test address",
             "delivery_type": "Новый заказ",
             "payment_type": "картой",
-            # "order_number": ,
+            "order_number": 1,
+            "total_price": "1000.00",
         }
         cls.order = Order.objects.create(**some_data)
 

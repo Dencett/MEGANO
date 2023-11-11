@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, FormView
@@ -10,9 +10,12 @@ from profiles.models import User
 from profiles.views import UserRegisterView
 
 
-class OrderDetailView(DetailView):
+class OrderDetailView(PermissionRequiredMixin, DetailView):
     model = Order
     template_name = "orders/detail_order.jinja2"
+
+    def has_permission(self):
+        return self.get_object().user == self.request.user or self.request.user.is_superuser
 
 
 def view_test_page(request):
@@ -151,3 +154,9 @@ class OrderHistoryListView(ListView):
         context = super().get_context_data(**kwargs)
         context["history"] = self.get_queryset()
         return context
+
+
+# class OrderDetailsView(DetailView):
+#     model = Order
+#     template_name = "orders/order_detail.jinja2"
+#
