@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-11 17:38+0000\n"
+"POT-Creation-Date: 2023-11-11 19:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,11 +68,11 @@ msgstr ""
 msgid "Невозможно сравнить то, что не сравнивается."
 msgstr ""
 
-#: config/settings.py:202
+#: config/settings.py:200
 msgid "English"
 msgstr "Английский"
 
-#: config/settings.py:203
+#: config/settings.py:201
 msgid "Russian"
 msgstr "Русский"
 
@@ -986,6 +986,17 @@ msgstr ""
 
 #: templates/products/reviews.jinja2:70
 msgid "Отправить отзыв"
+msgstr ""
+
+#: templates/products/reviews.jinja2:79
+#, python-format
+msgid ""
+"\n"
+"            <div class=\"\">Чтобы оставить отзыв, вам нужно\n"
+"                <a href=\"%(url_profile_login)s\" style=\"\">авторизоваться</"
+"a>\n"
+"            </div>\n"
+"            "
 msgstr ""
 
 #: templates/profiles/about-user.jinja2:4

@@ -46,7 +46,7 @@
                             <div class="ProductCard-cart">
                                 <div class="ProductCard-cartElement ProductCard-cartElement_amount">
                                     <div class="Amount Amount_product">
-                                        <form class="Amount Amount_product" action="http://{{ request.get_host() }}{{ url('cart:add_cart') }}" method="post" >
+                                        <form class="Amount Amount_product" action="{{ url('cart:add_cart') }}" method="post" >
 
                                         <button class="Amount-remove" type="button">
                                         </button>

@@ -90,7 +90,7 @@ class ProductViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_view_url_exists_at_desired_location(self):
-        response = self.client.get("/product/{pk}/".format(pk=self.product.pk))
+        response = self.client.get("/ru/product/{pk}/".format(pk=self.product.pk))
         self.assertEqual(response.status_code, 200)
 
     def test_view_success_url_redirect(self):

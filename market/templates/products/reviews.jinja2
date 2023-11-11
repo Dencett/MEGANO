@@ -75,9 +75,12 @@
 
     {% else %}
         <header class="Section-header Section-header_product">
-            <div class="">{{_('Чтобы оставить отзыв, вам нужно
-                <a href="%(url_profile_login)s!" style="">авторизоваться</a>')|format(url_profile_login = url('profiles:login'))}}
+            {% set url_profile_login = url('profiles:login') %}
+            {% trans %}
+            <div class="">Чтобы оставить отзыв, вам нужно
+                <a href="{{url_profile_login}}" style="">авторизоваться</a>
             </div>
+            {% endtrans %}
         </header>
     {% endif %}
 </div>
