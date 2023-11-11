@@ -40,6 +40,6 @@ test:
     - echo "REDIS_URL = $REDIS_URL" >> .env
     - cd market
     - poetry run python manage.py makemigrations
-    - python manage.py makemessages -a -e html,txt,py,jinja2
+    - poetry run python manage.py makemessages -a -e html,txt,py,jinja2
     - poetry run python manage.py compilemessages
     - poetry run python manage.py test
