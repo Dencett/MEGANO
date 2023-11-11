@@ -19,7 +19,7 @@ default:
   tags:
     - students
   before_script:
-    - apt-get update; apt-get install gettext-base git -y
+    - apt-get update; apt-get install gettext git -y
     - pip install poetry
     - poetry --version
     - poetry config virtualenvs.in-project true
