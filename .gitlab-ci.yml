@@ -19,6 +19,7 @@ default:
   tags:
     - students
   before_script:
+    - install gettext
     - pip install poetry
     - poetry --version
     - poetry config virtualenvs.in-project true
