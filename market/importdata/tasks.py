@@ -1,7 +1,7 @@
-# import time
 import os
 import json
 
+from django.core.mail import EmailMessage
 from django.conf import settings
 from django.db import transaction, DatabaseError, IntegrityError
 from config.celery import app
@@ -9,7 +9,7 @@ from celery.utils.log import get_task_logger
 from pydantic import ValidationError
 from json.decoder import JSONDecodeError
 
-from products.models import Product, ProductDetail, Detail, Manufacturer, Category
+from products.models import Product, ProductDetail, Detail, Manufacturer, Category, Tag
 from shops.models import Offer, Shop
 from importdata.services import ProductPydantic
 
@@ -17,15 +17,12 @@ from importdata.services import ProductPydantic
 logger = get_task_logger(__name__)
 
 
-@app.task(bind=True)
-def load_files(self, files, email):
-    # A task being bound means the first argument to the task will
-    # always be the task instance (self), just like Python bound methods:
+@app.task(ignore_result=True, name="importdata.tasks.load_files")
+def load_files(files, email_to):
     """
     Задача Сelery. Импорт файлов.
-    :param self:
     :param files:
-    :param email:
+    :param email_to:
     :return:
     """
     file_total = 0
@@ -36,6 +33,7 @@ def load_files(self, files, email):
     total_failed_product = 0
     formats = ["json"]
     folder_name = settings.IMPORT_FOLDER
+    excp = {}
 
     try:
         folder_path, dir_files = get_folder_path_and_files(folder_name)
@@ -44,12 +42,10 @@ def load_files(self, files, email):
     else:
         if not files:
             files = dir_files
-            logger.critical("Файлы не выбраны, импорт инициирован из всех файлов находящихся в '%s'." % folder_name)
-            # print("Файлы не выбраны, импорт инициирован из всех файлов находящихся в '%s'." % folder_name)
+            logger.info("Файлы не выбраны, импорт инициирован из всех файлов находящихся в '%s'." % folder_name)
 
         for file in files:
             logger.info("Импорт файла %s..." % file)
-            # print("Импорт файла %s..." % file)
             file_total += 1
 
             try:
@@ -60,19 +56,19 @@ def load_files(self, files, email):
                     with open(file_path, "r", encoding="utf-8") as f:
                         products = json.load(f)
 
-                        l, f, t = load(products)
+                        l, f, t, e = load(products)
 
                 else:
                     raise OSError("Файла нет папке '%s'" % folder_name)
 
-            except (DatabaseError, JSONDecodeError, OSError) as e:
+            except (DatabaseError, JSONDecodeError, OSError, BaseException) as e:
                 failed_file += 1
+                excp[file] = [e]
                 os.rename(
                     os.path.abspath(os.path.join(folder_name, file)),
                     os.path.join(folder_path, "failed_import_files", file),
                 )
                 logger.critical("Файл '%s' не импортирован. %s: %s" % (file, type(e), e))
-                # print("Файл '%s' не импортирован: %s: %s" % (file, type(e), e))
 
             else:
                 total_loaded_product += l
@@ -82,23 +78,24 @@ def load_files(self, files, email):
                 os.rename(file_path, os.path.join(folder_path, "success_import_files", file_name))
 
                 if f > 0:
+                    excp[file] = e
                     logger.warning(
                         "Файл %s импортирован не полностью. Импортировано %d из %d продуктов." % (file, l, t)
                     )
-                    # print("Файл %s импортирован не полностью. Импортировано %d из %d продуктов." % (file, l, t))
                 else:
                     logger.info("Импорт файла '%s' завершен. Импортировано %d из %d продуктов." % (file, l, t))
-                    # print("Импорт файла '%s' завершен. Импортировано %d из %d продуктов." % (file, l, t))
 
         logger.info("Импортированно %d файлов из %d" % (successed_file, file_total))
         logger.info(
             "Импортированно %d из %d продуктов из %d файлов" % (total_loaded_product, total_product, successed_file)
         )
-        # print("Импортированно %d файлов из %d" % (successed_file, file_total))
-        # print("Импортированно %d из %d продуктов из %d файлов" %
-        #       (total_loaded_product, total_product, successed_file)
-        #       )
-        # mail_import_report(email)
+
+        if email_to:
+            mail_report(files, file_total, successed_file, excp, email_to)
+            logger.info("Отчет отправлен на слeдующий адреc: %s" % email_to)
+
+        else:
+            logger.info("Отчет не отправлен. Адреса для отправки отчета не указан")
 
 
 def load(products):
@@ -111,30 +108,29 @@ def load(products):
     loaded_object_count = 0
     failed_object_count = 0
     obj_count = 0
+    excp = []
 
     for product_data in products:
         total_objects += 1
         obj_count += 1
         logger.info("Импорт продукта №%d..." % obj_count)
-        # print("Импорт продукта №%d..." % obj_count)
         try:
             obj = ProductPydantic(**product_data)
 
             with transaction.atomic():
                 shop = get_and_validate_shop(obj)
                 manufacturer = get_or_create_manufacturer(obj)
+                tags = get_or_create_tag(obj)
 
                 try:
                     product = Product.objects.get(name=obj.name)
 
                 except Product.DoesNotExist:
-                    create_product(obj, manufacturer, shop)
+                    create_product(obj, manufacturer, shop, tags)
                     logger.info("Продукт №%d(%s) импортирован успешно" % (obj_count, obj.name))
-                    # print("Продукт №%d(%s) импортирован успешно" % (obj_count, obj.name))
                 else:
-                    update_product(obj, manufacturer, product, shop)
+                    update_product(obj, manufacturer, product, shop, tags)
                     logger.info("Продукт №%d(%s) обновлен успешно" % (obj_count, obj.name))
-                    # print("Продукт №%d(%s) обновлен успешно" % (obj_count, obj.name))
 
                 loaded_object_count += 1
 
@@ -143,38 +139,35 @@ def load(products):
 
         except ValidationError as e:
             failed_object_count += 1
+            excp.append(e)
             logger.error(
                 "Продукт №%d не импортирован. %s: продукт содержит ошибки валидации в кол-ве: %s шт"
                 % (obj_count, type(e), e.error_count())
             )
-            # print("Продукт №%d не импортирован. %s: продукт содержит %s ошибки валидации" %
-            #       (obj_count, type(e), e.error_count())
-            #       )
 
         except (ValueError, FileNotFoundError, IntegrityError) as e:
             failed_object_count += 1
+            excp.append(e)
             logger.error("Продукт №%d(%s) не импортирован: %s %s" % (obj_count, product_data["name"], type(e), e))
-            # print("Продукт №%d(%s) не импортирован: %s %s" % (obj_count, product_data['name'], type(e), e))
 
         except Exception as e:
             failed_object_count += 1
+            excp.append(e)
             logger.warning(
                 "Продукт №%d(%s) не импортирован, необработаная ошибка: %s %s"
                 % (obj_count, product_data["name"], type(e), e)
             )
-            # print("Продукт №%d(%s) не импортирован, необработаная ошибка: %s %s" %
-            #       (obj_count, product_data['name'], type(e), e)
-            #       )
 
-    return loaded_object_count, failed_object_count, total_objects
+    return loaded_object_count, failed_object_count, total_objects, excp
 
 
-def create_product(obj, manufacturer, shop):
+def create_product(obj, manufacturer, shop, tags):
     """
     Создание сущности Продукт.
     :param obj:
     :param manufacturer:
     :param shop:
+    :param tags:
     :return:
     """
     # create product
@@ -185,6 +178,9 @@ def create_product(obj, manufacturer, shop):
         description=obj.description,
         manufacturer=manufacturer,
     )
+    # add tags if any
+    product.tags.add(*tags)
+    product.save()
 
     img_name, img_path = parse_img_name_and_validate(obj.preview)
     # add image
@@ -196,17 +192,17 @@ def create_product(obj, manufacturer, shop):
 
     # create offer
     offer = Offer(product=product, shop=shop, price=obj.offer.price, remains=obj.offer.quantity)
-
     offer.save()
 
 
-def update_product(obj, manufacturer, product, shop):
+def update_product(obj, manufacturer, product, shop, tags):
     """
     Обнавление сущности Продукт.
     :param obj:
     :param manufacturer:
     :param product:
     :param shop:
+    :param tags:
     :return:
     """
     # update_product
@@ -214,9 +210,12 @@ def update_product(obj, manufacturer, product, shop):
     product.manufacturer = manufacturer
     product.about = obj.about
     product.description = obj.description
+    # clear current tags if any and add new if any
+    product.tags.clear()
+    product.tags.add(*tags)
     product.save()
 
-    # delete if image
+    # delete image if any
     product.preview.delete(save=True)
 
     img_name, img_path = parse_img_name_and_validate(obj.preview)
@@ -231,6 +230,7 @@ def update_product(obj, manufacturer, product, shop):
         # update offer
         offer.price = obj.offer.price
         offer.remains += obj.offer.quantity
+        offer.save()
     except Offer.DoesNotExist:
         # create new offer
         Offer(product=product, shop=shop, price=obj.offer.price, remains=obj.offer.quantity)
@@ -248,7 +248,7 @@ def get_and_validate_shop(obj):
 
 def get_or_create_manufacturer(obj):
     """
-    Получении или создание сущности Производитель.
+    Получение или создание сущности Производитель.
     :param obj:
     :return:
     """
@@ -260,9 +260,23 @@ def get_or_create_manufacturer(obj):
     return manufacturer
 
 
+def get_or_create_tag(obj):
+    """
+    Получение списка сущностей Тag.
+    :param obj:
+    :return:
+    """
+    tags = []
+    for tag_name in obj.tags:
+        tag, created = Tag.objects.get_or_create(name=tag_name)
+        tags.append(tag)
+
+    return tags
+
+
 def category_create(obj):
     """
-    Получения или создание сущности Категория с попутным созданием подкатегории.
+    Получение или создание сущности Категория с попутным созданием подкатегории.
     :param obj:
     :return:
     """
@@ -325,7 +339,6 @@ def parse_img_name_and_validate(file_path):
     :param file_path:
     :return:
     """
-    # allowed_extensions = validators.get_available_image_extensions()
     allowed_extensions = ["jpg", "jpeg", "img", "webp", "png", "gif", "svg", "bmp"]
 
     # Валидация пути
@@ -333,8 +346,6 @@ def parse_img_name_and_validate(file_path):
         raise ValueError("Не задан путь к изображению.")
     if len(file_path) < 5:
         raise ValueError("Путь '%s' к изображению короче 4 символов." % file_path)
-
-    file_path = settings.MEDIA_ROOT + os.path.join(os.sep, file_path)
 
     if os.path.isfile(file_path):
         file_extension = os.path.splitext(file_path)[1].lower()
@@ -349,7 +360,7 @@ def parse_img_name_and_validate(file_path):
 
 def parse_name(file_name, formats):
     """
-    Получения названия и формата файла с валидацией.
+    Получение названия и формата файла с валидацией.
     """
     parts = file_name.rsplit(".", 2)
 
@@ -380,20 +391,48 @@ def get_folder_path_and_files(folder_name: str):
     return folder_path, files
 
 
-# @app.task(bind=True)
-# def mail_import_report(self, errors, email):
-#     subject = 'Report from file importing service'
-#     html_content = '<h1>Отчет"</h1><p>Импортированно
-#     {successed_file} файла из {file_total}.</p>'.
-#     format(successed_file, file_total)
-#     if len(failed_file)>0:
-#         content = ''
-#     email_from = settings.EMAIL_HOST_USER
-#     recipient_list = [settings.EMAIL_HOST_USER, ]
-#     msg = EmailMessage(subject, html_content, email_from, recipient_list)
-#     msg.content_subtype = 'html'
-#     msg.send()
-#     res = celery_test.delay()
-#     time.sleep(5)
-#     print(res.id)
-#     print(res.status)
+def mail_report(files, file_total, successed_file, excp, email_to):
+    """
+    Отправка отчета по завершению команды ипорта продуктов.
+    :param files:
+    :param file_total:
+    :param successed_file:
+    :param excp:
+    :param email_to:
+    :return:
+    """
+    subject = "Отчет по заврешнению команды импорта продутков"
+    html_content = html_content_maker(files, file_total, successed_file, excp)
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [email_to]
+    msg = EmailMessage(subject, html_content, email_from, recipient_list)
+    msg.content_subtype = "html"
+    msg.send()
+
+
+def html_content_maker(files, file_total, successed_file, excp):
+    """
+    Получения контента собщения в html.
+    :param files:
+    :param file_total:
+    :param successed_file:
+    :param excp:
+    :return:
+    """
+    html_content = "<h1>Отчет:</h1><p>Импортированно %d файлов из %d.</p>" % (successed_file, file_total)
+
+    if excp:
+        html_content += "<h2>Ошибки в следующих файлах: </h2>"
+        for file in files:
+            errors = excp.get(file)
+            if errors:
+                html_content += "<h3><b>'%s':</b></h3>" % file
+                errors_count = 0
+                for error in errors:
+                    errors_count += 1
+                    html_content += "<p>%d) %s</p>" % (errors_count, error)
+
+    else:
+        html_content += "<h2>Ошибкок не выявлено.</h2>"
+
+    return html_content

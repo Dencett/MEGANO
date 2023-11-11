@@ -225,6 +225,9 @@ PAY_URL = reverse_lazy("api_payments:pays")
 CELERY_BROKER_URL = config["REDIS_URL"]
 # configure storing the state and returning values of tasks in Redis
 CELERY_RESULT_BACKEND = config["REDIS_URL"]
+# CELERYD_LOG_FILE = "/logs/celery.log"
+# CELERYD_LOG_LEVEL = "ERROR"
+CELERY_CREATE_DIRS = 1
 
 
 # Django Email
@@ -236,8 +239,8 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_USER_SSL = False
-# EMAIL_HOST_USER =
-# EMAIL_HOST_PASSWORD =
+EMAIL_HOST_USER = "example@gmail.com"
+EMAIL_HOST_PASSWORD = "eeee ddds wwwf wtoa"
 
-
+# Set the import folder for importadata app
 IMPORT_FOLDER = "import_folder"

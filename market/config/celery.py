@@ -1,5 +1,11 @@
 import os
+import logging
+import datetime
+
 from celery import Celery
+from celery.app.log import TaskFormatter
+from celery.signals import task_prerun, task_postrun
+
 
 # commands
 # celery -A config worker --loglevel=INFO
@@ -22,3 +28,45 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()
+
+
+@task_prerun.connect
+def setup_task_logger(task_id, task, args, **kwargs):
+    """
+    Добавление FileHandler к logger.handlers при запуске команды.
+    :param task_id:
+    :param task:
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    logger = logging.getLogger("celery.task")
+
+    if not os.path.exists(f"tmp/logs/celery.task/{task.name}"):
+        os.makedirs(f"tmp/logs/celery.task/{task.name}")
+
+    # FileHandler
+    file_handler = logging.FileHandler(
+        f'tmp/logs/celery.task/{task.name}/{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}.log'
+    )
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(TaskFormatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
+
+    logger.addHandler(file_handler)
+
+
+@task_postrun.connect
+def cleanup_logger(task_id, task, args, **kwargs):
+    """
+    Удаление FileHandler из logger.handlers при завершении команды.
+    :param task_id:
+    :param task:
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    logger = logging.getLogger("celery.task")
+
+    for handler in logger.handlers:
+        if isinstance(handler, logging.FileHandler) and task.name in handler.baseFilename:
+            logger.removeHandler(handler)
