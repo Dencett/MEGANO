@@ -19,6 +19,7 @@ default:
   tags:
     - students
   before_script:
+    - apt-get update; apt-get install gettext-base git -y
     - pip install poetry
     - poetry --version
     - poetry config virtualenvs.in-project true
@@ -35,8 +36,6 @@ test:
   variables:
     DATABASE_URL: "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB"
     REDIS_URL: "redis://broker:6379/0"
-  before_script:
-    - apt-get update; apt-get install gettext-base git -y
   script:
     - echo "DATABASE_URL = $DATABASE_URL" >> .env
     - echo "REDIS_URL = $REDIS_URL" >> .env
