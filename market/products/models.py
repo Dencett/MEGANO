@@ -206,7 +206,7 @@ class Banner(models.Model):
         ]
 
     name = models.CharField(max_length=512, verbose_name=_("наименование"))
-    description = models.TextField(blank=True, max_length=512, verbose_name="описание")
+    description = models.TextField(blank=True, max_length=512, verbose_name=_("описание"))
     image = models.ImageField(null=True, blank=True, upload_to=banner_directory_path)
     archived = models.BooleanField(default=False, verbose_name=_("архивировано"))
     category = models.ForeignKey(

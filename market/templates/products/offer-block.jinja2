@@ -12,25 +12,25 @@
 <!--                    </a>-->
                      <label for="push-form-offer-{{offer.pk}}" tabindex="0" class="btn btn_primary">
                         <img class="btn-icon" src="{{ static('assets/img/icons/card/cart_white.svg')}}" alt="cart_white.svg" />
-                        <span class="btn-content">Купить </span>
+                        <span class="btn-content">{{_("Купить")}} </span>
                     </label>
                 </div>
             </div>
             <div class="row-block">
                 <div class="Order-info Order-info_delivery">
-                    <div class="Order-infoType">Тип доставки:
+                    <div class="Order-infoType">{{_("Тип доставки:")}}
                     </div>
                     <div class="Order-infoContent"> {{offer.get_delivery_method_display()}}
                     </div>
                 </div>
                 <div class="Order-info Order-info_pay">
-                    <div class="Order-infoType">Оплата:
+                    <div class="Order-infoType">{{_("Оплата:")}}
                     </div>
                     <div class="Order-infoContent"> {{offer.get_payment_method_display()}}
                     </div>
                 </div>
                 <div class="Order-info">
-                    <div class="Order-infoType">Стоимость:
+                    <div class="Order-infoType">{{_("Стоимость:")}}
                     </div>
                     <div class="Order-infoContent"><span class="Order-price"> {{offer.price}} ₽</span>
                     </div>

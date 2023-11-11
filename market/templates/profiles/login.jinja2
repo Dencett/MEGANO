@@ -1,7 +1,7 @@
 {% extends 'base.jinja2' %}
 
 {% block title -%}
-Login page
+{{_("Login page")}}
 {% endblock %}
 
 {% block middle %}
@@ -10,7 +10,7 @@ Login page
   <div class="Section">
       <div class="wrap">
         <div class="wrapper">
-          <h2>Login page</h2>
+          <h2>{{_("Login page")}}</h2>
           {% if form.errors %}
           <p>{{ form.errors }}</p>
           {% endif %}
@@ -27,8 +27,8 @@ Login page
             <input class="user-input" type="password" name="password" autocomplete="current-password" required id="id_password" placeholder="*********">
           </p>
           <input type="submit" value="Login">
-          <a class="forgot-label" href="e-mail.html">Забыли пароль?</a>
-          <a class="registr" href="{{ url('profiles:register') }}">Регистрация</a>
+          <a class="forgot-label" href="e-mail.html">{{_("Забыли пароль?")}}</a>
+          <a class="registr" href="{{ url('profiles:register') }}">{{_("Регистрация")}}</a>
                     <!--    <button type="submit" class="btn btn_square btn_dark">Login</button>-->
           </form>
       </div>

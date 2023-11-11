@@ -1,6 +1,8 @@
 <div class="Tabs-block" id="reviews">
     <header class="Section-header">
-        <h3 class="Section-title"> {{ reviews | length }} отзыв
+        <h3 class="Section-title">
+<!--          не удалять!!! строка для i18n {{_('отзыв')}} {{_('отзывов')}}-->
+            {{ ngettext('%(num)d ' + _('отзыв'), '%(num)d ' + _('отзывов'), reviews | length) }}
         </h3>
     </header>
     {% for review in page_obj %}
@@ -57,7 +59,7 @@
 
     {% if user.is_authenticated %}
         <header class="Section-header Section-header_product">
-            <h3 class="Section-title">Добавить отзыв
+            <h3 class="Section-title">{{_("Добавить отзыв")}}
             </h3>
         </header>
         <div class="Tabs-addComment">
@@ -65,7 +67,7 @@
                 {% csrf_token %}
                 {{ form.as_p() }}
                 <div class="form-group">
-                    <button class="btn btn_muted" type="submit">Отправить отзыв
+                    <button class="btn btn_muted" type="submit">{{_("Отправить отзыв")}}
                     </button>
                 </div>
             </form>
@@ -73,8 +75,8 @@
 
     {% else %}
         <header class="Section-header Section-header_product">
-            <div class="">Чтобы оставить отзыв, вам нужно
-                <a href="{{ url ('profiles:login') }}" style="">авторизоваться</a>
+            <div class="">{{_('Чтобы оставить отзыв, вам нужно
+                <a href="%(url_profile_login)s!" style="">авторизоваться</a>')|format(url_profile_login = url('profiles:login'))}}
             </div>
         </header>
     {% endif %}
