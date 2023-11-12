@@ -45,12 +45,12 @@ class ProductModelTest(TestCase):
         variable_name_in_template = (
             "shops",
             "preview",
-            "productimage_set",
+            "images",
             "name",
             "about",
             "tags",
             "description",
-            "offer_set",
+            "offers",
             "productdetail_set",
         )
         for name in variable_name_in_template:
