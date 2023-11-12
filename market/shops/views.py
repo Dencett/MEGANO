@@ -22,7 +22,7 @@ class ShopDetailsView(UserPassesTestMixin, DetailView):
     """
     Подробная страница магазина пользователя.
     Пользователь получает доступ только к своему(своим) магазину.
-    Если магазин не связан с пользователем => 403 Forbidden
+    Если магазин не связан с пользователем => 403 Forbidden (запрет доступа).
     """
 
     model = Shop
@@ -33,7 +33,7 @@ class ShopDetailsView(UserPassesTestMixin, DetailView):
 
 
 class ShopProductListView(ListView):
-    """Представление продуктов магазина"""
+    """Представление списка продуктов магазина."""
 
     model = Shop
     template_name = "shops/products_list.jinja2"
@@ -46,7 +46,7 @@ class ShopProductListView(ListView):
 
 
 class ShopProductsDetail(DetailView):
-    """Представление продуктов магазина"""
+    """Представление детальной информации продуктов магазина."""
 
     model = Shop
     template_name = "shops/shop_products.jinja2"
@@ -54,6 +54,8 @@ class ShopProductsDetail(DetailView):
 
 
 class ShopUpdateView(UpdateView):
+    """Представление: Обновление информации о магазине."""
+
     model = Shop
     fields = ["name", "about", "phone", "email", "avatar"]
     template_name = "shops/shop_form.jinja2"
