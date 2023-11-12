@@ -1,10 +1,9 @@
-from django.test import TestCase  # noqa
+from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
-from catalog.tests.utils import get_fixtures_list, echo_sql  # noqa
+from catalog.tests.utils import get_fixtures_list
 from orders.models import Order
-
 
 User = get_user_model()
 
@@ -26,8 +25,9 @@ class OrderCreateTestCase(TestCase):
             "address": "test address",
             "delivery_type": "Новый заказ",
             "payment_type": "картой",
-            # "order_number": ,
+            "order_number": 1,
             "status": "created",
+            "total_price": "45888.65",
         }
         cls.order = Order.objects.create(**some_data)
 
@@ -40,6 +40,7 @@ class OrderCreateTestCase(TestCase):
         self.assertEqual(self.order.user.username, "test_user")
         self.assertEqual(self.order.payment_type, "картой")
         self.assertEqual(self.order.payment_type, order.payment_type)
+        self.assertTrue(self.order.total_price, "45888.65")
 
 
 class UserHistoryOrdersListViewTestCase(TestCase):
@@ -76,8 +77,9 @@ class UserHistoryOrdersListViewTestCase(TestCase):
             "address": "test address",
             "delivery_type": "usually",
             "payment_type": "card",
-            # "order_number": ,
+            "order_number": 1,
             "status": "created",
+            "total_price": "12365.88",
         }
         # Создание заказа
         cls.order = Order.objects.create(**cls.order_data)
@@ -100,3 +102,59 @@ class UserHistoryOrdersListViewTestCase(TestCase):
         response = self.client.get(reverse("orders:history"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.order.order_number)
+
+
+class OrderDetailTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.all_info = {
+            "username": "John-test",
+            "phone": "89701112233",
+            "residence": "London",
+            "address": "Bakers streets 148 ap.3",
+            "retailer_group": True,
+        }
+        cls.user_login_info = {
+            "email": "jhon@test.com",
+            "password": "JohnTest1234",
+        }
+        cls.user = User.objects.create_user(
+            username=cls.all_info["username"],
+            email=cls.user_login_info["email"],
+            password=cls.user_login_info["password"],
+            phone=cls.all_info["phone"],
+            residence=cls.all_info["residence"],
+            address=cls.all_info["address"],
+        )
+
+        cls.order_data = {
+            "user": cls.user,
+            "city": "test city",
+            "address": "test address",
+            "delivery_type": "usually",
+            "payment_type": "card",
+            "order_number": 1,
+            "status": "created",
+            "total_price": "12365.88",
+        }
+        cls.order = Order.objects.create(**cls.order_data)
+
+    def setUp(self) -> None:
+        self.client.login(**self.user_login_info)
+
+    def test_detail_order(self):
+        url = reverse("orders:detail_order", kwargs={"pk": self.order.pk})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_contains_order_info(self):
+        url = reverse("orders:detail_order", kwargs={"pk": self.order.pk})
+        response = self.client.get(url)
+        self.assertContains(response, "test city")
+        self.assertContains(response, "test address")
+        self.assertContains(response, "12365.88")
+
+    def test_payment_method(self):
+        url = reverse("orders:detail_order", kwargs={"pk": self.order.pk})
+        response = self.client.get(url)
+        self.assertContains(response, "cart")
