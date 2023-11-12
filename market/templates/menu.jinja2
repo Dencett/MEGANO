@@ -14,7 +14,7 @@
                 {% if current_category %}
                     {{ current_category.name }}
                 {% else %}
-                    Все категории
+                    {{_("Все категории")}}
                 {% endif %}
             </span>
             <div class="CategoriesButton-arrow"></div>
@@ -27,7 +27,7 @@
                         <div class="CategoriesButton-icon">
                             <img src="{{ static('assets/img/icons/allDep.svg') }}" alt="allDep.svg"/>
                         </div>
-                        <span class="CategoriesButton-text">Все категории</span>
+                        <span class="CategoriesButton-text">{{_("Все категории")}}</span>
                     </a>
                 </div>
             {% endif %}

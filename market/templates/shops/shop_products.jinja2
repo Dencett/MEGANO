@@ -2,7 +2,7 @@
 
 
 {% block title %}
-Продукты магазина {{ shop.name }}
+{{_("Продукты магазина")}} {{ shop.name }}
 {% endblock %}
 
 
@@ -13,7 +13,7 @@
 
 {% block shop_content %}
 <div class="Account-column">
-  <h2 class="Section-title">Товары магазина {{ shop.name }}</h2>
+  <h2 class="Section-title">{{_("Товары магазина")}} {{ shop.name }}</h2>
   <div class="Cards Cards_blog" style="margin-bottom:40px;">
     <ul class="Cards Cards_blog">
     {% for product in shop.products.all() %}
@@ -22,7 +22,7 @@
         {% if product.preview %}
         <img  src="{{ product.preview.url }}" alt="миникартинка товара" ></a>
         {% else %}
-        Изображение товара отсутствует
+        {{_("Изображение товара отсутствует")}}
         {% endif %}
         <div class="Card-content">
           <strong class="Card-title">

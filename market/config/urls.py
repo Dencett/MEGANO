@@ -18,20 +18,33 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
+from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    # path("admin/", admin.site.urls),
     path("settings/", include("site_settings.urls")),
+    # path("", include("products.urls")),
+    # path("profiles/", include("profiles.urls")),
+    # path("shops/", include("shops.urls")),
+    # path("catalog/", include("catalog.urls")),
+    # path("cart/", include("cart.urls")),
+    # path("comparison/", include("comparison.urls")),
+    path("api/", include("api_payments.urls")),
+    # path("pay/", include("payapp.urls")),
+    # path("orders/", include("orders.urls")),
+]
+
+urlpatterns += i18n_patterns(
+    path("admin/", admin.site.urls),
     path("", include("products.urls")),
     path("profiles/", include("profiles.urls")),
     path("shops/", include("shops.urls")),
     path("catalog/", include("catalog.urls")),
     path("cart/", include("cart.urls")),
     path("comparison/", include("comparison.urls")),
-    path("api/", include("api_payments.urls")),
     path("pay/", include("payapp.urls")),
     path("orders/", include("orders.urls")),
-]
+)
 
 if settings.DEBUG:
     urlpatterns.append(
