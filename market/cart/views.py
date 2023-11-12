@@ -3,6 +3,8 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.http import Http404, HttpResponse
 from django.utils.translation import gettext_lazy as _
+from django.views.generic.base import TemplateResponseMixin
+from django.views.generic.edit import FormMixin
 
 from shops.models import Offer
 from .forms import UserOneOfferCARTForm
@@ -11,7 +13,7 @@ from .forms import UserOneOfferCARTDeleteForm, UserManyOffersCARTForm
 
 
 class CartListView(TemplateView):
-    """Корзина пользователя"""
+    """Отображение корзины пользователя и обновление корзины"""
 
     cart_name_in_context = "cart_list"
     template_name = "cart/cart.jinja2"
@@ -54,16 +56,22 @@ class CartListView(TemplateView):
 
 
 class RemoveCartView(View):
+    """Очистка всей корзины"""
+
     def post(self, request, *args, **kwargs):
         self.cart = get_cart_service(request)
         self.cart.clear()
         return redirect("cart:user_cart")
 
     def get(self, request, *args, **kwargs):
-        raise Http404
+        self.cart = get_cart_service(request)
+        self.cart.clear()
+        return redirect(request.META["HTTP_REFERER"])
 
 
 class RemoveOneCartView(View):
+    """Удаление из корзины одной записи предложения"""
+
     def get(self, request, *args, **kwargs):
         form = UserOneOfferCARTDeleteForm(request.GET)
         if form.is_valid():
@@ -73,11 +81,15 @@ class RemoveOneCartView(View):
         # raise Http404
 
 
-class AddCartFromProduct(View):
+class AddCartFromProduct(TemplateResponseMixin, FormMixin, View):
+    template_name = "cart/invalid_cart_add.html"
+
     def get(self, request, *args, **kwargs):
+        """Не допустимый метод"""
         raise Http404
 
     def post(self, request, *args, **kwargs):
+        """Обработка формы для добавления предложения в корзину"""
         form = UserOneOfferCARTForm(request.POST)
         self.url = request.META["HTTP_REFERER"]
         self.cart = get_cart_service(request)
@@ -85,15 +97,15 @@ class AddCartFromProduct(View):
             self.cart.add_to_cart(**form.cleaned_data)
             return redirect(self.url + "#modal_open")
         else:
-            return redirect(self.url)
+            return self.form_invalid(form)
 
 
 class CartView(View):
     """
     Представление в котором:
-        - при полечении "GET" запроса возвращается ProductDetailView.as_view
-        - при полечении "POST" запроса возвращается ProductReviewFormView.as_view
-    doc: https://docs.djangoproject.com/en/3.2/topics/class-based-views/mixins/#using-formmixin-with-detailview
+        - при полечении "GET" запроса возвращается корзина пользователя
+        - при полечении "POST" запроса возвращается обновленная кориза пользователя
+        - переход в сервис оформления заказов
     """
 
     BUTTONS = (
@@ -112,7 +124,10 @@ class CartView(View):
             self.BUTTONS[1]: CartListView.as_view(),  # Обновить корзину
         }
         action = request.POST.get("action")
+
+        # Переход в оформление заказа
         if action == self.BUTTONS[2]:
             return redirect("orders:view_step_one")
+
         view = choice.get(action)
         return view(request, *args, buttons=self.BUTTONS, **kwargs)

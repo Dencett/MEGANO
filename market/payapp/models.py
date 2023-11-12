@@ -1,10 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-# Create your models here.
-
 
 class OrderPayStatus(models.Model):
+    """Модель для хранения ответа от сервера оплаты"""
+
     order = models.ForeignKey(
         to="orders.Order", related_name="payrecords", verbose_name=_("заказ"), on_delete=models.CASCADE
     )
@@ -15,9 +15,3 @@ class OrderPayStatus(models.Model):
         ordering = ["-created_at"]
         verbose_name = _("история оплаты заказа")
         verbose_name_plural = _("истории оплаты заказа")
-
-
-# class TestOrder(models.Model):
-#     number = models.IntegerField(verbose_name=_("Номер заказа"))
-#     price = models.DecimalField(verbose_name=_("Цена заказа"), max_digits=8, decimal_places=2)
-#     status_payed = models.BooleanField(default=False)

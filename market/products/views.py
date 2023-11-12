@@ -58,6 +58,9 @@ class ProductDetailView(DetailView):
             make_record_in_history(user=request.user, product=self.object)
         return response
 
+    # def get_queryset(self):
+    #     queryset = Product.objects.filter(pk=self.object.pk).select_related()
+
 
 class ProductReviewFormView(SingleObjectMixin, FormView):
     """Валидация формы и дальнейшие действия по созданию экземпляра класса "Review"

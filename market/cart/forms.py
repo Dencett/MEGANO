@@ -5,14 +5,19 @@ from cart.models import UserOfferCart
 
 
 class UserOneOfferCARTForm(forms.Form):
-    """Форма"""
+    """Форма для добавления одной записи в корзину"""
 
     amount = forms.IntegerField(min_value=0)
     offer_id = forms.IntegerField()
 
 
 class UserManyOffersCARTForm(forms.Form):
-    """Форма"""
+    """
+    Форма для множественного добавления записей в корзину
+    при этом поля должны содержать:
+    offer_id[i]
+    amount[i]
+    """
 
     def __init__(self, number: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
