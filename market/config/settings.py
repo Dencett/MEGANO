@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from dotenv import dotenv_values
 from queue import Queue
 from threading import Lock
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -87,7 +89,6 @@ INSTALLED_APPS += ["debug_toolbar"]
 
 MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
-
 TEMPLATES = [
     {
         "BACKEND": "django_jinja.jinja2.Jinja2",
@@ -102,6 +103,9 @@ TEMPLATES = [
                 "django_jinja.builtins.extensions.DebugExtension",
                 "django_jinja.builtins.extensions.UrlsExtension",
             },
+            # "policies": {
+            #                 "ext.i18n.trimmed": True,
+            #             },
             "match_extension": ".jinja2",
             "match_regex": None,
             "app_dirname": "templates",
@@ -114,7 +118,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # "django.template.context_processors.i18n",
             ],
+            # "translation_engine": "django.utils.translation",
         },
     },
     {
@@ -178,13 +184,22 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "ru-RU"
+LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "UTC"
 
 USE_I18N = True
 
 USE_TZ = True
+
+USE_L10N = True
+
+LOCALE_PATHS = [BASE_DIR / "locale/"]
+
+LANGUAGES = [
+    ("en", _("English")),
+    ("ru", _("Russian")),
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
