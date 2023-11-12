@@ -42,7 +42,7 @@ class PayappOrderPayStatusTest(TestCase):
             "delivery_type": "Новый заказ",
             "payment_type": "картой",
             "order_number": 1,
-            "total_price": "1000.00",
+            "total_price": "120400.85",
         }
         cls.order = Order.objects.create(**some_data)
 
@@ -79,7 +79,8 @@ class TestOrder(TestCase):
             "address": "test address",
             "delivery_type": "Новый заказ",
             "payment_type": "картой",
-            # "order_number": ,
+            "order_number": 1,
+            "total_price": "120400.85",
         }
         cls.order = Order.objects.create(**some_data)
 
@@ -109,7 +110,8 @@ class AppPayViewsTest(TestCase):
             "address": "test address",
             "delivery_type": "Новый заказ",
             "payment_type": "картой",
-            # "order_number": ,
+            "order_number": 1,
+            "total_price": "120400.85",
         }
         cls.order = Order.objects.create(**some_data)
         cls.order.save()

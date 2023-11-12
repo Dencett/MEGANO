@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, FormView
 from orders.forms import OrderStepTwoForm, OrderStepThreeForm, OrderFastRegistrationAnonymousUser
@@ -11,18 +11,15 @@ from profiles.views import UserRegisterView
 
 
 class OrderDetailView(PermissionRequiredMixin, DetailView):
+    """
+    Страница отображения деталей заказа при переходе на заказ из истории заказов.
+    """
+
     model = Order
     template_name = "orders/detail_order.jinja2"
 
     def has_permission(self):
         return self.get_object().user == self.request.user or self.request.user.is_superuser
-
-
-def view_test_page(request):
-    context = {
-        "base": "Базовая страница",
-    }
-    return render(request, "orders/order_base.jinja2", context=context)
 
 
 class OrderStepOneView(LoginRequiredMixin, UserRegisterView):
@@ -116,18 +113,18 @@ class OrderStepFourView(ListView):
         queryset = order.details.all()
         return queryset
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data()
-        context["total"] = self.get_total_price()
-        return context
-
-    def get_total_price(self):
-        """Метод получения общей цены заказа"""
-        price = 0
-        for product in self.get_queryset():
-            product_price = product.offer.price * product.quantity
-            price += product_price
-        return price
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     context = super().get_context_data()
+    #     context["total"] = self.get_total_price()
+    #     return context
+    #
+    # def get_total_price(self):
+    #     """Метод получения общей цены заказа"""
+    #     price = 0
+    #     for product in self.get_queryset():
+    #         product_price = product.offer.price * product.quantity
+    #         price += product_price
+    #     return price
 
 
 class OrderHistoryListView(ListView):
@@ -154,9 +151,3 @@ class OrderHistoryListView(ListView):
         context = super().get_context_data(**kwargs)
         context["history"] = self.get_queryset()
         return context
-
-
-# class OrderDetailsView(DetailView):
-#     model = Order
-#     template_name = "orders/order_detail.jinja2"
-#
