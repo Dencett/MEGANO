@@ -62,10 +62,9 @@ class AnonimCartService:
 
     def get_cart_as_dict(self):
         """Получает список из UserOfferCart без атрибута user на основании сессии"""
-        cart = []
         if not self.session_cart:
-            return cart
-        return cart
+            return {}
+        return {int(k): int(v) for k, v in self.session_cart.items()}
 
     def remove_from_cart(self, offer_id: int):
         """

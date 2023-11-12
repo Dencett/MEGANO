@@ -45,11 +45,12 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         review = ReviewServices(self.request, self.object)
-        offers = self.object.offer_set.all()
+        offers = self.object.offers.all()
         context["min_price"] = product_min_price_or_none(product=self.object, product_offers=offers)
         context["form"] = ProductReviewForm()
         context["reviews"] = review.get_reviews()
         context["page_obj"] = review.listing(context["reviews"])
+        context["current_user"] = self.request.user
         return context
 
     def get(self, request, *args, **kwargs):
@@ -58,8 +59,12 @@ class ProductDetailView(DetailView):
             make_record_in_history(user=request.user, product=self.object)
         return response
 
-    # def get_queryset(self):
-    #     queryset = Product.objects.filter(pk=self.object.pk).select_related()
+    def get_queryset(self):
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        queryset = Product.objects.filter(pk=pk).prefetch_related(
+            "offers", "offers__shop", "tags", "productdetail_set", "productdetail_set__detail", "images"
+        )
+        return queryset
 
 
 class ProductReviewFormView(SingleObjectMixin, FormView):

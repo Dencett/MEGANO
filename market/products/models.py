@@ -18,7 +18,13 @@ def product_images_directory_path(instance: Union["Product", "ProductImage"], fi
 class ProductImage(models.Model):
     """Изображение для продукта"""
 
-    product = models.ForeignKey(null=False, on_delete=models.CASCADE, to="Product", verbose_name="продукт")
+    product = models.ForeignKey(
+        null=False,
+        on_delete=models.CASCADE,
+        to="Product",
+        verbose_name="продукт",
+        related_name="images",
+    )
     image = models.ImageField(null=True, blank=True, upload_to=product_images_directory_path)
 
     class Meta:
@@ -91,7 +97,7 @@ class ProductDetail(models.Model):
     """Значение свойства продукта"""
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    detail = models.ForeignKey(Detail, on_delete=models.CASCADE)
+    detail = models.ForeignKey(Detail, on_delete=models.CASCADE, related_name="product_value")
     value = models.CharField(max_length=128, verbose_name=_("значение"))
 
     class Meta:

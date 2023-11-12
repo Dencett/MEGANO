@@ -10,7 +10,7 @@
             <div class="Comment">
                 <div class="Comment-column Comment-column_pict">
                     <div class="Comment-avatar">
-                        {# Добавить корректную ссылку к User.avatar #}
+                        {# Добавить корректную ссылку к current_user.avatar #}
                         <img src="{{ review.user.avatar }}" alt="avatar">
                     </div>
                 </div>
@@ -57,7 +57,7 @@
         {% endif%}
     </div>
 
-    {% if user.is_authenticated %}
+    {% if current_user.is_authenticated %}
         <header class="Section-header Section-header_product">
             <h3 class="Section-title">{{_("Добавить отзыв")}}
             </h3>

@@ -15,11 +15,10 @@ from .forms import UserOneOfferCARTDeleteForm, UserManyOffersCARTForm
 class CartListView(TemplateView):
     """Отображение корзины пользователя и обновление корзины"""
 
-    cart_name_in_context = "cart_list"
     template_name = "cart/cart.jinja2"
 
     def get(self, request, *args, **kwargs):
-        self.cart = get_cart_service(request).get_cart_as_list()
+        self.cart = get_cart_service(request).get_cart_as_dict()
         response = super().get(request, *args, **kwargs)
         return response
 
@@ -36,21 +35,12 @@ class CartListView(TemplateView):
             return HttpResponse(form.errors.as_ul(), status=400)
 
     def get_queryset(self):
-        user = self.request.user
-        if user.is_authenticated:
-            offers_list = []
-            for cart_record in self.cart:
-                offers_list.append(cart_record.offer)
-            queryset = Offer.objects.all()
-        else:
-            offers_list = []
-            for cart_record in self.cart:
-                offers_list.append(cart_record.offer)
-            queryset = Offer.objects.all()
+        offers_pk_list = self.cart.keys()
+        queryset = Offer.objects.filter(pk__in=offers_pk_list).select_related("product", "shop")
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = {self.cart_name_in_context: self.cart}
+        context = {"offer_list": self.get_queryset(), "cart": self.cart}
         context.update(kwargs)
         return super().get_context_data(object_list=None, **context)
 
