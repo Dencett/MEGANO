@@ -84,7 +84,7 @@ class UserLoginTestCase(TestCase):
     def test_user_login_to_register_page(self):
         response = self.client.get(reverse("profiles:register"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Страница регистрации")  # "Registration page")
+        self.assertContains(response, "Registration")
         self.assertContains(response, "Выбрать, если вы хотите стать продавцом на сайте:")
 
 
