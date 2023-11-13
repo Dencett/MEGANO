@@ -11,6 +11,7 @@ from .services.errors import get_random_error
     ]
 )
 def megano_fake_pay(request: Request) -> Response:
+    """АПИ для ответа сервису оплаты"""
     data = request.data
     order_even = MeganoOrderEvenSerializer(data=data)
     if order_even.is_valid():

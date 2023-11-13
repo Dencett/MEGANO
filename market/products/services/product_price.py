@@ -13,7 +13,7 @@ def product_min_price_or_none(product: Product, product_offers=None):
         price = min(product_offers, key=lambda x: x.price).price
         return price
     else:
-        offers = product.offer_set.all()
+        offers = product.offers.all()
         if offers:
             return product_min_price_or_none(product, offers)
         else:

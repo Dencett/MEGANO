@@ -8,6 +8,9 @@ from .services.pay_service import pay_order, invalid_form
 
 
 class PayView(TemplateView):
+    """Отображение страницы для ввода номера счета для заказа, если заказ уже оплачен,
+    то переадресация на страницу статуса"""
+
     template_name = "payapp/base_pay.jinja2"
 
     def get(self, request, *args, **kwargs):
@@ -21,6 +24,8 @@ class PayView(TemplateView):
 
 
 class PayStatusView(DetailView):
+    """Отображение статуса оплаты"""
+
     template_name = "payapp/pay_status.jinja2"
     model = Order
     context_object_name = "order"
@@ -38,6 +43,8 @@ class PayStatusView(DetailView):
 
 
 class BankAccountValidate(View):
+    """Представление для проверки ввода счета"""
+
     def post(self, request, *args, **kwargs):
         form = BancAccountForm(request.POST)
         order_pk = kwargs.get("order_pk")

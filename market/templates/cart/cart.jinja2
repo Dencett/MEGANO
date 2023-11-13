@@ -10,10 +10,10 @@
             <div class="wrap">
                 <form class="form Cart" id="cart_form" method="post">
                 {% csrf_token %}
-                {% if cart_list %}
+                {% if offer_list %}
                 <h2 class="Section-title"> {{_("Ваша корзина:")}}</h2>
 
-                    {% for cart in cart_list %}
+                    {% for offer in offer_list %}
                     {% set iter_count = loop.index0 %}
                      {% include "cart/cart_record.jinja2" %}
                     {% endfor %}

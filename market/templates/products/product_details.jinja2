@@ -17,7 +17,7 @@
                             {% endif %}
                             </div>
                             <div class="ProductCard-picts">
-                                {% for picture in product.productimage_set.all() %}
+                                {% for picture in product.images.all() %}
                                 <a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{ picture.image.url }}">
                                     <img src="{{ picture.image.url }}" alt="image {{ product.name }}" />
                                 </a>
@@ -52,7 +52,7 @@
                                         </button>
                                             {% csrf_token %}
                                             <input class="Amount-input form-input" name="amount" type="text" value="1"/>
-                                            {% for offer in product.offer_set.all() %}
+                                            {% for offer in product.offers.all() %}
                                                 <input type="submit" id="push-form-offer-{{offer.pk}}" style="display: none;" name="offer_id" value="{{offer.pk}}" />
                                             {% endfor %}
 
@@ -128,7 +128,7 @@
                             <div class="Tabs-block" id="sellers">
                                 <div class="Section-content">
                                     <div class="Orders">
-                                        {% for offer in product.offer_set.all() %}
+                                        {% for offer in product.offers.all() %}
                                         {% include "products/offer-block.jinja2" %}
                                         {% endfor %}
                                     </div>

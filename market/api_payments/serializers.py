@@ -3,6 +3,8 @@ from .custom_validators import even_number
 
 
 class MeganoOrderEvenSerializer(serializers.Serializer):
+    """Сериализатор для сервиса оплаты"""
+
     identify_number = serializers.IntegerField()
     cart_number = serializers.IntegerField(
         min_value=10000000,
