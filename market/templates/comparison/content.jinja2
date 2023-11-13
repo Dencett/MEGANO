@@ -85,11 +85,8 @@
                                                     <td>{{ value['category']}}</td>
                                                 </tr>
                                                 {% if common and display_diff_details == 1 %}
-                                                    <tr>
-                                                        <td style="background: rgb(0, 99, 209); color: white"><b>{{_("Общ.параметры")}}</b></td>
-                                                        <td style="background: rgb(0, 99, 209); color: white"></td>
                                                     <tr class="comparis">
-                                                        <td><b>Общ. параметры</b></td>
+                                                        <td><b>{{_("Общ.параметры")}}</b></td>
                                                         <td></td>
                                                     </tr>
                                                     {% for k, v in value['detail'].items() | sort()  %}
@@ -125,7 +122,7 @@
                         </div>
                     </div>
 
-                    <div class="ProductCard-cart" style="padding-top: 0">
+                    <div class="ProductCard-cart">
                         <div class="ProductCard-cartElement">
                             <a class="btn btn_primary" href="cart.html">
                                 <img class="btn-icon" src="{{ static('assets/img/icons/card/cart_white.svg') }}" alt="cart.svg">
