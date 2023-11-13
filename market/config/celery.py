@@ -34,11 +34,6 @@ app.autodiscover_tasks()
 def setup_task_logger(task_id, task, args, **kwargs):
     """
     Добавление FileHandler к logger.handlers при запуске команды.
-    :param task_id:
-    :param task:
-    :param args:
-    :param kwargs:
-    :return:
     """
     logger = logging.getLogger("celery.task")
 
@@ -59,11 +54,6 @@ def setup_task_logger(task_id, task, args, **kwargs):
 def cleanup_logger(task_id, task, args, **kwargs):
     """
     Удаление FileHandler из logger.handlers при завершении команды.
-    :param task_id:
-    :param task:
-    :param args:
-    :param kwargs:
-    :return:
     """
     logger = logging.getLogger("celery.task")
 

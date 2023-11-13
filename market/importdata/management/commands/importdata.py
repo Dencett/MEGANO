@@ -22,13 +22,12 @@ class Command(BaseCommand):
         parser.add_argument(
             "-e",
             "--email",
-            # default=[],
+            default=None,
             help="Address to mail a report to.",
         )
 
     def handle(self, *files, **options):
         load_files.delay(files, options["email"])
-
         if options["email"]:
             self.stdout.write(
                 "Команда 'Importdata' поставлена в очередь задач на выполнение. "

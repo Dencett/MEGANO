@@ -16,15 +16,15 @@
                         </tr>
                         {% for key, value in objects_list.items() %}
                             <tr>
-                                <td class="comparis" >{{ value['name'] }}</td>
-                                <td class="comparis" >
+                                <td>{{ value['name'] }}</td>
+                                <td>
                                     <div>
                                         <div style="min-height: 100px">
                                             <img src="{{ value['preview'] }}" width="50" height="auto" alt="product image" style="margin-top: 0">
                                         </div>
                                     </div>
                                 </td>
-                                <td class="comparis">
+                                <td>
                                     <form action="{{ url('comparison:comparison_delete') }}" method="post">
                                         {% csrf_token %}
                                         <input type="hidden" id="product_id" name="product_id" value="{{ key }}">
@@ -81,13 +81,13 @@
                                                     <th class="hed">Значение</th>
                                                 </tr>
                                                 <tr>
-                                                    <td class="comparis" >Тип</td>
-                                                    <td class="comparis">{{ value['category']}}</td>
+                                                    <td>Тип</td>
+                                                    <td>{{ value['category']}}</td>
                                                 </tr>
                                                 {% if common and display_diff_details == 1 %}
-                                                    <tr>
-                                                        <td style="background: rgb(0, 99, 209); color: white"><b>Общ. параметры</b></td>
-                                                        <td style="background: rgb(0, 99, 209); color: white"></td>
+                                                    <tr class="comparis">
+                                                        <td><b>Общ. параметры</b></td>
+                                                        <td></td>
                                                     </tr>
                                                     {% for k, v in value['detail'].items() | sort()  %}
                                                         {% if k in common %}
@@ -99,9 +99,9 @@
                                                     {% endfor %}
                                                 {% endif %}
                                                 {% if diff %}
-                                                    <tr>
-                                                        <td style="background: rgb(0, 99, 209); color: white"><b>Отл. параметры</b></td>
-                                                        <td style="background: rgb(0, 99, 209); color: white"></td>
+                                                    <tr class="comparis">
+                                                        <td><b>Отл. параметры</b></td>
+                                                        <td></td>
                                                     </tr>
 
                                                     {% for k, v in value['detail'].items()|sort() %}
@@ -133,7 +133,7 @@
 
                     <form action="{{ url('comparison:comparison_delete') }}" method="post">
                         {% csrf_token %}
-                        <div class="ProductCard-cart" style="padding-top: 0">
+                        <div class="ProductCard-cart">
                             <div class="ProductCard-cartElement">
                                 <input type="hidden" id="product_id" name="product_id" value="{{ key }}">
                                 <button class="btn btn_primary" type="submit">
