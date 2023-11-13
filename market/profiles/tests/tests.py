@@ -24,7 +24,7 @@ FIXTURES = [
 ]
 
 
-class UserLogoutTestCase(TestCase):
+class UserLogoutTest(TestCase):
     fixtures = FIXTURES
 
     @classmethod
@@ -44,7 +44,7 @@ class UserLogoutTestCase(TestCase):
         self.assertEqual(to_reverse.status_code, 200)
 
 
-class UserLoginTestCase(TestCase):
+class UserLoginTest(TestCase):
     fixtures = FIXTURES
 
     @classmethod
@@ -88,7 +88,7 @@ class UserLoginTestCase(TestCase):
         self.assertContains(response, "Выбрать, если вы хотите стать продавцом на сайте:")
 
 
-class UserRegisterTestCase(TestCase):
+class UserRegisterTest(TestCase):
     fixtures = FIXTURES
 
     @classmethod
@@ -136,7 +136,7 @@ class UserRegisterTestCase(TestCase):
         self.assertEqual(response.url, url)
 
 
-class UserChangeInformationTestCase(TestCase):
+class UserChangeInformationTest(TestCase):
     fixtures = FIXTURES
 
     @classmethod
@@ -169,7 +169,7 @@ class UserChangeInformationTestCase(TestCase):
         self.assertContains(response, self.user.residence)
 
 
-class UserHaveShopViewTestCase(TestCase):
+class UserHaveShopViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.category = Category.objects.create(name="Тестовая категория2")

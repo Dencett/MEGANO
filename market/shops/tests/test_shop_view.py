@@ -10,7 +10,7 @@ from shops.models import Shop
 User = get_user_model()
 
 
-class ShopViewTestCaseData(TestCase):
+class ShopViewTestData(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
         cls.category = Category.objects.create(name="Тестовая категория2")

@@ -8,7 +8,7 @@ from orders.models import Order
 User = get_user_model()
 
 
-class OrderCreateTestCase(TestCase):
+class OrderCreateTest(TestCase):
     """Тест создания заказа"""
 
     @classmethod
@@ -43,7 +43,7 @@ class OrderCreateTestCase(TestCase):
         self.assertTrue(self.order.total_price, "45888.65")
 
 
-class UserHistoryOrdersListViewTestCase(TestCase):
+class UserHistoryOrdersListViewTest(TestCase):
     """Тест истории заказов пользователя"""
 
     fixtures = get_fixtures_list()
@@ -104,7 +104,7 @@ class UserHistoryOrdersListViewTestCase(TestCase):
         self.assertContains(response, self.order.order_number)
 
 
-class OrderDetailTestCase(TestCase):
+class OrderDetailTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.all_info = {
