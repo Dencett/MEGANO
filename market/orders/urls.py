@@ -1,7 +1,6 @@
 from django.urls import path
 
 from orders.views import (
-    view_test_page,
     OrderDetailView,
     OrderStepOneView,
     OrderStepTwoView,
@@ -14,7 +13,6 @@ app_name = "orders"
 
 
 urlpatterns = [
-    path("", view_test_page, name="base"),
     path("step_one/", OrderStepOneView.as_view(), name="view_step_one"),
     path("step_two/", OrderStepTwoView.as_view(), name="view_step_two"),
     path("step_three/", OrderStepThreeView.as_view(), name="view_step_three"),

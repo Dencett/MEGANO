@@ -3,17 +3,9 @@ from django.contrib import admin
 from .models import Shop, Offer
 
 
-# class ProductInline(admin.StackedInline):
-#     model = Shop.products.through
-
-
 @admin.register(Shop)
 class ShopAdmin(admin.ModelAdmin):
-    """Админ Магазин"""
-
-    # inlines = [
-    #     ProductInline,
-    # ]
+    """Административная панель модели: Магазин"""
 
     list_display = (
         "pk",
@@ -28,7 +20,7 @@ class ShopAdmin(admin.ModelAdmin):
 
 @admin.register(Offer)
 class OfferAdmin(admin.ModelAdmin):
-    """Админ Магазин"""
+    """Административная панель модели: Предложение"""
 
     list_display = (
         "pk",

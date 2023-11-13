@@ -9,7 +9,6 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 
 from .forms import UserRegisterForm, ProfileAvatarUpdateForm
 from .models import User
-from profiles.services.have_store import user_have_store
 from products.models import Product
 from .services.products_history import get_products_in_user_history
 from products.services.product_price import product_min_price_or_none
@@ -32,14 +31,8 @@ class AboutUserView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["update_avatar"] = ProfileAvatarUpdateForm()
-        context["user_example"] = User.objects.filter(pk=self.request.user.pk).first()
-        have_shop = user_have_store(self.request)
-        if len(have_shop) >= 1:
-            context["shop"] = have_shop
-        else:
-            context["shop"] = ""
-
         user = self.request.user
+
         if user.is_authenticated:
             history = get_products_in_user_history(user, number=3)
             context["history"] = history
@@ -109,10 +102,10 @@ class UserLogoutView(LogoutView):
 
 
 class UserResetPasswordView(PasswordChangeView):
-    """View class change password. Asks the user for the old password
-    and the new password twice.
-    If the first new password matches the second, it sets a new password
-    to the user and sends the user to the main page.
+    """View class смены пароля. Запрашивает у пользователя старый пароль
+    и новый пароль дважды.
+    Если первый пароль совпадает со вторым, устанавливается новый пароль
+    и отправляет пользователя на главную страницу.
     """
 
     template_name = "profiles/password_form.jinja2"
@@ -120,7 +113,7 @@ class UserResetPasswordView(PasswordChangeView):
 
 
 class UserUpdateProfileInfo(UpdateView):
-    """View of user information updates"""
+    """View class обновления информации о пользователе."""
 
     model = User
     template_name = "profiles/user_update_form2.jinja2"

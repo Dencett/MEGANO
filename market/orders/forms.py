@@ -48,9 +48,8 @@ class OrderFastRegistrationAnonymousUser(UserRegisterForm):
 class OrderCreateForm(forms.Form):
     city = forms.CharField(max_length=30)
     address = forms.CharField(max_length=30)
-    # user = forms.CharField(max_length=30)
-    delivery_type = forms.ChoiceField(choices=(Order.DELIVERY_TYPE))  # widget={"payment_type": RadioSelect})
-    payment_type = forms.ChoiceField(choices=(Order.PAYMENT_TYPES))  # widget={"payment_type": RadioSelect})
+    delivery_type = forms.ChoiceField(choices=(Order.DELIVERY_TYPE))
+    payment_type = forms.ChoiceField(choices=(Order.PAYMENT_TYPES))
     status = forms.ChoiceField(choices=(Order.STATUS_CHOICES))
     total_price = forms.CharField(max_length=30)
 
@@ -60,7 +59,7 @@ class OrderCreateForm(forms.Form):
 
 class OrderStepFourForm(forms.ModelForm):
     """
-    Форма для обработки четвертого шага заказа товара
+    Форма для обработки четвертого шага заказа товара.
     """
 
     class Meta:
