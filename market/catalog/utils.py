@@ -1,7 +1,7 @@
 from typing import Tuple, Any, Dict, Generator, List
 
 from django.db.models import QuerySet, Count, F, Q
-
+from django.utils.translation import gettext as _
 from catalog.common import parse_price
 
 
@@ -224,10 +224,10 @@ class Sorter:
     default_sort = "pk"
 
     sort_types = {
-        "famous": "Популярности",
-        "price": "Цене",
-        "review": "Отзывам",
-        "recency": "Новизне",
+        "famous": _("Популярности"),
+        "price": _("Цене"),
+        "review": _("Отзывам"),
+        "recency": _("Новизне"),
     }
 
     def get_items(self) -> Generator[Tuple[str, str], None, None]:

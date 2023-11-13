@@ -1,7 +1,7 @@
 {% extends 'base.jinja2' %}
 
 {% block title %}
-Информация о пользователе
+
 {% endblock %}
 
 {% block middle %}
@@ -15,32 +15,32 @@
             <div class="Section-column">
                 <div class="Section-columnSection">
                     <header class="Section-header">
-                        <strong class="Section-title">Навигация
+                        <strong class="Section-title">{{_("Навигация")}}
                         </strong>
                     </header>
                     <div class="Section-columnContent">
                         <div class="NavigateProfile">
                             <ul class="menu menu_vt">
                                 <li class="{% block activate_cabinet %} menu-item {% endblock %}">
-                                    <a class="menu-link" href="{{ url('profiles:about-user') }}">Личный кабинет</a>
+                                    <a class="menu-link" href="{{ url('profiles:about-user') }}">{{_("Личный кабинет")}}</a>
                                 </li>
                                 <li class="{% block activate_profile %} menu-item {% endblock %}">
-                                    <a class="menu-link" href="{{ url('profiles:update-info', pk=user.pk) }}">Профиль</a>
+                                    <a class="menu-link" href="{{ url('profiles:update-info', pk=user.pk) }}">{{_("Профиль")}}</a>
                                 </li>
                                 <li class="{% block history_order %} menu-item {% endblock %}">
-                                    <a class="menu-link" href="{{ url('orders:history') }}">История заказов</a>
+                                    <a class="menu-link" href="{{ url('orders:history') }}">{{_("История заказов")}}</a>
                                 </li>
                                 <li class="{% block history_product %} menu-item {% endblock %}">
-                                    <a class="menu-link" href="{{ url('profiles:browsing_history') }}">История просмотра</a>
+                                    <a class="menu-link" href="{{ url('profiles:browsing_history') }}">{{_("История просмотра")}}</a>
                                 </li>
                                 <li class="{% block change_password %} menu-item {% endblock %}">
-                                    <a class="menu-link" href="{{ url('profiles:change-password') }}">Сменить пароль</a>
+                                    <a class="menu-link" href="{{ url('profiles:change-password') }}">{{_("Сменить пароль")}}</a>
                                 </li>
                                 <li class="{% block to_main %} menu-item {% endblock %}">
-                                    <a class="menu-link" href="{{ url('products:home-page') }}">На главную</a>
+                                    <a class="menu-link" href="{{ url('products:home-page') }}">{{_("На главную")}}</a>
                                 </li>
                                 {% if shop != "" %}
-                                <h3 class="header">Информация о магазине</h3>
+                                <h3 class="header">{{_("Информация о магазине")}}</h3>
                                     {% for all_shop in shop %}
                                     <li class="menu-item">
                                         <a class="menu-link" href="{{ url('shops:shop_detail', pk=all_shop.pk)}}">{{ all_shop.name }}</a>
@@ -63,9 +63,11 @@
     </div>
 </div>
 {% else %}
+{% trans trimmed url_login = url('profiles:login'), url_register = url('profiles:register') %}
 <h2>Вы зашли как анонимный пользователь.</h2>
 <p>Пожалуйста,
-    <a href="{{ url('profiles:login') }}">авторизуйтесь</a> или <a href="{{ url('profiles:register') }}">зарегистрируйтесь.</a>
+    <a href="{{ url_login }}">авторизуйтесь</a> или <a href="{{ url_register }}">зарегистрируйтесь.</a>
 </p>
+{% endtrans %}
 {% endif %}
 {% endblock %}

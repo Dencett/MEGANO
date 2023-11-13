@@ -71,7 +71,7 @@ class Offer(models.Model):
     """Предложение магазина"""
 
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
-    product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
+    product = models.ForeignKey("products.Product", on_delete=models.CASCADE, related_name="offers")
     price = models.DecimalField(
         max_digits=10, decimal_places=2, verbose_name=_("цена"), validators=[MinValueValidator(Decimal("0.01"))]
     )

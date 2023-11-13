@@ -138,7 +138,7 @@ class CategoryAdmin(admin.ModelAdmin):
         ),
     ]
 
-    @admin.display(description="родительская категория")
+    @admin.display(description=_("родительская категория"))
     def parent_name_id(self, obj: Category):
         if obj.parent is None:
             return
@@ -210,7 +210,7 @@ class ReviewAdmin(admin.ModelAdmin):
         ),
     ]
 
-    @admin.display(description="отзыв")
+    @admin.display(description=_("отзыв"))
     def short_review_content(self, obj: Review) -> str:
         if len(obj.review_content) > 50:
             return obj.review_content[:50] + "..."

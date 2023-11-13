@@ -62,10 +62,9 @@ class AnonimCartService:
 
     def get_cart_as_dict(self):
         """Получает список из UserOfferCart без атрибута user на основании сессии"""
-        cart = []
         if not self.session_cart:
-            return cart
-        return cart
+            return {}
+        return {int(k): int(v) for k, v in self.session_cart.items()}
 
     def remove_from_cart(self, offer_id: int):
         """
@@ -380,21 +379,10 @@ def get_cart_service(request: HttpRequest) -> Union[UserCartService, AnonimCartS
     то возвращает сервис для Анонимной корзины работающий на сессиях. Иначе возвращает сервис для корзины пользователя,
     работающий через БД.
     """
-    # if request.user.is_anonymous:
-    #     return AnonimCartService(request)
-    # else:
-    #     return UserCartService(request)
-
     return AnonimCartService(request)
 
 
 def login_cart(request: HttpRequest) -> None:
     """Обновление пользовательской корзины при входе пользователя, все записи анонимной корзины мигрируют в
     пользовательскую корзину"""
-    # anonim_cart = AnonimCartService(request)
-    # if anonim_cart.session_cart:
-    #     user_cart = _merge_session_cart_to_user_cart(request, anonim_cart)
-    # else:
-    #     user_cart = get_cart_service(request)
-    # user_cart.get_upd_length()
     return

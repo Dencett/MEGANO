@@ -9,9 +9,10 @@
             <div class="Card-cost">
                 <span class="Card-price">
                     {% if price(product) %}
-                        От {{ price(product) }} р
+                    {# Translators: "От" {{price}} #}
+                        {{_("От")}} {{ price(product) }} р
                     {% else %}
-                        Нет в наличие
+                        {{_("Нет в наличие")}}
                     {% endif %}
                 </span>
             </div>
