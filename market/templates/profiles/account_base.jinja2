@@ -39,13 +39,14 @@
                                 <li class="{% block to_main %} menu-item {% endblock %}">
                                     <a class="menu-link" href="{{ url('products:home-page') }}">{{_("На главную")}}</a>
                                 </li>
-                                {% if shop != "" %}
+                                {% if user.shops.count() != 0 %}
                                 <h3 class="header">{{_("Информация о магазине")}}</h3>
-                                    {% for all_shop in shop %}
+                                    {% for shop in user.shops.all() %}
                                     <li class="menu-item">
-                                        <a class="menu-link" href="{{ url('shops:shop_detail', pk=all_shop.pk)}}">{{ all_shop.name }}</a>
+                                        <a class="menu-link" href="{{ url('shops:shop_detail', pk=shop.pk)}}">{{ shop.name }}</a>
                                     </li>
                                     {% endfor %}
+
                                 {% else %}
 
                                 {% endif %}
