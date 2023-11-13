@@ -36,9 +36,15 @@ test:
   variables:
     DATABASE_URL: "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB"
     REDIS_URL: "redis://broker:6379/0"
+    SECRET_KEY: "django-insecure-=e-i4dlx_qq&ra7un4)u8bdr#08q)gc_*yyy4@7--kt(0(p#!("
+    DEBUG: True
+    ALLOWED_HOSTS: www.allowed.com www.host.com
   script:
     - echo "DATABASE_URL = $DATABASE_URL" >> .env
     - echo "REDIS_URL = $REDIS_URL" >> .env
+    - echo "SECRET_KEY = $SECRET_KEY" >> .env
+    - echo "DEBUG = $DEBUG" >> .env
+    - echo "ALLOWED_HOSTS = $ALLOWED_HOSTS" >> .env
     - cd market
     - poetry run python manage.py makemigrations
     - poetry run python manage.py makemessages -a -e html,txt,py,jinja2
