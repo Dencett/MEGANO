@@ -17,7 +17,7 @@ class Shop(models.Model):
     """Магазин"""
 
     # Магазин связан с пользователем
-    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True, related_name="shops")
     name = models.CharField(max_length=512, verbose_name=_("название"))
     about = models.TextField(
         verbose_name=_("Описание магазина"),

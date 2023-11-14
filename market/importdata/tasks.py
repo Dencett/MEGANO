@@ -1,8 +1,8 @@
 import os
 import json
 import time
-
 from typing import List, Dict, Optional, Tuple, Union
+
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.core.cache import cache
@@ -14,7 +14,7 @@ from json.decoder import JSONDecodeError
 
 from products.models import Product, ProductDetail, Detail, Manufacturer, Category, Tag
 from shops.models import Offer, Shop
-from importdata.services import ProductPydantic, DetailsPydantic
+from importdata.services import ProductBaseModel, DetailsBaseModel
 
 
 logger = get_task_logger(__name__)
@@ -129,7 +129,7 @@ def load(products) -> tuple[int, int, int, List[Optional[Exception]]]:
         obj_count += 1
         logger.info("Импорт продукта №%d..." % obj_count)
         try:
-            obj: ProductPydantic = ProductPydantic(**product_data)
+            obj: ProductBaseModel = ProductBaseModel(**product_data)
 
             with transaction.atomic():
                 shop = get_and_validate_shop(obj)
@@ -179,7 +179,7 @@ def load(products) -> tuple[int, int, int, List[Optional[Exception]]]:
     return loaded_object_count, failed_object_count, total_objects, excp
 
 
-def create_product(obj: ProductPydantic, manufacturer: Manufacturer, shop: Shop, tags: Optional[List[Tag]]) -> None:
+def create_product(obj: ProductBaseModel, manufacturer: Manufacturer, shop: Shop, tags: Optional[List[Tag]]) -> None:
     """
     Создание сущности Продукт.
     :param obj:
@@ -213,7 +213,7 @@ def create_product(obj: ProductPydantic, manufacturer: Manufacturer, shop: Shop,
     offer.save()
 
 
-def update_product(obj: ProductPydantic, manufacturer: Manufacturer, product: Product, shop: Shop, tags) -> None:
+def update_product(obj: ProductBaseModel, manufacturer: Manufacturer, product: Product, shop: Shop, tags) -> None:
     """
     Обнавление сущности Продукт.
     :param obj:
@@ -254,7 +254,7 @@ def update_product(obj: ProductPydantic, manufacturer: Manufacturer, product: Pr
         Offer(product=product, shop=shop, price=obj.offer.price, remains=obj.offer.quantity)
 
 
-def get_and_validate_shop(obj: ProductPydantic) -> Shop:
+def get_and_validate_shop(obj: ProductBaseModel) -> Shop:
     """Получение сущности Магазин."""
     try:
         shop = Shop.objects.get(name=obj.shop)
@@ -264,7 +264,7 @@ def get_and_validate_shop(obj: ProductPydantic) -> Shop:
         return shop
 
 
-def get_or_create_manufacturer(obj: ProductPydantic) -> Manufacturer:
+def get_or_create_manufacturer(obj: ProductBaseModel) -> Manufacturer:
     """
     Получение или создание сущности Производитель.
     :param obj:
@@ -278,7 +278,7 @@ def get_or_create_manufacturer(obj: ProductPydantic) -> Manufacturer:
     return manufacturer
 
 
-def get_or_create_tag(obj: ProductPydantic) -> Optional[List[Tag]]:
+def get_or_create_tag(obj: ProductBaseModel) -> Optional[List[Tag]]:
     """
     Получение списка сущностей Тag.
     :param obj:
@@ -292,7 +292,7 @@ def get_or_create_tag(obj: ProductPydantic) -> Optional[List[Tag]]:
     return tags
 
 
-def category_create(obj: ProductPydantic) -> Category:
+def category_create(obj: ProductBaseModel) -> Category:
     """
     Получение или создание сущности Категория с попутным созданием подкатегории.
     :param obj:
@@ -318,7 +318,7 @@ def category_create(obj: ProductPydantic) -> Category:
     return category
 
 
-def product_details_create_or_update(obj: ProductPydantic, product: Product, update=False) -> None:
+def product_details_create_or_update(obj: ProductBaseModel, product: Product, update=False) -> None:
     """
     Создание или обновление свойств продукта и его характеристик.
     :param obj:
@@ -337,7 +337,7 @@ def product_details_create_or_update(obj: ProductPydantic, product: Product, upd
         product_detail.save()
 
 
-def detail_must_be_unique_validator(v: List[Optional[DetailsPydantic]]) -> None:
+def detail_must_be_unique_validator(v: List[Optional[DetailsBaseModel]]) -> None:
     """
     Валидация параметров продукта по уникальности.
     :param v:

@@ -1,5 +1,6 @@
 import os
 
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.core import management
 from django.core.cache import cache
@@ -9,7 +10,12 @@ from django.views.generic.edit import FormView
 from .forms import ImportForm
 
 
-class ImportView(FormView):
+class ImportView(UserPassesTestMixin, FormView):
+    """
+    View class для отображения страницы с формой для импорта товаров.
+    Если форма валидна - запускается команда импорта товаров.
+    """
+
     form_class = ImportForm
     template_name = "importdata/import.jinja2"
     success_url = reverse_lazy("importdata:importdata")
@@ -32,5 +38,15 @@ class ImportView(FormView):
                 ],
             }
         )
-
         return context
+
+    def test_func(self):
+        """
+        Проверка доступа к странице импорта товаров.
+        Если пользователь авторизирован и у него есть магазин
+        или пользователь является суперюзером - доступ открыт,
+        иначе -  403 Forbidden.
+        """
+        return (
+            self.request.user.is_authenticated and self.request.user.shops.exists() or self.request.user.is_superuser
+        )
