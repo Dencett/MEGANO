@@ -1,5 +1,3 @@
-from types import NoneType
-
 from django.db import transaction
 from orders.models import Order, OrderDetail
 from profiles.models import User
@@ -41,15 +39,18 @@ class OrderDetailCreate:
         city = self.request.session["city"]
         address = self.request.session["address"]
         payment_type = self.request.session["payment_type"]
+        cart_price = self.request.session.get(settings.CART_PRICE_SESSION_KEY)
+        total_price = cart_price
 
         order = Order.objects.create(
             city=city,
             address=address,
             user=user,
             delivery_type=delivery_type,
-            # order_number=self.get_last_order_number(),
+            order_number=self.get_last_order_number(),
             payment_type=payment_type,
             status=Order.STATUS_CREATED,
+            total_price=total_price,
         )
         return order
 
@@ -60,15 +61,12 @@ class OrderDetailCreate:
         # В разработке...
         """
         user = User.objects.get(pk=self.request.user.pk)
-        order_number = Order.objects.filter(user=user).first().order_number
-        try:
-            if order_number is None:
-                order_number = 1
-                return order_number
-        except NoneType as exc:
-            return f"{exc.__class__, exc.__class__.__name__, exc}"
+        last_client_order = Order.objects.filter(user=user).first()
+        if last_client_order is None:
+            order_number = 1
+            return order_number
 
-        order_number += 1
+        order_number = last_client_order.order_number + 1
         return order_number
 
     @transaction.atomic

@@ -69,7 +69,7 @@
         <p class="Cart-title">{{_("Телефон:")}} {{ user.phone }}</p>
         <p class="Cart-title">{{_("Город проживания:")}} {{ user.residence }}</p>
         <p class="Cart-title">{{_("Адрес:")}} {{ user.address }}</p>
-        <a href="#" class="btn btn_square btn_dark" style="margin-bottom: 15px;">{{_("Изменить профиль")}}</a>
+        <a class="btn btn_square btn_dark" href="{{ url('profiles:update-info', pk=user.pk) }}" style="margin-bottom: 15px;">{{_("Изменить профиль")}}</a>
     </div>
 <!--========================================== Информация пользователя пользователя!  КОНЕЦ  ==========================================-->
 </div>

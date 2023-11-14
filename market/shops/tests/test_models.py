@@ -117,7 +117,7 @@ class OfferModelTest(TestCase):
             self.assertIn(name, attr_names)
 
 
-class ShopDataModelTestCase(TestCase):
+class ShopDataModelTest(TestCase):
     """Класс тестов модели Магазин"""
 
     @classmethod
@@ -154,7 +154,7 @@ class ShopDataModelTestCase(TestCase):
         cache.clear()
 
     def test_verbose_name(self):
-        shop = ShopDataModelTestCase.shop
+        shop = ShopDataModelTest.shop
         field_verboses = {
             "name": "название",
             "about": "Описание магазина",

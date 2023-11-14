@@ -17,8 +17,8 @@
         <div class="Order-personal">
             <div class="row">
                 <div class="row-block">
-                    <a class="Order-title" href="oneorder.html">Заказ&#32;
-                        <span class="Order-numberOrder">№{{ order.pk }}</span>
+                    <a class="Order-title" href="{{ url('orders:detail_order', pk=order.pk) }}">Заказ&#32;
+                        <span class="Order-numberOrder">№{{ order.order_number }}</span>
                         &#32;от&#32;
                         <span class="Order-dateOrder">{{ order.created_at.date() }}</span>
                     </a>
@@ -39,13 +39,13 @@
                     <div class="Order-info">
                         <div class="Order-infoType">Общая стоимость:
                         </div>
-                        <div class="Order-infoContent"><span class="Order-price"><b>2000$</b> (цена пока не сохраняется)</span>
+                        <div class="Order-infoContent"><span class="Order-price"><b>{{ order.total_price }} &#x20bd;</span>
                         </div>
                     </div>
                     <div class="Order-info Order-info_status">
                         <div class="Order-infoType">Статус:
                         </div>
-                        <div class="Order-infoContent">Не оплачен (эта опция не сделана)
+                        <div class="Order-infoContent"> {{ order.status.title() }}
                         </div>
                     </div>
                 </div>
