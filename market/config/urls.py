@@ -32,6 +32,7 @@ urlpatterns = [
     path("api/", include("api_payments.urls")),
     # path("pay/", include("payapp.urls")),
     # path("orders/", include("orders.urls")),
+    # path("importdata/", include("importdata.urls")),
 ]
 
 urlpatterns += i18n_patterns(
@@ -44,6 +45,7 @@ urlpatterns += i18n_patterns(
     path("comparison/", include("comparison.urls")),
     path("pay/", include("payapp.urls")),
     path("orders/", include("orders.urls")),
+    path("importdata/", include("importdata.urls")),
 )
 
 if settings.DEBUG:

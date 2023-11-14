@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "orders",
     "api_payments",
     "payapp",
+    "importdata",
 ]
 
 MIDDLEWARE = [
@@ -229,3 +230,30 @@ CART_PRICE_SESSION_KEY = "cart_price"
 PAY_QUEUE = Queue()
 PAY_QUEUE_LOCK = Lock()
 PAY_URL = reverse_lazy("api_payments:pays")
+
+
+# Celery configuration
+
+# configure the location of Redis database:
+CELERY_BROKER_URL = config["REDIS_URL"]
+# configure storing the state and returning values of tasks in Redis
+CELERY_RESULT_BACKEND = config["REDIS_URL"]
+# CELERYD_LOG_FILE = "/logs/celery.log"
+# CELERYD_LOG_LEVEL = "ERROR"
+CELERY_CREATE_DIRS = 1
+
+
+# Django Email
+# https://docs.djangoproject.com/en/4.2/topics/email/
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_USER_SSL = False
+EMAIL_HOST_USER = "example@gmail.com"
+EMAIL_HOST_PASSWORD = "eeee ddds wwwf wtoa"
+
+# Set the import folder for importadata app
+IMPORT_FOLDER = "import_folder"

@@ -59,9 +59,12 @@ class ComparisonAddView(View):
         if form.is_valid():
             cd = form.cleaned_data
             product = get_object_or_404(Product, pk=cd["product_id"])
-            comparison.add(product=product)
+            res = comparison.add(product=product)
 
-        return redirect(url)
+            if res:
+                return redirect(url + "#modal_open_comparison_succ")
+            else:
+                return redirect(url + "#modal_open_comparison_failed")
 
 
 class ComparisonDeleteView(View):

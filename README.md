@@ -32,6 +32,11 @@ poetry install  ; установка пакетов
 poetry shell  ; активация виртуального окружения
 pre-commit install  ; установка pre-commit для проверки форматирования кода, см. .pre-commit-config.yaml
 ```
+Запуск менеджера задач Celery и плагина Flower для мониторинга задач в режиме реального времени
+```shell
+celery -A config worker --loglevel=INFO
+celery -A config flower --loglevel=INFO
+```
 ### Как удалить контейнеры
 СУБД Postgres
 ```shell

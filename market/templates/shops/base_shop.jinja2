@@ -26,6 +26,8 @@
                 </li>
                 <li class="{% block active_shop_products %} menu-item {% endblock%}"><a class="menu-link" href="{{ url('shops:shop_products', pk=shop.pk) }}">Товары магазина</a>
                 </li>
+                <li class="{% block active_import_products %} menu-item {% endblock%}"><a class="menu-link" href="{{ url('importdata:importdata') }}">Импортировать продукты</a>
+                </li>
               </ul>
             </div>
           </div>

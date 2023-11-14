@@ -21,7 +21,7 @@ class ComparisonService:
 
         self.comparison = comparison
 
-    def add(self, product: Product) -> None:
+    def add(self, product: Product) -> bool:
         """
         Добавление товара в список сравнения.
         """
@@ -41,7 +41,11 @@ class ComparisonService:
             for productdetail in productdetails:
                 self.comparison[product_id]["detail"][productdetail.detail.name] = productdetail.value
 
-        self.save()
+            self.save()
+            return True
+
+        else:
+            return False
 
     def save(self) -> None:
         """

@@ -2,6 +2,7 @@ import os
 from typing import Union
 
 from django.db import models
+from django.db.models.constraints import UniqueConstraint
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.core.validators import FileExtensionValidator
@@ -48,7 +49,7 @@ class Product(models.Model):
         verbose_name = _("продукт")
         verbose_name_plural = _("продукты")
 
-    name = models.CharField(max_length=512, verbose_name=_("наименование"))
+    name = models.CharField(max_length=512, unique=True, verbose_name=_("наименование"))
     manufacturer = models.ForeignKey("Manufacturer", on_delete=models.CASCADE, verbose_name=_("производитель"))
     details = models.ManyToManyField("Detail", through="ProductDetail", verbose_name=_("характеристики"))
     about = models.TextField(blank=True, max_length=512, verbose_name="краткое описание")
@@ -103,6 +104,7 @@ class ProductDetail(models.Model):
     class Meta:
         verbose_name = _("значение свойства продуктов")
         verbose_name_plural = _("значения свойства продуктов")
+        constraints = [UniqueConstraint(fields=["product", "detail"], name="unique_product_detail")]
 
 
 def category_icon_directory_path(instance: "Category", filename: str) -> str:
