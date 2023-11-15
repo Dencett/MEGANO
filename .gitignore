@@ -167,5 +167,3 @@ market/templates/elmir_trash/
 .DS_Store
 
 local/
-market/import_folder/failed_import_files
-market/import_folder/success_import_files
