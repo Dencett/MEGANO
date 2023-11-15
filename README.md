@@ -35,6 +35,9 @@ pre-commit install  ; установка pre-commit для проверки фо
 Запуск менеджера задач Celery и плагина Flower для мониторинга задач в режиме реального времени
 ```shell
 celery -A config worker --loglevel=INFO
+# ОС Windows
+celery -A config worker --loglevel=INFO --pool=solo
+
 celery -A config flower --loglevel=INFO
 ```
 ### Как удалить контейнеры

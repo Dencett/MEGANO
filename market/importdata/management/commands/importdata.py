@@ -7,7 +7,8 @@ class Command(BaseCommand):
     help = (
         "Import products data into the database from json"
         "file(s) located at '%s' folder. *If no files are selected,"
-        "the import will be initiated from all files in the directory." % settings.IMPORT_FOLDER
+        "the import will be initiated from all files in the directory."
+        "**WARNING For task works properly Celery should be running" % settings.IMPORT_FOLDER
     )
     # missing_args_message = 'No files'
 

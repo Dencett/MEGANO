@@ -6,11 +6,6 @@ from celery import Celery
 from celery.app.log import TaskFormatter
 from celery.signals import task_prerun, task_postrun
 
-
-# commands
-# celery -A config worker --loglevel=INFO
-# celery -A config flower --loglevel=INFO
-
 # Celery https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html#django-first-steps
 # Real Python https://realpython.com/asynchronous-tasks-with-django-and-celery/
 
