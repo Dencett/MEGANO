@@ -9,9 +9,15 @@
         <div class="Comments">
             <div class="Comment">
                 <div class="Comment-column Comment-column_pict">
-                    <div style="width: 100px">
-                        <img src="{{ review.user.avatar.url }}" width="100%" alt="avatar">
-                    </div>
+                    {% if review.user.avatar %}
+                        <div style="width: 100px">
+                            <img src="{{ review.user.avatar.url }}" width="100%" alt="avatar">
+                        </div>
+                    {% else %}
+                        <div class="Comment-avatar">
+                            <img src="{{ static('assets/img/icons/profile.png') }}" alt="avatar">
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="Comment-column">
                     <header class="Comment-header">
