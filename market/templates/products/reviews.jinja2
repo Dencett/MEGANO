@@ -9,9 +9,8 @@
         <div class="Comments">
             <div class="Comment">
                 <div class="Comment-column Comment-column_pict">
-                    <div class="Comment-avatar">
-                        {# Добавить корректную ссылку к current_user.avatar #}
-                        <img src="{{ review.user.avatar }}" alt="avatar">
+                    <div style="width: 100px">
+                        <img src="{{ review.user.avatar.url }}" width="100%" alt="avatar">
                     </div>
                 </div>
                 <div class="Comment-column">
