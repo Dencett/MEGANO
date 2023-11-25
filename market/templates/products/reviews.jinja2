@@ -10,12 +10,12 @@
             <div class="Comment">
                 <div class="Comment-column Comment-column_pict">
                     {% if review.user.avatar %}
-                        <div style="width: 100px">
-                            <img src="{{ review.user.avatar.url }}" width="100%" alt="avatar">
+                        <div style="width: 100px;">
+                            <img src="{{ review.user.avatar.url }}" width="100%"  style="margin: 0" alt="avatar">
                         </div>
                     {% else %}
                         <div class="Comment-avatar">
-                            <img src="{{ static('assets/img/icons/profile.png') }}" alt="avatar">
+<!--                            <img src="#" alt="avatar">-->
                         </div>
                     {% endif %}
                 </div>
