@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import BaseUserCreationForm, UsernameField
+from django.contrib.auth.forms import BaseUserCreationForm, UsernameField, SetPasswordForm
 
 from django.utils.translation import gettext_lazy as _
 from .models import User
@@ -94,3 +94,11 @@ class ChangeProfileInfoForm(forms.ModelForm):
 
 class ProfileAvatarUpdateForm(forms.Form):
     user_avatar = forms.ImageField()
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        label=_("New password"),
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        strip=False,
+    )
