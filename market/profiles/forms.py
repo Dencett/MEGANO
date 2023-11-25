@@ -15,6 +15,9 @@ class UserRegisterForm(BaseUserCreationForm):
     phone = forms.CharField(
         label="Номер телефона",
         max_length=16,
+        widget=forms.PasswordInput(
+            attrs={"placeholder": "+7(999)999-99-99", "type": "text", "data-mask": "+7(999)999-99-99"}
+        ),
         help_text="Вводите номер в виде '+7(ХХХ)ХХХ-ХХ-ХХ'",
         validators=[
             RegexValidator(regex=r"\+[7]\([0-9]{3}\)[0-9]{3}\-[0-9]{2}\-[0-9]{2}", message=_("номер некорректный"))
