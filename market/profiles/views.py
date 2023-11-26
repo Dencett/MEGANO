@@ -1,5 +1,13 @@
 from django.contrib.auth.models import Group
-from django.contrib.auth.views import LogoutView, PasswordChangeView, LoginView
+from django.contrib.auth.views import (
+    LogoutView,
+    PasswordChangeView,
+    LoginView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
 from django.contrib.auth import authenticate, login
 from django.db import transaction
 from django.urls import reverse_lazy, reverse
@@ -7,7 +15,7 @@ from django.http.response import HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView, UpdateView, ListView
 from django.contrib.auth.mixins import UserPassesTestMixin
 
-from .forms import UserRegisterForm, ProfileAvatarUpdateForm
+from .forms import UserRegisterForm, ProfileAvatarUpdateForm, CustomSetPasswordForm
 from .models import User
 from products.models import Product
 from .services.products_history import get_products_in_user_history
@@ -151,3 +159,29 @@ class CustomLoginView(LoginView):
         if self.request.user.is_authenticated:
             login_cart(self.request)
         return answer
+
+
+class CustomPasswordResetView(PasswordResetView):
+    subject_template_name = "profiles/password_reset_subject.txt"
+    email_template_name = "profiles/password_reset_email.html"
+    success_url = reverse_lazy("profiles:reset_password_done")
+    template_name = "profiles/password_reset_form.jinja2"
+
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = "profiles/password_reset_done.jinja2"
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    success_url = reverse_lazy("profiles:reset_password_complete")
+    template_name = "profiles/password_reset_confirm.jinja2"
+    form_class = CustomSetPasswordForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user_"] = self.user
+        return context
+
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = "profiles/password_reset_complete.jinja2"
