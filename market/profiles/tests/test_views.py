@@ -2,7 +2,7 @@ from django.test import TestCase
 from profiles.models import User
 from products.models import Product
 from django.urls import reverse
-from ..models import UserProductHistory
+from profiles.models import UserProductHistory
 
 FIXTURES = [
     "fixtures/01-users.json",
@@ -93,3 +93,58 @@ class AboutUserViewTest(TestCase):
         self.client.get(reverse("products:product-detail", kwargs={"pk": 1}))
         response = self.client.get(reverse("profiles:about-user"))
         self.assertContains(response, "Вы смотрели")
+
+
+class PasswordResetViewTest(TestCase):
+    fixtures = FIXTURES
+
+    @classmethod
+    def setUpTestData(cls):
+        # создает пользователя
+        cls.credentials = {"username": "bob_test", "password": "qwerty", "email": "test@test.ru"}
+        cls.login_info = {"password": "qwerty", "email": "test@test.ru"}
+        cls.user = User.objects.create_user(**cls.credentials)
+
+    def test_reset_password_page(self):
+        response = self.client.get(reverse("profiles:reset_password"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_form_reset_password_page(self):
+        response = self.client.post(reverse("profiles:reset_password"), data={"email": "test@test.ru"})
+        # self.token = response.context[0].dicts[1]['token']
+        # self.uid = response.context[0].dicts[1]['uid']
+        self.assertEqual(response.status_code, 302)
+
+    def test_reset_password_page2(self):
+        response = self.client.get(reverse("profiles:reset_password_done"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Инструкция")
+
+    def test_reset_password_page3(self):
+        response = self.client.post(reverse("profiles:reset_password"), data={"email": "test@test.ru"})
+        token = response.context[0].dicts[1]["token"]
+        uid = response.context[0].dicts[1]["uid"]
+        response = self.client.get(reverse("profiles:reset_password_confirm", kwargs={"uidb64": uid, "token": token}))
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_reset_password_page3(self):
+        response = self.client.post(reverse("profiles:reset_password"), data={"email": "test@test.ru"})
+        token = response.context[0].dicts[1]["token"]
+        uid = response.context[0].dicts[1]["uid"]
+        response = self.client.post(
+            reverse("profiles:reset_password_confirm", kwargs={"uidb64": uid, "token": token}),
+            data={"password1": "ABC1abc1", "password2": "ABC1abc1"},
+        )
+        self.assertEqual(response.status_code, 302)
+
+    def test_login_with_new_pass(self):
+        response = self.client.post(reverse("profiles:reset_password"), data={"email": "test@test.ru"})
+        token = response.context[0].dicts[1]["token"]
+        uid = response.context[0].dicts[1]["uid"]
+        response = self.client.get(
+            reverse("profiles:reset_password_confirm", kwargs={"uidb64": uid, "token": token}),
+        )
+        response = self.client.post(response.url, data={"new_password1": "ABC1abc1", "new_password2": "ABC1abc1"})
+        self.login_info["password"] = "ABC1abc1"
+        islogin = self.client.login(**self.login_info)
+        self.assertEqual(islogin, True)
