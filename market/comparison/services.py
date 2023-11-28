@@ -5,9 +5,6 @@ from django.http import HttpRequest
 from django.utils import timezone
 
 
-MAX_PRODUCTS = 2
-
-
 class ComparisonService:
     def __init__(self, request: HttpRequest) -> None:
         """
@@ -71,7 +68,7 @@ class ComparisonService:
         del self.session[settings.COMPARISON_SESSION_ID]
         self.save()
 
-    def get_valid_products_list(self, max_products: int = MAX_PRODUCTS) -> Dict[str, Any]:
+    def get_valid_products_list(self, max_products: int = settings.COMPARISON_MAX_PRODUCTS) -> Dict[str, Any]:
         """
         Валидация списка по макс. кол-ву товаров.
         :param max_products: макс. кол-во товаров для сравнения
@@ -129,7 +126,9 @@ class ComparisonService:
         return valid_list
 
     @classmethod
-    def get_all_unique_details(cls, valid_list: Dict[str, Any], max_products: int = MAX_PRODUCTS) -> List[str]:
+    def get_all_unique_details(
+        cls, valid_list: Dict[str, Any], max_products: int = settings.COMPARISON_MAX_PRODUCTS
+    ) -> List[str]:
         """
         Получение уникальных характеристик доступных к сравнению товаров
         :param max_products: максимально число товаров для сравнения

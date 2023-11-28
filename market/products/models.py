@@ -119,19 +119,13 @@ class Category(models.Model):
     """Категория продукта"""
 
     name = models.CharField(max_length=128, unique=True, verbose_name=_("наименование"))
-    slug = models.SlugField(max_length=128, null=True, blank=True)
+    slug = models.SlugField(max_length=128, unique=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
     modified_at = models.DateTimeField(auto_now=True, verbose_name=_("дата последнего изменения"))
     archived = models.BooleanField(default=False, verbose_name=_("архивировано"))
     is_active = models.BooleanField(default=True, verbose_name=_("активно"))
     parent = models.ForeignKey("self", blank=True, null=True, verbose_name=_("родитель"), on_delete=models.CASCADE)
     foreground = models.BooleanField(default=False, verbose_name=_("приоритетный"))
-
-    class Meta:
-        verbose_name = _("категория")
-        verbose_name_plural = _("категории")
-        app_label = "products"
-
     icon = models.FileField(
         null=True,
         blank=True,
@@ -139,6 +133,12 @@ class Category(models.Model):
         verbose_name=_("иконка"),
         validators=[FileExtensionValidator(["svg", "img", "png"])],
     )
+
+    class Meta:
+        verbose_name = _("категория")
+        verbose_name_plural = _("категории")
+        app_label = "products"
+        constraints = [UniqueConstraint(fields=["name", "parent"], name="unique_parent_name")]
 
     def get_absolute_url(self):
         """Method returns a string that can be used to refer to the object over HTTP"""
