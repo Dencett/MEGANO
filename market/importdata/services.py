@@ -10,10 +10,10 @@ class DetailsBaseModel(BaseModel):
 
 
 class CategoryBaseModel(BaseModel):
-    name: str = Field(max_length=128)
+    category: str = Field(max_length=128)
     cat_slug: str = Field(max_length=128)
-    parent: Optional[str] = Field(default=None, max_length=128)
-    par_slug: Optional[str] = Field(default=None, max_length=128)
+    subcategory: Optional[str] = Field(default=None, max_length=128)
+    sub_slug: Optional[str] = Field(default=None, max_length=128)
 
 
 class ManufacturerBaseModel(BaseModel):

@@ -29,10 +29,10 @@
       "slug": "apple"
     },
     "category": {
-      "name": "Наушники",
+      "category": "Наушники",
       "cat_slug": "headphones",
-      "parent": "Электроника",
-      "par_slug": "electronics"
+      "subcategory": "Электроника",
+      "sub_slug": "electronics"
     }
   },
 
@@ -73,10 +73,10 @@
       "slug": "apple"
     },
     "category": {
-      "name": "Ноутбуки",
+      "category": "Ноутбуки",
       "cat_slug": "laptops",
-      "parent": "Компьютеры",
-      "par_slug": "computers"
+      "subcategory": "Компьютеры",
+      "sub_slug": "computers"
     },
     "tags": [
       "apple",
@@ -122,7 +122,7 @@
       "slug": "amozon"
     },
     "category": {
-      "name": "Электронная книга",
+      "category": "Электронная книга",
       "cat_slug": "ebook"
     },
     "tags": [
@@ -169,7 +169,7 @@
       "slug": "amozon"
     },
     "category": {
-      "name": "Электронная книга",
+      "category": "Электронная книга",
       "cat_slug": "ebook"
     },
     "tags": [
@@ -216,7 +216,7 @@
       "slug": "amozon"
     },
     "category": {
-      "name": "Электронная книга",
+      "category": "Электронная книга",
       "cat_slug": "ebook"
     },
     "tags": [
@@ -256,10 +256,10 @@
       "slug": "apple"
     },
     "category": {
-      "name": "Наушники",
+      "category": "Наушники",
       "cat_slug": "headphones",
-      "parent": "Электроника",
-      "par_slug": "electronics"
+      "subcategory": "Электроника",
+      "sub_slug": "electronics"
     }
   },
   {
@@ -287,10 +287,10 @@
       "slug": "apple"
     },
     "category": {
-      "name": "Наушники",
+      "category": "Наушники",
       "cat_slug": "headphones",
-      "parent": "Электроника",
-      "par_slug": "electronics"
+      "subcategory": "Электроника",
+      "sub_slug": "electronics"
     }
   }
 ]
