@@ -1,19 +1,19 @@
 from django.contrib import admin  # noqa F401
 
-from .models import SetPromo, Promo, CartPromo
+from .models import SetPromo, ProductPromo, CartPromo
 
 
-@admin.register(Promo)
-class PromoAdmin(admin.ModelAdmin):
+@admin.register(ProductPromo)
+class ProductPromoAdmin(admin.ModelAdmin):
     """Админ Скидка"""
 
     list_display = (
         "pk",
         "name",
         "description",
-        "value",
-        "active_from",
-        "active_to",
+        # "value",
+        # "active_from",
+        # "active_to",
     )
     list_display_links = (
         "pk",
@@ -23,7 +23,7 @@ class PromoAdmin(admin.ModelAdmin):
 
 
 @admin.register(SetPromo)
-class ProductsSetPromoAdmin(admin.ModelAdmin):
+class SetPromoAdmin(admin.ModelAdmin):
     """Админ Набор"""
 
     list_display = (
@@ -39,7 +39,7 @@ class ProductsSetPromoAdmin(admin.ModelAdmin):
 
 @admin.register(CartPromo)
 class CartPromoAdmin(admin.ModelAdmin):
-    """Админ Привило на корзину"""
+    """Админ"""
 
     list_display = (
         "pk",
