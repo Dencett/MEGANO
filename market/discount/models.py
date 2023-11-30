@@ -37,13 +37,23 @@ class CartPromo(BasePromo):
     на общую стоимость товаров в корзине от-до.
     """
 
-    items_from = models.IntegerField(null=True, blank=True, verbose_name=_("кол-во товаров в корзине от"))
-    items_to = models.IntegerField(null=True, blank=True, verbose_name=_("кол-во товаров в корзине до"))
+    items_from = models.PositiveIntegerField(null=True, blank=True, verbose_name=_("кол-во товаров в корзине от"))
+    items_to = models.PositiveIntegerField(null=True, blank=True, verbose_name=_("кол-во товаров в корзине до"))
     price_from = models.DecimalField(
-        max_digits=12, decimal_places=2, null=True, blank=True, verbose_name=_("общая стоимость корзины от")
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        verbose_name=_("общая стоимость корзины от"),
+        validators=[MinValueValidator(Decimal("0.01"))],
     )
     price_to = models.DecimalField(
-        max_digits=12, decimal_places=2, null=True, blank=True, verbose_name=_("общая стоимость корзины до")
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        verbose_name=_("общая стоимость корзины до"),
+        validators=[MinValueValidator(Decimal("0.01"))],
     )
     value = models.DecimalField(
         max_digits=10,
@@ -74,19 +84,16 @@ class SetPromo(BasePromo):
     """
 
     products = models.ManyToManyField(
-        Product, blank=True, related_name="products_set", verbose_name=_("набор товаров")
+        Product, blank=True, related_name="products_setpromos", verbose_name=_("набор товаров")
     )
     categories = models.ManyToManyField(
-        Category, blank=True, related_name="categories_set", verbose_name=_("набор категорий")
+        Category, blank=True, related_name="categories_setpromos", verbose_name=_("набор категорий")
     )
     value = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         verbose_name=_("размер скидки в рублях"),
         validators=[MinValueValidator(Decimal("0.01"))],
-    )
-    weight = models.FloatField(
-        unique=True, verbose_name=_("вес скидки"), validators=[MinValueValidator(0.01), MaxValueValidator(1.00)]
     )
 
     class Meta(BasePromo.Meta):
@@ -106,13 +113,15 @@ class ProductPromo(BasePromo):
     на указанные категории товаров.
     """
 
+    products = models.ManyToManyField(
+        Product, blank=True, related_name="products_prodoctpromos", verbose_name=_("товары")
+    )
+    categories = models.ManyToManyField(
+        Category, blank=True, related_name="categories_prodoctpromos", verbose_name=_("категории")
+    )
     value = models.IntegerField(
         verbose_name=_("размер скидки в процентах"), validators=[MinValueValidator(1), MaxValueValidator(100)]
     )
-    categories = models.ManyToManyField(
-        Category, blank=True, related_name="categories_promos", verbose_name=_("категории")
-    )
-    products = models.ManyToManyField(Product, blank=True, related_name="products_promos", verbose_name=_("товары"))
 
     class Meta(BasePromo.Meta):
         verbose_name = _("скидка на продукт(ы) и/или категорию(ии)")
