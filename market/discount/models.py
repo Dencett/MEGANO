@@ -8,9 +8,35 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from products.models import Product, Category
 
 
-class CartPromo(models.Model):
-    name = models.CharField(max_length=128, verbose_name=_("наименование скидки на корзину"))
-    description = models.TextField(max_length=1024, blank=True, verbose_name=_("описание скидки на корзину"))
+class BasePromo(models.Model):
+    """
+    Абстракная модель скидки.
+    """
+
+    name = models.CharField(max_length=128, verbose_name=_("наименование скидки"))
+    description = models.TextField(max_length=1024, blank=True, verbose_name=_("подробное описание скидки"))
+    weight = models.FloatField(
+        unique=True, verbose_name=_("вес скидки"), validators=[MinValueValidator(0.01), MaxValueValidator(1.00)]
+    )
+    active_from = models.DateTimeField(null=True, blank=True, verbose_name=_("действует от "))
+    active_to = models.DateTimeField(null=True, blank=True, verbose_name=_("действует до "))
+    is_active = models.BooleanField(default=False, verbose_name=_("скидка активна"))
+
+    class Meta:
+        abstract = True
+        constraints = [
+            models.CheckConstraint(check=Q(active_from__lte=F("active_to")), name="%(class)s_date_from_lte_date_to"),
+        ]
+
+
+class CartPromo(BasePromo):
+    """
+    Модель скиди на корзину.
+    Скидки могут быть установлены на корзину,
+    например на количество товаров в корзине от-до и/или
+    на общую стоимость товаров в корзине от-до.
+    """
+
     items_from = models.IntegerField(null=True, blank=True, verbose_name=_("кол-во товаров в корзине от"))
     items_to = models.IntegerField(null=True, blank=True, verbose_name=_("кол-во товаров в корзине до"))
     price_from = models.DecimalField(
@@ -25,29 +51,28 @@ class CartPromo(models.Model):
         verbose_name=_("размер скидки в рублях"),
         validators=[MinValueValidator(Decimal("0.01"))],
     )
-    weight = models.FloatField(
-        unique=True, verbose_name=_("вес скидки"), validators=[MinValueValidator(0.01), MaxValueValidator(1.00)]
-    )
-    active_from = models.DateTimeField(null=True, blank=True, verbose_name=_("действует от "))
-    active_to = models.DateTimeField(null=True, blank=True, verbose_name=_("действует до "))
-    is_active = models.BooleanField(default=False, verbose_name=_("скидка активна"))
 
-    class Meta:
+    class Meta(BasePromo.Meta):
         verbose_name = _("скидка на корзину")
         verbose_name_plural = _("скидки на корзину")
         constraints = [
             models.CheckConstraint(check=Q(items_from__lte=F("items_to")), name="items_from_lte_items_to"),
             models.CheckConstraint(check=Q(price_from__lte=F("price_to")), name="price_from_lte_price_to"),
-            models.CheckConstraint(check=Q(active_from__lte=F("active_to")), name="cartpromo_date_from_lte_date_to"),
         ]
 
     def __str__(self) -> str:
         return f"Скидка на корзину (pk={self.pk}, name={self.name!r}, value={self.value!r}руб)"
 
 
-class SetPromo(models.Model):
-    name = models.CharField(max_length=128, verbose_name=_("наименование скидки на набор"))
-    description = models.TextField(max_length=1024, blank=True, verbose_name=_("описание скидки на набор"))
+class SetPromo(BasePromo):
+    """
+    Модель скиди на наборы.
+    Cкидки могут быть установлены на группу товаров,
+    если они вместе находятся в корзине.
+    Указывается группа товаров 1 и группа товаров 2
+    (таким же образом, что и в скидке на товар, то есть раздел и/или конкретный товар).
+    """
+
     products = models.ManyToManyField(
         Product, blank=True, related_name="products_set", verbose_name=_("набор товаров")
     )
@@ -63,16 +88,10 @@ class SetPromo(models.Model):
     weight = models.FloatField(
         unique=True, verbose_name=_("вес скидки"), validators=[MinValueValidator(0.01), MaxValueValidator(1.00)]
     )
-    active_from = models.DateTimeField(null=True, blank=True, verbose_name=_("действует от "))
-    active_to = models.DateTimeField(null=True, blank=True, verbose_name=_("действует до "))
-    is_active = models.BooleanField(default=False, verbose_name=_("скидка активна"))
 
-    class Meta:
+    class Meta(BasePromo.Meta):
         verbose_name = _("скидка на наборы продуктов и/или категорий")
         verbose_name_plural = _("скидки на наборы продуктов и/или категорий")
-        constraints = [
-            models.CheckConstraint(check=Q(active_from__lte=F("active_to")), name="setpromo_date_from_lte_date_to"),
-        ]
 
     def __str__(self) -> str:
         return (
@@ -80,9 +99,13 @@ class SetPromo(models.Model):
         )
 
 
-class ProductPromo(models.Model):
-    name = models.CharField(max_length=128, verbose_name=_("наименование скидки"))
-    description = models.TextField(max_length=1024, blank=True, verbose_name=_("описание скидки"))
+class ProductPromo(BasePromo):
+    """
+    Модель скидки на товар.
+    Cкидки могут быть установлены на указанный список товаров и/или
+    на указанные категории товаров.
+    """
+
     value = models.IntegerField(
         verbose_name=_("размер скидки в процентах"), validators=[MinValueValidator(1), MaxValueValidator(100)]
     )
@@ -90,21 +113,10 @@ class ProductPromo(models.Model):
         Category, blank=True, related_name="categories_promos", verbose_name=_("категории")
     )
     products = models.ManyToManyField(Product, blank=True, related_name="products_promos", verbose_name=_("товары"))
-    weight = models.FloatField(
-        unique=True, verbose_name=_("вес скидки"), validators=[MinValueValidator(0.01), MaxValueValidator(1.00)]
-    )
-    active_from = models.DateTimeField(null=True, blank=True, verbose_name=_("действует от "))
-    active_to = models.DateTimeField(null=True, blank=True, verbose_name=_("действует до "))
-    is_active = models.BooleanField(default=False, verbose_name=_("скидка активна"))
 
-    class Meta:
+    class Meta(BasePromo.Meta):
         verbose_name = _("скидка на продукт(ы) и/или категорию(ии)")
         verbose_name_plural = _("скидки на продукт(ы) и/или категорию(ии)")
-        constraints = [
-            models.CheckConstraint(
-                check=Q(active_from__lte=F("active_to")), name="product_promo_date_from_lte_date_to"
-            ),
-        ]
 
     def __str__(self) -> str:
         return f"Cкидка на продукт(ы) и/или категорию(ии)(pk={self.pk}, name={self.name!r}, value={self.value!r}%)"
