@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django.db import models
+from django.db.models import Q, F
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -34,6 +35,11 @@ class CartPromo(models.Model):
     class Meta:
         verbose_name = _("скидка на корзину")
         verbose_name_plural = _("скидки на корзину")
+        constraints = [
+            models.CheckConstraint(check=Q(items_from__lte=F("items_to")), name="items_from_lte_items_to"),
+            models.CheckConstraint(check=Q(price_from__lte=F("price_to")), name="price_from_lte_price_to"),
+            models.CheckConstraint(check=Q(active_from__lte=F("active_to")), name="cartpromo_date_from_lte_date_to"),
+        ]
 
     def __str__(self) -> str:
         return f"Скидка на корзину (pk={self.pk}, name={self.name!r}, value={self.value!r}руб)"
@@ -64,6 +70,9 @@ class SetPromo(models.Model):
     class Meta:
         verbose_name = _("скидка на наборы продуктов и/или категорий")
         verbose_name_plural = _("скидки на наборы продуктов и/или категорий")
+        constraints = [
+            models.CheckConstraint(check=Q(active_from__lte=F("active_to")), name="setpromo_date_from_lte_date_to"),
+        ]
 
     def __str__(self) -> str:
         return (
@@ -91,6 +100,11 @@ class ProductPromo(models.Model):
     class Meta:
         verbose_name = _("скидка на продукт(ы) и/или категорию(ии)")
         verbose_name_plural = _("скидки на продукт(ы) и/или категорию(ии)")
+        constraints = [
+            models.CheckConstraint(
+                check=Q(active_from__lte=F("active_to")), name="product_promo_date_from_lte_date_to"
+            ),
+        ]
 
     def __str__(self) -> str:
         return f"Cкидка на продукт(ы) и/или категорию(ии)(pk={self.pk}, name={self.name!r}, value={self.value!r}%)"
