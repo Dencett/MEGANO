@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "api_payments",
     "payapp",
     "importdata",
+    "discount",
 ]
 
 MIDDLEWARE = [
