@@ -1,0 +1,92 @@
+[
+  {
+    "model": "discount.productpromo",
+    "pk": 1,
+    "fields": {
+      "name": "Распродажа ноутбуков",
+      "description": "Успей приобрести ноутбук со скидкой 25%",
+      "weight": 0.5,
+      "preview": "img/promos/ProductPromo/Laptop25.webp",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "value": 25,
+      "products": [],
+      "categories": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "discount.productpromo",
+    "pk": 2,
+    "fields": {
+      "name": "Суперцена на ограниченный ряд моделей ноутбуков",
+      "description": "Дарим скидки 35% на ограниченный ряд моделей",
+      "weight": 0.6,
+      "preview": "img/promos/ProductPromo/LimitedLaptopSale35.webp",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "value": 35,
+      "products": [
+        4,
+        31
+      ],
+      "categories": []
+    }
+  },
+  {
+    "model": "discount.productpromo",
+    "pk": 3,
+    "fields": {
+      "name": "Акция на Планшеты и умную колонку Яндекс",
+      "description": "Купи любой Планшет или Умную колонку Яндекс со скидкой 15%",
+      "weight": 0.1,
+      "preview": "img/promos/ProductPromo/PadAliceSale15.webp",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "value": 15,
+      "products": [
+        8
+      ],
+      "categories": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "discount.productpromo",
+    "pk": 4,
+    "fields": {
+      "name": "Скидка на все товары",
+      "description": "Получи скидку  50 % на все товар в корзине",
+      "weight": 1.0,
+      "preview": "",
+      "active_from": "2023-12-10T00:00:00Z",
+      "active_to": "2023-12-10T23:59:59Z",
+      "is_active": false,
+      "value": 50,
+      "products": [],
+      "categories": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ]
+    }
+  }
+]

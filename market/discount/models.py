@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import Union
 
 from django.db import models
 from django.db.models import Q, F
@@ -6,6 +7,11 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from products.models import Product, Category
+
+
+def promo_image_directory_path(instance: Union["CartPromo", "SetPromo", "ProductPromo"], filename: str) -> str:
+    """Функция получения пути для изображений продукта"""
+    return "img/promos/{name}/{filename}".format(name=instance.__class__.__name__, filename=filename)
 
 
 class BasePromo(models.Model):
@@ -17,6 +23,9 @@ class BasePromo(models.Model):
     description = models.TextField(max_length=1024, blank=True, verbose_name=_("подробное описание скидки"))
     weight = models.FloatField(
         unique=True, verbose_name=_("вес скидки"), validators=[MinValueValidator(0.01), MaxValueValidator(1.00)]
+    )
+    preview = models.ImageField(
+        null=True, blank=True, upload_to=promo_image_directory_path, verbose_name=_("изображение")
     )
     active_from = models.DateTimeField(null=True, blank=True, verbose_name=_("действует от "))
     active_to = models.DateTimeField(null=True, blank=True, verbose_name=_("действует до "))

@@ -1,0 +1,96 @@
+[
+  {
+    "model": "discount.cartpromo",
+    "pk": 1,
+    "fields": {
+      "name": "Скидка на сумму не менее 100 000 рублей",
+      "description": "Собери товараов в корзине на сумму не менее 100 000 рублей и купи это вместе за 75 000 рублей",
+      "weight": 0.5,
+      "preview": "",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "items_from": null,
+      "items_to": null,
+      "price_from": "100000.00",
+      "price_to": null,
+      "value": "75000.00"
+    }
+  },
+  {
+    "model": "discount.setpromo",
+    "pk": 1,
+    "fields": {
+      "name": "Акция на набор IPhone + IPad pro2",
+      "description": "Акция IPad pro2 по цене 14999.99 рублей при покупки любого смартфон линейки Apple",
+      "weight": 0.15,
+      "preview": "",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "value": "14999.99",
+      "products": [
+        5,
+        6
+      ],
+      "categories": []
+    }
+  },
+  {
+    "model": "discount.productpromo",
+    "pk": 1,
+    "fields": {
+      "name": "Распродажа ноутбуков",
+      "description": "Успей приобрести ноутбук со скидкой 25%",
+      "weight": 0.5,
+      "preview": "img/promos/ProductPromo/Laptop25.webp",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "value": 25,
+      "products": [],
+      "categories": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "discount.productpromo",
+    "pk": 2,
+    "fields": {
+      "name": "Суперцена на ограниченный ряд моделей ноутбуков",
+      "description": "Дарим скидки 35% на ограниченный ряд моделей",
+      "weight": 0.6,
+      "preview": "img/promos/ProductPromo/LimitedLaptopSale35.webp",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "value": 35,
+      "products": [
+        4,
+        31
+      ],
+      "categories": []
+    }
+  },
+  {
+    "model": "discount.productpromo",
+    "pk": 3,
+    "fields": {
+      "name": "Акция на Планшеты и умную колонку Яндекс",
+      "description": "Купи любой Планшет или Умную колонку Яндекс со скидкой 15%",
+      "weight": 0.1,
+      "preview": "img/promos/ProductPromo/PadAliceSale15.webp",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "value": 15,
+      "products": [
+        8
+      ],
+      "categories": [
+        4
+      ]
+    }
+  }
+]
