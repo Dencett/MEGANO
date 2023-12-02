@@ -1,23 +1,5 @@
 [
   {
-    "model": "discount.cartpromo",
-    "pk": 1,
-    "fields": {
-      "name": "Скидка на сумму не менее 100 000 рублей",
-      "description": "Собери товараов в корзине на сумму не менее 100 000 рублей и купи это вместе за 75 000 рублей",
-      "weight": 0.5,
-      "preview": "",
-      "active_from": "2023-12-01T00:00:00Z",
-      "active_to": "2023-12-31T00:00:00Z",
-      "is_active": true,
-      "items_from": null,
-      "items_to": null,
-      "price_from": "100000.00",
-      "price_to": null,
-      "value": "75000.00"
-    }
-  },
-  {
     "model": "discount.productpromo",
     "pk": 1,
     "fields": {
@@ -71,6 +53,39 @@
       ],
       "categories": [
         4
+      ]
+    }
+  },
+  {
+    "model": "discount.productpromo",
+    "pk": 4,
+    "fields": {
+      "name": "Скидка на все товары",
+      "description": "Получи скидку  50 % на все товар в корзине",
+      "weight": 1.0,
+      "preview": "",
+      "active_from": "2023-12-10T00:00:00Z",
+      "active_to": "2023-12-10T23:59:59Z",
+      "is_active": false,
+      "value": 50,
+      "products": [],
+      "categories": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
       ]
     }
   }
