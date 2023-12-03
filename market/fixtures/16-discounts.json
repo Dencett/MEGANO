@@ -1,5 +1,137 @@
 [
   {
+    "model": "discount.cartpromo",
+    "pk": 1,
+    "fields": {
+      "name": "Скидка на сумму не менее 100 000 рублей",
+      "description": "Собери товаров в корзине на сумму не менее 100 000 рублей и купи все вместе за 75 000 рублей",
+      "weight": 0.5,
+      "preview": "",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "items_from": null,
+      "items_to": null,
+      "price_from": "100000.00",
+      "price_to": null,
+      "value": "75000.00"
+    }
+  },
+  {
+    "model": "discount.cartpromo",
+    "pk": 2,
+    "fields": {
+      "name": "Все товары в корзине за 1 рубль",
+      "description": "Собери от 2 до 5 товаров на сумму от 70 000 до 120 000 рублей и купи все вместе за 1 рубль",
+      "weight": 1.0,
+      "preview": "",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "items_from": 2,
+      "items_to": 5,
+      "price_from": "70000.00",
+      "price_to": "120000.00",
+      "value": "1.00"
+    }
+  },
+  {
+    "model": "discount.cartpromo",
+    "pk": 3,
+    "fields": {
+      "name": "Фиксированная стоимость на корзину",
+      "description": "Собери товаров на сумму более 300 000 рублей и все следующие добавленные товары получи бесплатно",
+      "weight": 0.7,
+      "preview": "",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "items_from": null,
+      "items_to": null,
+      "price_from": "300000.00",
+      "price_to": null,
+      "value": "300000.00"
+    }
+  },
+  {
+    "model": "discount.setpromo",
+    "pk": 1,
+    "fields": {
+      "name": "Акция на набор IPhone + IPad pro2",
+      "description": "Купи IPad pro2 и любой смартфон линейки Apple и получи скидку 14 999,99 рублей",
+      "weight": 0.15,
+      "preview": "",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "value": "14999.99",
+      "products": [
+        5,
+        6,
+        39
+      ],
+      "categories": []
+    }
+  },
+  {
+    "model": "discount.setpromo",
+    "pk": 2,
+    "fields": {
+      "name": "Акция на бытовую техники",
+      "description": "Получи скидку 40000 рублей при покупки любой кухонной плиты и микроволновой печи",
+      "weight": 0.3,
+      "preview": "",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "value": "40000.00",
+      "products": [],
+      "categories": [
+        9,
+        11
+      ]
+    }
+  },
+  {
+    "model": "discount.setpromo",
+    "pk": 3,
+    "fields": {
+      "name": "Акция Телевизор + безпроводная мышь",
+      "description": "При покупки телевизора и мыши Wireless Mouse 2.4 G скидка на корзину 1000 рублей.",
+      "weight": 0.6,
+      "preview": "",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "value": "1000.00",
+      "products": [
+        2
+      ],
+      "categories": [
+        6
+      ]
+    }
+  },
+  {
+    "model": "discount.setpromo",
+    "pk": 4,
+    "fields": {
+      "name": "Акция фотоаппарат + телефон",
+      "description": "Купи любой фотоаппарат и телефон -  получи скидку на корзину 150 000 рублей",
+      "weight": 0.8,
+      "preview": "",
+      "active_from": "2023-12-01T00:00:00Z",
+      "active_to": "2023-12-31T00:00:00Z",
+      "is_active": true,
+      "value": "150000.00",
+      "products": [],
+      "categories": [
+        1,
+        7
+      ]
+    }
+  },
+  {
     "model": "discount.productpromo",
     "pk": 1,
     "fields": {
