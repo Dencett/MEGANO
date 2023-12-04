@@ -1,6 +1,6 @@
-<div class="Card"><a class="Card-picture" href="#">
+<div class="Card"><a class="Card-picture" href="{{url('discount:' + promo.disc_type, promo.pk)}}">
 {% if promo.preview %}
-<img src="{{promo.preview.url}}" alt="promo.png"></a>
+<img src="{{url_method(promo.preview)}}" alt="promo.png"></a>
 {% else %}
 <img src="" alt="promo.png"></a>
 {% endif %}
@@ -19,6 +19,8 @@
         </strong>
         <div class="Card-description">{{promo.description}}
         </div>
+        type = {{promo.disc_type}}
+        id = {{promo.pk}}
     </div>
 <!--    localization-->
 <!--    {{_('Dec')}}-->

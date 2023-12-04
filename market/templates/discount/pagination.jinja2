@@ -6,7 +6,8 @@
                 <img src="{{ static('assets/img/icons/prevPagination.svg') }}" alt="prevPagination.svg"/>
             </a>
         {% endif %}
-        {% for page_number in page_obj.paginator.get_elided_page_range(page_obj.number) %}
+        {% for page_number in page_obj.paginator.get_elided_page_range(page_obj.number,
+        on_each_side=site_settings.pagination_on_each_side, on_ends=site_settings.pagination_on_ends) %}
             {% if page_number == page_obj.paginator.ELLIPSIS %}
                 <span class="Pagination-text">{{ page_number }}</span>
 

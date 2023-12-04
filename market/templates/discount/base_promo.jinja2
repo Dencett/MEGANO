@@ -9,6 +9,8 @@
                     <ul class="breadcrumbs Middle-breadcrumbs">
                         <li class="breadcrumbs-item"><a href="{{url('products:home-page')}}">Главная</a>
                         </li>
+                        <li class="breadcrumbs-item"><a href="{{url('discount:discount-list')}}">Скидки</a>
+                        </li>
                         <li class="breadcrumbs-item breadcrumbs-item_current"><span>Скидки</span>
                         </li>
                     </ul>
@@ -17,13 +19,12 @@
         </div>
         <div class="Section">
             <div class="wrap">
-                <div class="Cards Cards_blog">
-                    {% for promo in promos %}
-                        {% include "discount/discount_card.jinja2" %}
-                    {% endfor %}
-                </div>
-
-                {% include "discount/pagination.jinja2" %}
+                <p> name = {{object.name}} </p>
+                <p> description = {{object.description}} </p>
+                <p>
+                    {% block discount_type %}
+                    {% endblock %}
+                </p>
             </div>
         </div>
     </div>
