@@ -29,7 +29,11 @@ class CartListView(TemplateView):
         if form.is_valid():
             form_data = form.cleaned_data
             data = {form_data[f"offer_id[{i}]"]: form_data[f"amount[{i}]"] for i in range(number)}
+
             self.cart.update_cart(data)
+            if kwargs["action"] == kwargs["buttons"][2]:
+                # self.cart.update_cart(data)
+                return redirect("orders:view_step_one")
             return self.get(request, *args, **kwargs)
         else:
             return HttpResponse(form.errors.as_ul(), status=400)
@@ -112,12 +116,14 @@ class CartView(View):
         choice = {
             self.BUTTONS[0]: RemoveCartView.as_view(),  # Удалить корзину
             self.BUTTONS[1]: CartListView.as_view(),  # Обновить корзину
+            self.BUTTONS[2]: CartListView.as_view(),  # Обновить корзину
         }
         action = request.POST.get("action")
 
         # Переход в оформление заказа
-        if action == self.BUTTONS[2]:
-            return redirect("orders:view_step_one")
+        # if action == self.BUTTONS[2]:
+
+        # return redirect("orders:view_step_one")
 
         view = choice.get(action)
-        return view(request, *args, buttons=self.BUTTONS, **kwargs)
+        return view(request, *args, buttons=self.BUTTONS, action=action, **kwargs)
