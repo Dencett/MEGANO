@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="Cart-block Cart-block_delete">
-            <a class="Cart-delete" href="{{url('cart:delete_cart') + '?offer_id=' }}{{cart.offer_id}}">
+            <a class="Cart-delete" href="{{url('cart:delete_cart') + '?offer_id=' }}{{offer.pk}}">
                 <img src="{{static('assets/img/icons/card/delete.svg')}}" alt="delete.svg">
             </a>
         </div>
