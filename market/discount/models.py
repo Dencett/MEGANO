@@ -10,7 +10,7 @@ from products.models import Product, Category
 
 
 def promo_image_directory_path(instance: Union["CartPromo", "SetPromo", "ProductPromo"], filename: str) -> str:
-    """Функция получения пути для изображений продукта"""
+    """Функция получения пути для изображений скидок"""
     return "img/promos/{name}/{filename}".format(name=instance.__class__.__name__, filename=filename)
 
 
@@ -129,7 +129,7 @@ class ProductPromo(BasePromo):
         Category, blank=True, related_name="categories_prodoctpromos", verbose_name=_("категории")
     )
     value = models.IntegerField(
-        verbose_name=_("размер скидки в процентах"), validators=[MinValueValidator(1), MaxValueValidator(100)]
+        verbose_name=_("размер скидки в процентах"), validators=[MinValueValidator(1), MaxValueValidator(99)]
     )
 
     class Meta(BasePromo.Meta):

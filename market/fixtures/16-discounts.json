@@ -155,7 +155,7 @@
     "fields": {
       "name": "Суперцена на ограниченный ряд моделей ноутбуков",
       "description": "Дарим скидки 35% на ограниченный ряд моделей",
-      "weight": 0.6,
+      "weight": 0.7,
       "preview": "img/promos/ProductPromo/LimitedLaptopSale35.webp",
       "active_from": "2023-12-01T00:00:00Z",
       "active_to": "2023-12-31T00:00:00Z",
@@ -194,12 +194,12 @@
     "fields": {
       "name": "Скидка на все товары",
       "description": "Получи скидку  50 % на все товар в корзине",
-      "weight": 1.0,
+      "weight": 0.6,
       "preview": "",
       "active_from": "2023-12-10T00:00:00Z",
       "active_to": "2023-12-10T23:59:59Z",
-      "is_active": false,
-      "value": 50,
+      "is_active": true,
+      "value": 20,
       "products": [],
       "categories": [
         1,
