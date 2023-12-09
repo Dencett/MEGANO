@@ -27,14 +27,14 @@ class BasePromo(models.Model):
     preview = models.ImageField(
         null=True, blank=True, upload_to=promo_image_directory_path, verbose_name=_("изображение")
     )
-    active_from = models.DateTimeField(null=True, blank=True, verbose_name=_("действует от "))
-    active_to = models.DateTimeField(null=True, blank=True, verbose_name=_("действует до "))
+    active_from = models.DateField(verbose_name=_("действует от "))
+    active_to = models.DateField(verbose_name=_("действует до "))
     is_active = models.BooleanField(default=False, verbose_name=_("скидка активна"))
 
     class Meta:
         abstract = True
         constraints = [
-            models.CheckConstraint(check=Q(active_from__lte=F("active_to")), name="%(class)s_date_from_lte_date_to"),
+            models.CheckConstraint(check=Q(active_from__lt=F("active_to")), name="%(class)s_date_from_lt_date_to"),
         ]
 
 
@@ -92,12 +92,7 @@ class SetPromo(BasePromo):
     (таким же образом, что и в скидке на товар, то есть раздел и/или конкретный товар).
     """
 
-    products = models.ManyToManyField(
-        Product, blank=True, related_name="products_setpromos", verbose_name=_("набор товаров")
-    )
-    categories = models.ManyToManyField(
-        Category, blank=True, related_name="categories_setpromos", verbose_name=_("набор категорий")
-    )
+    sets = models.ManyToManyField("ProductCategorySet", blank=True, verbose_name=_("наборы"))
     value = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -106,13 +101,11 @@ class SetPromo(BasePromo):
     )
 
     class Meta(BasePromo.Meta):
-        verbose_name = _("скидка на наборы продуктов и/или категорий")
-        verbose_name_plural = _("скидки на наборы продуктов и/или категорий")
+        verbose_name = _("скидка на наборы")
+        verbose_name_plural = _("скидки на наборы")
 
     def __str__(self) -> str:
-        return (
-            f"Cкидка на наборы продуктов и/или категорий (pk={self.pk}, name={self.name!r}, value={self.value!r}руб)"
-        )
+        return f"Cкидка на набор (pk={self.pk}, name={self.name!r}, value={self.value!r}руб)"
 
 
 class ProductPromo(BasePromo):
@@ -138,3 +131,48 @@ class ProductPromo(BasePromo):
 
     def __str__(self) -> str:
         return f"Cкидка на продукт(ы) и/или категорию(ии)(pk={self.pk}, name={self.name!r}, value={self.value!r}%)"
+
+
+class ProductCategorySet(models.Model):
+    name = models.CharField(max_length=128, verbose_name=_("наименование набора"))
+    products = models.ManyToManyField(Product, blank=True, verbose_name=_("набор товаров"))
+    categories = models.ManyToManyField(Category, blank=True, verbose_name=_("набор категорий"))
+
+    class Meta:
+        verbose_name = _("набор")
+        verbose_name_plural = _("наборы")
+
+    def __str__(self) -> str:
+        return f"Набор (pk={self.pk}, name={self.name!r}%)"
+
+
+# class SetPromo(BasePromo):
+#     """
+#     Модель скиди на наборы.
+#     Cкидки могут быть установлены на группу товаров,
+#     если они вместе находятся в корзине.
+#     Указывается группа товаров 1 и группа товаров 2
+#     (таким же образом, что и в скидке на товар, то есть раздел и/или конкретный товар).
+#     """
+#
+#     products = models.ManyToManyField(
+#         Product, blank=True, related_name="products_setpromos", verbose_name=_("набор товаров")
+#     )
+#     categories = models.ManyToManyField(
+#         Category, blank=True, related_name="categories_setpromos", verbose_name=_("набор категорий")
+#     )
+#     value = models.DecimalField(
+#         max_digits=10,
+#         decimal_places=2,
+#         verbose_name=_("размер скидки в рублях"),
+#         validators=[MinValueValidator(Decimal("0.01"))],
+#     )
+#
+#     class Meta(BasePromo.Meta):
+#         verbose_name = _("скидка на наборы продуктов и/или категорий")
+#         verbose_name_plural = _("скидки на наборы продуктов и/или категорий")
+#
+#     def __str__(self) -> str:
+#         return (
+#             f"Cкидка на наборы продуктов и/или категорий (pk={self.pk}, name={self.name!r}, value={self.value!r}руб)"
+#         )
