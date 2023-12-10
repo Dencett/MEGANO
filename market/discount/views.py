@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 
 from .models import SetPromo, ProductPromo, CartPromo, BasePromo
 from site_settings.models import SiteSettings
+from .services import get_all_products_in_set
 
 
 class DiscountListView(ListView):
@@ -51,11 +52,13 @@ class DiscountListView(ListView):
 class SetPromoView(DetailView):
     model = SetPromo
     template_name = "discount/setpromo.jinja2"
+    extra_context = {"all_products": get_all_products_in_set}
 
 
 class ProductPromoView(DetailView):
     model = ProductPromo
     template_name = "discount/productpromo.jinja2"
+    extra_context = {"all_products": get_all_products_in_set}
 
 
 class CartPromoView(DetailView):
