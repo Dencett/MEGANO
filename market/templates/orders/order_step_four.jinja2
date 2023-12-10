@@ -98,7 +98,7 @@
                             </div>
                         </div>
                         <div class="Cart-block Cart-block_price">
-                            <div class="Cart-price">{{ prod.offer.price }}$
+                            <div class="Cart-price">{{ prod.offer.price }}&#160;р
                             </div>
                         </div>
                     </div>
@@ -115,8 +115,12 @@
 <!--=================== Итоговая цена товаров ==============================-->
                 <div class="Cart-total">
                     <div class="Cart-block Cart-block_total">
+                        <strong class="Cart-title">{{_('Скидка:')}}
+                        </strong><span class="Cart-price"> {{ order_info.discount_amount }} р</span>
+                    </div>
+                    <div class="Cart-block Cart-block_total">
                         <strong class="Cart-title">{{_('Итого:')}}
-                        </strong><span class="Cart-price"> {{ order_info.total_price }} $</span>
+                        </strong><span class="Cart-price"> {{ order_info.total_price }} р</span>
                     </div>
                     <div class="Cart-block">
                         <button class="btn btn_primary btn_lg" type="submit">{{_('Оплатить')}}

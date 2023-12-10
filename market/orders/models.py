@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from profiles.models import User
+from django.db.models import Q
 
 
 class Order(models.Model):
@@ -73,13 +74,17 @@ class Order(models.Model):
     total_price = models.DecimalField(
         max_digits=12,
         decimal_places=2,
-        verbose_name=_("общая стоимость"),
+        verbose_name=_("Итоговая стоимость"),
+    )
+    discount_amount = models.DecimalField(
+        max_digits=12, decimal_places=2, verbose_name=_("Размер скидки"), default=0.00
     )
 
     class Meta:
         ordering = ["-created_at"]
         verbose_name = _("заказ")
         verbose_name_plural = _("заказы")
+        constraints = [models.CheckConstraint(check=Q(total_price__gte=1.00), name="total_price_lte_1.00")]
 
     def __str__(self):
         return f"Заказ#{self.pk}:{self.user.username}"
