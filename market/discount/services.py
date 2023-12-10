@@ -80,17 +80,7 @@ class CartDiscount:
         Получения активных скидок на продукт(ы) и/или категорию(ии)
         """
         prefetch_fields = ["categories", "products"]
-        # TODO оформить фильтр по датам верно от до и тд
-        # condition = Q(is_active=True,
-        #               active_from__data__range=(F("active_from"), self.today),
-        #               active_to__gt=self.today)
-        # condition = Q(
-        #     is_active=True, active_from__data__range=(F("active_from"), F("active_to")), active_to__gt=self.today
-        # )
-
-        # condition = Q(is_active=True, active_to__gte=self.today)
-        # promos_query = ProductPromo.objects.prefetch_related(*prefetch_fields).filter(condition)
-        promos_query = ProductPromo.objects.prefetch_related(*prefetch_fields).all()
+        promos_query = ProductPromo.objects.prefetch_related(*prefetch_fields).filter(is_active=True)
 
         return promos_query
 
@@ -129,14 +119,8 @@ class CartDiscount:
         """
         Получения активных скидок на корзину.
         """
-        # TODO
-        # condition = Q(is_active=True, active_to__gte=self.today)
-        # condition = Q(is_active=True,
-        #               active_from__data__range=(F("active_from"), F("active_to")),
-        #               active_to__gt=self.today)
 
-        # promos_query = CartPromo.objects.filter(is_active=True, active_to_gte=self.today)
-        promos_query = CartPromo.objects.all()
+        promos_query = CartPromo.objects.filter(is_active=True)
 
         return promos_query
 
@@ -279,10 +263,7 @@ class CartDiscount:
         """
 
         prefetch_fields = ["sets__products", "sets__categories"]
-        # TODO оформить фильтр по датам верно от до и тд
-
-        # promos_query = SetPromo.objects.prefetch_related(*prefetch_fields).filter(condition)
-        promos_query = SetPromo.objects.prefetch_related(*prefetch_fields).all()
+        promos_query = SetPromo.objects.prefetch_related(*prefetch_fields).filter(is_active=True)
 
         return promos_query
 
