@@ -23,7 +23,7 @@ class OrderDetailCreate:
         self.session = request.session.get(settings.CART_SESSION_KEY)
 
     def get_products_in_cart(self):
-        """Показать продукты, которые находятся в корзине в ссесиях"""
+        """Показать продукты, которые находятся в корзине в сессиях"""
 
         multiselect = self.session.keys()
         products = Offer.objects.filter(pk__in=multiselect)
@@ -71,14 +71,57 @@ class OrderDetailCreate:
 
     @transaction.atomic
     def created_order_details_product(self):
-        """Метод добавления продуктов из корзины"""
+        """
+        Метод добавления продуктов из корзины.
+        Переменная order - создаёт новый заказ и привязывает предложения к этому заказу.
+
+        """
         # multiselect = self.session.keys()
         # products = Offer.objects.filter(pk__in=multiselect)
+
+        # Заказ создаётся здесь
         order = self.create_order()
 
         for offer, value in self.session.items():
+            # Такой ситуации не может и не должно быть!
+            if value == 0:
+                continue
             add_offer = Offer.objects.get(pk=offer)
+            # получить предложение - проверяем сколько в нём есть товаров
+            assert add_offer.remains - int(value) >= 0, "Запросили больше товара чем есть"
+
+            # Проверяем больше ли заказано чем есть товаров на складе.
+            # if add_offer.remains - int(value) >= 0:
+            add_offer.remains -= int(value)
+            add_offer.save()
+            # else:
+            #     value, add_offer.remains = add_offer.remains, 0
+            #     add_offer.remains = 0
+            #     add_offer.save()
+
+            # если add_offer.quantity > value:
+            #     ... continue
+
+            # иначе выполняем код
+            #     не забываем удалить из предложения товары:
+            #     что бы зарезервировать их в заказе
+
+            # Если возвращает None, то нужно делать редирект на какую-то страницу....
             OrderDetail.objects.create(offer=add_offer, quantity=value, user_order=order)
+
+        # Пересчитываем цену в товарах, которые остались.
+        request_price = order.details.aggregate(total_price=Sum(F("quantity") * F("offer__price")))
+        # print("request_price", request_price)
+
+        # Передаём в заказ новую сумму заказа
+        # reque = request_price["total_price"]  # пересчитанная цена
+        # minus = Decimal("50.00")  # Применение скидки
+
+        # order.total_price = reque - minus
+
+        order.total_price = request_price["total_price"]
+        # Где-то здесь как раз может сработать и скидка на товары
+        order.save()
 
 
 def get_order_total_price(order: Order):
