@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import TemplateView
@@ -48,7 +50,7 @@ class CartListView(TemplateView):
             "offer_list": self.get_queryset(),
             "cart": self.cart,
             "discount_amount": self.discount_amount,
-            "total_price": float(self.cart_service.get_upd_price()) - self.discount_amount,
+            "total_price": round((Decimal(self.cart_service.get_upd_price()) - Decimal(self.discount_amount)), 2),
         }
         context.update(kwargs)
         return super().get_context_data(object_list=None, **context)

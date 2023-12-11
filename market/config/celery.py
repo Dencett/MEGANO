@@ -3,6 +3,7 @@ import logging
 import datetime
 
 from celery import Celery
+from celery.schedules import crontab
 from celery.app.log import TaskFormatter
 from celery.signals import task_prerun, task_postrun
 
@@ -20,6 +21,14 @@ app = Celery("config")
 # - namespace='CELERY' means all celery-related configuration keys
 #   should have a `CELERY_` prefix.
 app.config_from_object("django.conf:settings", namespace="CELERY")
+
+# set up periodic tasks
+app.conf.beat_schedule = {
+    "update-discount-status-every-midnight": {
+        "task": "discount.tasks.update_discount_status",
+        "schedule": crontab(minute=0, hour=0),
+    },
+}
 
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()

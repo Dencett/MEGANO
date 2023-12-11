@@ -1,9 +1,13 @@
+from decimal import Decimal
+
 from django.db import transaction
 from orders.models import Order, OrderDetail
 from profiles.models import User
 from shops.models import Offer
 from config import settings
 from django.db.models import F, Sum
+from discount.services import CartDiscount
+from cart.services.cart_service import AnonimCartService
 
 
 class OrderServices:
@@ -21,6 +25,7 @@ class OrderDetailCreate:
         self.user = request.user
         self.request = request
         self.session = request.session.get(settings.CART_SESSION_KEY)
+        self.cart_service = AnonimCartService(request)
 
     def get_products_in_cart(self):
         """Показать продукты, которые находятся в корзине в ссесиях"""
@@ -39,8 +44,10 @@ class OrderDetailCreate:
         city = self.request.session["city"]
         address = self.request.session["address"]
         payment_type = self.request.session["payment_type"]
-        cart_price = self.request.session.get(settings.CART_PRICE_SESSION_KEY)
-        total_price = cart_price
+
+        discount_service = CartDiscount(self.cart_service)
+        discount_amount = discount_service.get_sum()
+        total_price = round((Decimal(self.cart_service.get_upd_price()) - Decimal(discount_amount)), 2)
 
         order = Order.objects.create(
             city=city,
@@ -51,6 +58,7 @@ class OrderDetailCreate:
             payment_type=payment_type,
             status=Order.STATUS_CREATED,
             total_price=total_price,
+            discount_amount=discount_amount,
         )
         return order
 

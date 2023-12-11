@@ -1,6 +1,4 @@
-import datetime
-
-from django.db.models import QuerySet, Q, Value, CharField
+from django.db.models import QuerySet, Value, CharField
 from django.views.generic import ListView, DetailView
 
 
@@ -25,8 +23,6 @@ class DiscountListView(ListView):
 
     def get_queryset(self):
         fields = "name", "description", "active_from", "active_to", "preview", "is_active", "pk"
-        today = datetime.datetime.now(tz=datetime.timezone.utc)
-        condition = Q(is_active=True, active_to__gte=today)
         disc_type = {
             "setpromo": Value("setpromo", output_field=CharField()),
             "productpromo": Value("productpromo", output_field=CharField()),
@@ -35,9 +31,9 @@ class DiscountListView(ListView):
 
         promos = (
             SetPromo.objects.annotate(disc_type=disc_type["setpromo"])
-            .filter(condition)
-            .union(ProductPromo.objects.annotate(disc_type=disc_type["productpromo"]).filter(condition))
-            .union(CartPromo.objects.annotate(disc_type=disc_type["cartpromo"]).filter(condition))
+            .filter(is_active=True)
+            .union(ProductPromo.objects.annotate(disc_type=disc_type["productpromo"]).filter(is_active=True))
+            .union(CartPromo.objects.annotate(disc_type=disc_type["cartpromo"]).filter(is_active=True))
             .values_list(*fields, "disc_type", named=True)
             .order_by("active_from")
         )
