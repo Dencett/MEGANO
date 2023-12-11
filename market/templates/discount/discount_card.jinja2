@@ -8,10 +8,10 @@
         <strong class="Card-date-number">{{promo.active_from.strftime('%d')}}
         </strong><span class="Card-date-month">{{_(promo.active_from.strftime('%b'))}}</span>
     </div>
-    {% if promo.active_from.date() != promo.active_to.date() %}
+    {% if (promo.active_to - promo.active_from).days > 1 %}
     <div class="Card-date Card-date_to">
         <strong class="Card-date-number">{{promo.active_to.strftime('%d')}}
-        </strong><span class="Card-date-month">{{_(promo.active_from.strftime('%b'))}}</span>
+        </strong><span class="Card-date-month">{{_(promo.active_to.strftime('%b'))}}</span>
     </div>
     {% endif %}
     <div class="Card-content">
