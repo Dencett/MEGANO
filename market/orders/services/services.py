@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import transaction
 from orders.models import Order, OrderDetail
 from profiles.models import User
@@ -45,7 +47,7 @@ class OrderDetailCreate:
 
         discount_service = CartDiscount(self.cart_service)
         discount_amount = discount_service.get_sum()
-        total_price = float(self.cart_service.get_upd_price()) - discount_amount
+        total_price = round((Decimal(self.cart_service.get_upd_price()) - Decimal(discount_amount)), 2)
 
         order = Order.objects.create(
             city=city,
