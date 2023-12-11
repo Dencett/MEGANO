@@ -9,10 +9,15 @@
         <div class="Comments">
             <div class="Comment">
                 <div class="Comment-column Comment-column_pict">
-                    <div class="Comment-avatar">
-                        {# Добавить корректную ссылку к current_user.avatar #}
-                        <img src="{{ review.user.avatar }}" alt="avatar">
-                    </div>
+                    {% if review.user.avatar %}
+                        <div style="width: 100px;">
+                            <img src="{{ review.user.avatar.url }}" width="100%"  style="margin: 0" alt="avatar">
+                        </div>
+                    {% else %}
+                        <div class="Comment-avatar">
+<!--                            <img src="#" alt="avatar">-->
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="Comment-column">
                     <header class="Comment-header">

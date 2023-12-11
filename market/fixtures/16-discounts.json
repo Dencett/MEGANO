@@ -1,0 +1,359 @@
+[
+  {
+    "model": "discount.cartpromo",
+    "pk": 1,
+    "fields": {
+      "name": "Скидка на сумму не менее 100 000 рублей",
+      "description": "Собери товаров в корзине на сумму не менее 100 000 рублей и купи все вместе за 75 000 рублей",
+      "weight": 0.5,
+      "preview": "",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "items_from": null,
+      "items_to": null,
+      "price_from": "100000.00",
+      "price_to": null,
+      "value": "75000.00"
+    }
+  },
+  {
+    "model": "discount.cartpromo",
+    "pk": 2,
+    "fields": {
+      "name": "Все товары в корзине за 1 рубль",
+      "description": "Собери от 2 до 5 товаров на сумму от 70 000 до 120 000 рублей и купи все вместе за 1 рубль",
+      "weight": 0.4,
+      "preview": "",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "items_from": 2,
+      "items_to": 5,
+      "price_from": "70000.00",
+      "price_to": "120000.00",
+      "value": "121000.00"
+    }
+  },
+  {
+    "model": "discount.cartpromo",
+    "pk": 3,
+    "fields": {
+      "name": "Фиксированная стоимость на корзину",
+      "description": "Собери товаров на сумму более 300 000 рублей и все следующие добавленные товары получи бесплатно",
+      "weight": 0.7,
+      "preview": "",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "items_from": null,
+      "items_to": null,
+      "price_from": "300000.00",
+      "price_to": null,
+      "value": "300000.00"
+    }
+  },
+  {
+    "model": "discount.cartpromo",
+    "pk": 4,
+    "fields": {
+      "name": "Корзина за 9999.99 рублей за 5 товара",
+      "description": "Корзина за 10000 рублей при заказе 5 товаров",
+      "weight": 0.6,
+      "preview": "",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "items_from": 5,
+      "items_to": 5,
+      "price_from": null,
+      "price_to": null,
+      "value": "9999.99"
+    }
+  },
+  {
+    "model": "discount.setpromo",
+    "pk": 1,
+    "fields": {
+      "name": "Акция на набор iPhone + IPad pro2",
+      "description": "Купи IPad pro2 и любой смартфон линейки Apple и получи скидку 14 999,99 рублей",
+      "weight": 0.5,
+      "preview": "img/promos/SetPromo/IPhone_IPods2.jpg",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "value": "14999.99",
+      "sets": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "discount.setpromo",
+    "pk": 2,
+    "fields": {
+      "name": "Акция на набор бытовой техники",
+      "description": "Получи скидку 40000 рублей при покупки любой кухонной плиты и микроволновой печи",
+      "weight": 0.6,
+      "preview": "",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "value": "40000.00",
+      "sets": [
+        3,
+        4
+      ]
+    }
+  },
+  {
+    "model": "discount.setpromo",
+    "pk": 3,
+    "fields": {
+      "name": "Акция набор любая техника Xiomy  + мышь и или колонка",
+      "description": "При покупки любой техники Xiomy + мыши Wireless Mouse 2.4 G и/или колонку скидка на корзину 1000 рублей",
+      "weight": 0.3,
+      "preview": "",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "value": "1000.00",
+      "sets": [
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "model": "discount.setpromo",
+    "pk": 4,
+    "fields": {
+      "name": "Акция на набор телефон + фотоаппарат",
+      "description": "Купи любой фотоаппарат и телефон -  получи скидку на корзину 150 000 рублей",
+      "weight": 0.9,
+      "preview": "",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "value": "150000.00",
+      "sets": [
+        8,
+        7
+      ]
+    }
+  },
+  {
+    "model": "discount.setpromo",
+    "pk": 5,
+    "fields": {
+      "name": "Акция на набор телефон + фотоаппарат + наушники",
+      "description": "Купи любой фотоаппарат, телефон и наушники - получи скидку на корзину 200 000 рублей",
+      "weight": 1.0,
+      "preview": "",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "value": "200000.00",
+      "sets": [
+        8,
+        9,
+        7
+      ]
+    }
+  },
+  {
+    "model": "discount.productpromo",
+    "pk": 1,
+    "fields": {
+      "name": "Распродажа ноутбуков",
+      "description": "Успей приобрести ноутбук со скидкой 25%",
+      "weight": 0.5,
+      "preview": "img/promos/ProductPromo/Laptop25.webp",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "value": 25,
+      "products": [],
+      "categories": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "discount.productpromo",
+    "pk": 2,
+    "fields": {
+      "name": "Суперцена на ограниченный ряд моделей ноутбуков",
+      "description": "Дарим скидки 35% на ограниченный ряд моделей",
+      "weight": 0.7,
+      "preview": "img/promos/ProductPromo/LimitedLaptopSale35.webp",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "value": 35,
+      "products": [
+        4,
+        31
+      ],
+      "categories": []
+    }
+  },
+  {
+    "model": "discount.productpromo",
+    "pk": 3,
+    "fields": {
+      "name": "Акция на Планшеты и умную колонку Яндекс",
+      "description": "Купи любой Планшет или Умную колонку Яндекс со скидкой 15%",
+      "weight": 0.1,
+      "preview": "img/promos/ProductPromo/PadAliceSale15.webp",
+      "active_from": "2023-12-01",
+      "active_to": "2023-12-31",
+      "is_active": true,
+      "value": 15,
+      "products": [
+        8
+      ],
+      "categories": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "discount.productpromo",
+    "pk": 4,
+    "fields": {
+      "name": "Скидка на все товары",
+      "description": "Получи скидку  50 % на все товар в корзине",
+      "weight": 0.6,
+      "preview": "",
+      "active_from": "2023-12-10",
+      "active_to": "2023-12-11",
+      "is_active": false,
+      "value": 20,
+      "products": [],
+      "categories": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ]
+    }
+  },
+  {
+    "model": "discount.productcategoryset",
+    "pk": 1,
+    "fields": {
+      "name": "Набор наушники AirPods Pro2",
+      "products": [
+        6
+      ],
+      "categories": []
+    }
+  },
+  {
+    "model": "discount.productcategoryset",
+    "pk": 2,
+    "fields": {
+      "name": "Набор все телефоны Apple",
+      "products": [
+        5,
+        39
+      ],
+      "categories": []
+    }
+  },
+  {
+    "model": "discount.productcategoryset",
+    "pk": 3,
+    "fields": {
+      "name": "Набор микроволновых печей",
+      "products": [],
+      "categories": [
+        9
+      ]
+    }
+  },
+  {
+    "model": "discount.productcategoryset",
+    "pk": 4,
+    "fields": {
+      "name": "Набор кухонных плит",
+      "products": [],
+      "categories": [
+        11
+      ]
+    }
+  },
+  {
+    "model": "discount.productcategoryset",
+    "pk": 5,
+    "fields": {
+      "name": "Набор всей техники Xiaomi",
+      "products": [
+        38,
+        40,
+        41
+      ],
+      "categories": []
+    }
+  },
+  {
+    "model": "discount.productcategoryset",
+    "pk": 6,
+    "fields": {
+      "name": "Набор Wireless Mouse + Колонки",
+      "products": [
+        2
+      ],
+      "categories": [
+        14
+      ]
+    }
+  },
+  {
+    "model": "discount.productcategoryset",
+    "pk": 7,
+    "fields": {
+      "name": "Все телефоны",
+      "products": [],
+      "categories": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "discount.productcategoryset",
+    "pk": 8,
+    "fields": {
+      "name": "Все фотоаппараты",
+      "products": [],
+      "categories": [
+        7
+      ]
+    }
+  },
+  {
+    "model": "discount.productcategoryset",
+    "pk": 9,
+    "fields": {
+      "name": "Все наушники",
+      "products": [],
+      "categories": [
+        13
+      ]
+    }
+  }
+]

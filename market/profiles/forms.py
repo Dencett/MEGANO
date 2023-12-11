@@ -1,7 +1,9 @@
 from django import forms
-from django.contrib.auth.forms import BaseUserCreationForm, UsernameField
+from django.contrib.auth.forms import BaseUserCreationForm, UsernameField, SetPasswordForm
 
+from django.utils.translation import gettext_lazy as _
 from .models import User
+from django.core.validators import RegexValidator
 
 
 class UserRegisterForm(BaseUserCreationForm):
@@ -10,7 +12,17 @@ class UserRegisterForm(BaseUserCreationForm):
     Запрашивает у пользователя, хочет ли он стать продавцом на сайте или нет.
     """
 
-    phone = forms.CharField(label="Номер телефона", max_length=11, help_text="Вводите номер через '8'")
+    phone = forms.CharField(
+        label="Номер телефона",
+        max_length=16,
+        widget=forms.PasswordInput(
+            attrs={"placeholder": "+7(999)999-99-99", "type": "text", "data-mask": "+7(999)999-99-99"}
+        ),
+        help_text="Вводите номер в виде '+7(ХХХ)ХХХ-ХХ-ХХ'",
+        validators=[
+            RegexValidator(regex=r"\+[7]\([0-9]{3}\)[0-9]{3}\-[0-9]{2}\-[0-9]{2}", message=_("номер некорректный"))
+        ],
+    )
     residence = forms.CharField(max_length=80, label="Город проживания")
     address = forms.CharField(
         max_length=80,
@@ -85,3 +97,11 @@ class ChangeProfileInfoForm(forms.ModelForm):
 
 class ProfileAvatarUpdateForm(forms.Form):
     user_avatar = forms.ImageField()
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        label=_("New password"),
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        strip=False,
+    )

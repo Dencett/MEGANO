@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_jinja",
     "django_extensions",
+    "django_celery_beat",
     "site_settings",
     "products",
     "shops",
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
     "api_payments",
     "payapp",
     "importdata",
+    "discount",
 ]
 
 MIDDLEWARE = [
@@ -222,6 +224,7 @@ LOGIN_REDIRECT_URL = reverse_lazy("products:home-page")
 LOGIN_URL = reverse_lazy("profiles:login")
 
 COMPARISON_SESSION_ID = "comparison"
+COMPARISON_MAX_PRODUCTS = 3
 
 CART_SESSION_KEY = "cart"
 CART_SIZE_SESSION_KEY = "cart_size"
@@ -241,19 +244,21 @@ CELERY_RESULT_BACKEND = config["REDIS_URL"]
 # CELERYD_LOG_FILE = "/logs/celery.log"
 # CELERYD_LOG_LEVEL = "ERROR"
 CELERY_CREATE_DIRS = 1
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 
 # Django Email
 # https://docs.djangoproject.com/en/4.2/topics/email/
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = config["EMAIL_HOST"]
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_USER_SSL = False
-EMAIL_HOST_USER = "example@gmail.com"
-EMAIL_HOST_PASSWORD = "eeee ddds wwwf wtoa"
+EMAIL_HOST_USER = config["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = config["EMAIL_HOST_PASSWORD"]
+
 
 # Set the import folder for importadata app
 IMPORT_FOLDER = "import_folder"

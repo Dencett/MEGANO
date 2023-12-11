@@ -142,9 +142,6 @@ def load(products) -> tuple[int, int, int, List[Optional[Exception]]]:
 
                 loaded_object_count += 1
 
-        except DatabaseError:
-            raise
-
         except ValidationError as e:
             failed_object_count += 1
             excp.append(e)
@@ -157,6 +154,9 @@ def load(products) -> tuple[int, int, int, List[Optional[Exception]]]:
             failed_object_count += 1
             excp.append(e)
             logger.error("Продукт №%d(%s) не импортирован: %s %s" % (obj_count, product_data["name"], type(e), e))
+
+        except DatabaseError:
+            raise
 
         except Exception as e:
             failed_object_count += 1
@@ -270,28 +270,48 @@ def get_or_create_tag(obj: ProductBaseModel) -> Optional[List[Tag]]:
     return tags
 
 
+def main_category_create(obj: ProductBaseModel, has_sub_cat=False) -> Category:
+    if has_sub_cat:
+        category_data = (obj.category.subcategory, obj.category.sub_slug)
+    else:
+        category_data = (obj.category.category, obj.category.cat_slug)
+
+    try:
+        category = Category.objects.get(name=category_data[0])
+        if category.parent:
+            raise IntegrityError("'%s' уже используется в БД, как подкатегория." % category_data[0])
+
+        category.slug = category_data[1]
+        category.save()
+
+        return category
+
+    except Category.DoesNotExist:
+        category = Category.objects.create(name=category_data[0], slug=category_data[1])
+        return category
+
+
 def category_create(obj: ProductBaseModel) -> Category:
     """
-    Получение или создание сущности Категория с попутным созданием подкатегории.
+    Получение или создание сущности Категория.
+    Если присутствует родительская категория,
+    то попутно создается родительской категория.
     """
-    if obj.category.parent:
-        # create parent category
-        parent, created = Category.objects.get_or_create(name=obj.category.parent)
-        parent.slug = obj.category.par_slug
-        parent.save()
-        # get or create main category if it needs
-        category, created = Category.objects.get_or_create(name=obj.category.name)
-        category.parent = parent
-        category.slug = obj.category.cat_slug
-        category.save()
+
+    if obj.category.subcategory:
+        main_category = main_category_create(obj=obj, has_sub_cat=True)
+        try:
+            parent, created = Category.objects.get_or_create(name=obj.category.category, parent=main_category)
+            if not created:
+                parent.slug = obj.category.cat_slug
+                parent.save()
+            return parent
+
+        except IntegrityError:
+            raise
 
     else:
-        # get or create main category with Null parent
-        category, created = Category.objects.get_or_create(name=obj.category.name, parent=None)
-        category.slug = obj.category.cat_slug
-        category.save()
-
-    return category
+        return main_category_create(obj=obj, has_sub_cat=False)
 
 
 def product_details_create_or_update(obj: ProductBaseModel, product: Product, update=False) -> None:

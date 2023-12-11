@@ -10,7 +10,8 @@
   <div class="Section">
       <div class="wrap">
         <div class="wrapper">
-          <h2>{{_("Login page")}}</h2>
+          <h2>{% block name %} {{_("Login page")}} {% endblock %}</h2>
+          {% block content %}
           {% if form.errors %}
           <p>{{ form.errors }}</p>
           {% endif %}
@@ -27,10 +28,11 @@
             <input class="user-input" type="password" name="password" autocomplete="current-password" required id="id_password" placeholder="*********">
           </p>
           <input type="submit" value="Login">
-          <a class="forgot-label" href="e-mail.html">{{_("Забыли пароль?")}}</a>
+          <a class="forgot-label" href="{{url('profiles:reset_password')}}">{{_("Забыли пароль?")}}</a>
           <a class="registr" href="{{ url('profiles:register') }}">{{_("Регистрация")}}</a>
                     <!--    <button type="submit" class="btn btn_square btn_dark">Login</button>-->
           </form>
+          {% endblock %}
       </div>
     </div>
   </div>
