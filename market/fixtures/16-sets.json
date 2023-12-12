@@ -1,4 +1,5 @@
-{
+[
+  {
     "model": "discount.productcategoryset",
     "pk": 1,
     "fields": {
@@ -49,9 +50,9 @@
     "fields": {
       "name": "Набор всей техники Xiaomi",
       "products": [
-        38,
         40,
-        41
+        41,
+        38
       ],
       "categories": []
     }
@@ -102,3 +103,4 @@
       ]
     }
   }
+]
