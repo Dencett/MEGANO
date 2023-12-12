@@ -34,10 +34,10 @@
                                 <strong class="Card-date-number">{{object.active_from.strftime('%d')}}
                                 </strong><span class="Card-date-month">{{_(object.active_from.strftime('%b'))}}</span>
                             </div>
-                            {% if object.active_from.date() != object.active_to.date() %}
+                            {% if (object.active_to - object.active_from).days > 1 %}
                             <div class="Card-date Card-date_to">
                                 <strong class="Card-date-number">{{object.active_to.strftime('%d')}}
-                                </strong><span class="Card-date-month">{{_(object.active_from.strftime('%b'))}}</span>
+                                </strong><span class="Card-date-month">{{_(object.active_to.strftime('%b'))}}</span>
                             </div>
                             {% endif %}
 
