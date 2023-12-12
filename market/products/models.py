@@ -124,9 +124,7 @@ class Category(models.Model):
     modified_at = models.DateTimeField(auto_now=True, verbose_name=_("дата последнего изменения"))
     archived = models.BooleanField(default=False, verbose_name=_("архивировано"))
     is_active = models.BooleanField(default=True, verbose_name=_("активно"))
-    parent = models.ForeignKey(
-        "self", blank=True, null=True, related_name="children", verbose_name=_("родитель"), on_delete=models.CASCADE
-    )
+    parent = models.ForeignKey("self", blank=True, null=True, verbose_name=_("родитель"), on_delete=models.CASCADE)
     foreground = models.BooleanField(default=False, verbose_name=_("приоритетный"))
     icon = models.FileField(
         null=True,
