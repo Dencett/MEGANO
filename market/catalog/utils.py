@@ -3,6 +3,7 @@ from typing import Tuple, Any, Dict, Generator, List
 from django.db.models import QuerySet, Count, F, Q
 from django.utils.translation import gettext as _
 from catalog.common import parse_price
+from products.models import Category
 
 
 class Params:
@@ -145,6 +146,10 @@ class Filter:
 
     def __category_filter(self, value: str) -> Dict[str, Any]:
         """Фильтр по категории"""
+        categories = Category.objects.filter(parent=Category.objects.get(pk=value))
+
+        if categories:
+            return {"product__category__pk__in": [str(category.pk) for category in categories]}
         return {"product__category__pk": value}
 
     def __remain_filter(self, field: str | None = None) -> Dict[str, int]:
