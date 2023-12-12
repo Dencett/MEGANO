@@ -27,13 +27,13 @@
                     <div class="Order-info Order-info_delivery">
                         <div class="Order-infoType">Тип доставки:
                         </div>
-                        <div class="Order-infoContent">{{ order.DELIVERY_TYPE_DICT[order.delivery_type].title() }}
+                        <div class="Order-infoContent"> {{ order.get_delivery_type_display() }} {# {{ order.DELIVERY_TYPE_DICT[order.delivery_type].title() }} #}
                         </div>
                     </div>
                     <div class="Order-info Order-info_pay">
                         <div class="Order-infoType">Оплата:
                         </div>
-                        <div class="Order-infoContent">{{ order.PAYMENT_TYPES_DICT[order.payment_type].title() }}
+                        <div class="Order-infoContent">{{ order.get_payment_type_display() }} {# {{ order.PAYMENT_TYPES_DICT[order.payment_type].title() }} #}
                         </div>
                     </div>
                     <div class="Order-info">

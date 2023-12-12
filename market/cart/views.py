@@ -37,6 +37,7 @@ class CartListView(TemplateView):
             data = {form_data[f"offer_id[{i}]"]: form_data[f"amount[{i}]"] for i in range(number)}
             self.cart_service.update_cart(data)
             if kwargs["action"] == kwargs["buttons"][2]:
+                self.cart_service.update_cart(data)
                 return redirect("orders:view_step_one")
             return self.get(request, *args, **kwargs)
         else:
@@ -130,8 +131,8 @@ class CartView(View):
         action = request.POST.get("action")
 
         # Переход в оформление заказа
-        if action == self.BUTTONS[2]:
-            return redirect("orders:view_step_one")
+        # if action == self.BUTTONS[2]:
+        #     return redirect("orders:view_step_one")
 
         view = choice.get(action)
         return view(request, *args, buttons=self.BUTTONS, action=action, **kwargs)

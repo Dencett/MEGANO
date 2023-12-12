@@ -56,7 +56,6 @@ class OrderStepTwoView(FormView):
         self.request.session["delivery_type"] = form.cleaned_data.get("delivery_type")
         self.request.session["city"] = form.cleaned_data.get("city")
         self.request.session["address"] = form.cleaned_data.get("address")
-
         return super().form_valid(form)
 
     def get_initial(self):
@@ -136,8 +135,6 @@ class OrderHistoryListView(ListView):
             .select_related("user")
             .prefetch_related(
                 "details",
-                # "details__offer",
-                # "details__offer__product",
             )
         )
         return queryset

@@ -16,7 +16,7 @@ def promo_image_directory_path(instance: Union["CartPromo", "SetPromo", "Product
 
 class BasePromo(models.Model):
     """
-    Абстракная модель скидки.
+    Абстрактная модель скидки.
     """
 
     name = models.CharField(max_length=128, verbose_name=_("наименование скидки"))
@@ -40,7 +40,7 @@ class BasePromo(models.Model):
 
 class CartPromo(BasePromo):
     """
-    Модель скиди на корзину.
+    Модель скидка на корзину.
     Скидки могут быть установлены на корзину,
     например на количество товаров в корзине от-до и/или
     на общую стоимость товаров в корзине от-до.
