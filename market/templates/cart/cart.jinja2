@@ -36,12 +36,6 @@
                         </div>
                         {% for button in buttons %}
                         <div class="Cart-block" style="margin: 10px 0px"><input type="submit" name="action" value="{{button}}" class="btn btn_success btn_lg" style="width: 100%;  font-size: 120%">
-                            {% for offer in offer_list %}
-                                {% set product=request.session.cart %}
-                                {{ product }}
-                                {{ offer.pk }}
-                            {% endfor %}
-
                         {% endfor %}
                     </div>
                 </form>

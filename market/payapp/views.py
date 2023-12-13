@@ -18,7 +18,6 @@ class PayView(TemplateView):
         order = Order.objects.get(pk=order_pk)
         if order.status != Order.STATUS_CREATED and order.status != Order.STATUS_NOT_PAID:
             return redirect("payapp:status", pk=order_pk)
-        # if order.payment_type == Order.PAYMENT_TYPES[1][0]:
         if order.payment_type == PaymentType.RANDOM:
             kwargs.update({"button": 1})
         return super().get(request, *args, **kwargs)
