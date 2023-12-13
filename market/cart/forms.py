@@ -30,10 +30,6 @@ class UserManyOffersCARTForm(forms.Form):
 
     def get_offer(self, offer_id):
         offer_remains = self.queryset.get(pk=int(offer_id)).remains
-        # offer_remains = Offer.objects
-        # .prefeatch_related("product")
-        # .select_related("user", "shop")
-        # .get(pk=int(offer_id)).remains
         return offer_remains
 
 
