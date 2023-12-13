@@ -6,7 +6,7 @@ from decimal import Decimal
 from cart.services.cart_service import AnonimCartService
 from shops.models import Offer
 from products.models import Product
-from discount.models import ProductPromo, CartPromo, SetPromo
+from discount.models import ProductPromo, CartPromo, SetPromo, ProductCategorySet
 
 
 class CartDiscount:
@@ -304,3 +304,7 @@ class CartDiscount:
                     break
 
         return all([status for status in is_applicable.values()])
+
+    @staticmethod
+    def get_products_in_product_promo_or_set(promo: ProductPromo | ProductCategorySet) -> list[Product]:
+        return CartDiscount._get_products_in_promo(promo)
