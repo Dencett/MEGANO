@@ -84,7 +84,14 @@ class Order(models.Model):
         verbose_name=_("способ оплаты"),
     )
     order_number = models.PositiveIntegerField(default=1, verbose_name=_("номер заказа"))
-    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=STATUS_CREATED, verbose_name="status")
+    # fmt: off
+    status = models.CharField(
+        max_length=15,
+        choices=STATUS_CHOICES,
+        default=STATUS_CREATED,
+        verbose_name="status"
+    )
+    # fmt: on
     total_price = models.DecimalField(
         max_digits=12,
         decimal_places=2,

@@ -108,15 +108,12 @@ class OrderStepFourView(ListView):
     context_object_name = "products"
 
     def get_queryset(self):
-        # Order.objects.prefetch_related("details", ).select_related("user").all()
-
         order = (
             Order.objects.prefetch_related("details")
             .select_related("user")
             .filter(user__pk=self.request.user.pk)
             .first()
         )
-        # order = Order.objects.filter(user__pk=self.request.user.pk).first()
         queryset = order.details.all()
         return queryset
 
