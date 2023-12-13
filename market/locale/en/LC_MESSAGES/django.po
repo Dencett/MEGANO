@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-20 16:41+0000\n"
+"POT-Creation-Date: 2023-12-13 19:19+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -172,73 +172,85 @@ msgstr "order payment history"
 msgid "истории оплаты заказа"
 msgstr "order payment history"
 
-#: products/admin.py:64
+#: products/admin.py:75
 msgid "Архивировать категорию"
 msgstr "Soft-delete the category"
 
-#: products/admin.py:69
+#: products/admin.py:80
 msgid "Разархивировать категорию"
 msgstr "recover the category"
 
-#: products/admin.py:102
+#: products/admin.py:113
 msgid "Поиск категории по названию"
 msgstr "Search for a category by name"
 
-#: products/admin.py:120
+#: products/admin.py:131
 msgid "Иконка"
 msgstr "a icon"
 
-#: products/admin.py:126
+#: products/admin.py:137
 msgid "Статус категории"
 msgstr "A category status"
 
-#: products/admin.py:129
+#: products/admin.py:140
 msgid "Поле используеться для задания статуса категории"
 msgstr "This field is used to set the category status"
 
-#: products/admin.py:133 products/admin.py:205 products/admin.py:265
+#: products/admin.py:144 products/admin.py:216 products/admin.py:276
 msgid "Дополнительные функции"
 msgstr "Additional functions"
 
-#: products/admin.py:136 products/admin.py:208 products/admin.py:268
+#: products/admin.py:147 products/admin.py:219 products/admin.py:279
 msgid "Поле 'архивировано' используеться для 'soft delete'"
 msgstr "The 'archived' field is used for 'soft delete'"
 
-#: products/admin.py:141
+#: products/admin.py:152
 msgid "родительская категория"
 msgstr "parent's category"
 
-#: products/admin.py:152
+#: products/admin.py:163
 msgid "Архивировать отзыв"
 msgstr "archive the feedback"
 
-#: products/admin.py:157
+#: products/admin.py:168
 msgid "Разархивировать отзыв"
 msgstr "unarchiver the feedback"
 
-#: products/admin.py:199
+#: products/admin.py:210
 msgid "Статус публикации"
 msgstr "Publication status"
 
-#: products/admin.py:213 products/models.py:162 products/models.py:168
+#: products/admin.py:224 products/models.py:162 products/models.py:168
 msgid "отзыв"
 msgstr "feedback"
 
-#: products/admin.py:220
+#: products/admin.py:231
 msgid "Архивировать производителя"
 msgstr "Soft-delete manufacturer"
 
-#: products/admin.py:225
+#: products/admin.py:236
 msgid "Разархивировать производителя"
 msgstr "Recover manufacturer"
 
-#: products/admin.py:274
+#: products/admin.py:285
 msgid "Архивировать баннер"
 msgstr "Soft-delete banner"
 
-#: products/admin.py:279
+#: products/admin.py:290
 msgid "Разархивировать баннер"
 msgstr "Recover banner"
+
+#: products/admin.py:317
+#, fuzzy
+#| msgid "Архивировать производителя"
+msgid "Архивировать ограниченное предложениеннер"
+msgstr "Soft-delete manufacturer"
+
+#: products/admin.py:322
+#, fuzzy
+#| msgid "Разархивировать производителя"
+msgid "Разархивировать ограниченное предложение"
+msgstr "Recover manufacturer"
 
 #: products/forms.py:11
 msgid "Отзыв"
@@ -310,7 +322,7 @@ msgid "дата последнего изменения"
 msgstr "last changing date"
 
 #: products/models.py:125 products/models.py:172 products/models.py:187
-#: products/models.py:219
+#: products/models.py:219 products/models.py:249
 msgid "архивировано"
 msgstr "archived"
 
@@ -326,17 +338,17 @@ msgstr "a parent"
 msgid "приоритетный"
 msgstr "priority"
 
-#: products/models.py:131
+#: products/models.py:133
+msgid "иконка"
+msgstr "a icon"
+
+#: products/models.py:138
 msgid "категория"
 msgstr "a category"
 
-#: products/models.py:132
+#: products/models.py:139
 msgid "категории"
 msgstr "categories"
-
-#: products/models.py:139
-msgid "иконка"
-msgstr "a icon"
 
 #: products/models.py:163
 msgid "отзывы"
@@ -362,6 +374,24 @@ msgstr "banners"
 msgid "описание"
 msgstr "description"
 
+#: products/models.py:244
+#, fuzzy
+#| msgid "Максимальное количество предложений"
+msgid "ограниченное предложение"
+msgstr "limited offer"
+
+#: products/models.py:245
+#, fuzzy
+#| msgid "Ограниченный тираж"
+msgid "ограниченные предложения"
+msgstr "limited offers"
+
+#: products/models.py:248
+#, fuzzy
+#| msgid "дата создания"
+msgid "дата окончания"
+msgstr "end date"
+
 #: profiles/admin.py:15
 msgid "Personal info"
 msgstr "Personal info"
@@ -374,41 +404,45 @@ msgstr "Permissons"
 msgid "Important dates"
 msgstr ""
 
-#: profiles/forms.py:20 profiles/models.py:17
+#: profiles/forms.py:23 profiles/models.py:20
 #, fuzzy
 #| msgid "приоритетный"
 msgid "номер некорректный"
 msgstr "the phone number is incorrect"
 
+#: profiles/forms.py:104
+msgid "New password"
+msgstr ""
+
 #: profiles/models.py:15
 msgid "email address"
 msgstr ""
 
-#: profiles/models.py:16
+#: profiles/models.py:17
 msgid "Номер телефона"
 msgstr "phone number"
 
-#: profiles/models.py:19
+#: profiles/models.py:24
 msgid "Город проживания"
 msgstr "City of residence"
 
-#: profiles/models.py:22
+#: profiles/models.py:27
 msgid "Адрес"
 msgstr "address"
 
-#: profiles/models.py:23 shops/models.py:38
+#: profiles/models.py:28 shops/models.py:38
 msgid "Аватар"
 msgstr "avatar"
 
-#: profiles/models.py:32
+#: profiles/models.py:37
 msgid "дата и время посещения"
 msgstr "date and time visiting"
 
-#: profiles/models.py:42
+#: profiles/models.py:47
 msgid "история посещения"
 msgstr "visit history"
 
-#: profiles/models.py:43
+#: profiles/models.py:48
 msgid "истории посещения"
 msgstr "visit histories"
 
@@ -804,9 +838,6 @@ msgstr "Clear cache"
 
 #~ msgid "ОГРАНИЧЕННЫЕ ПРЕДЛОЖЕНИЯ"
 #~ msgstr "LIMITED OFFERS"
-
-#~ msgid "Ограниченный тираж"
-#~ msgstr "Limited edition"
 
 #~ msgid "Купить"
 #~ msgstr "Buy"

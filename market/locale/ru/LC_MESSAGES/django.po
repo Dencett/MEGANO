@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-20 16:41+0000\n"
+"POT-Creation-Date: 2023-12-13 19:19+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -172,72 +172,80 @@ msgstr ""
 msgid "истории оплаты заказа"
 msgstr ""
 
-#: products/admin.py:64
+#: products/admin.py:75
 msgid "Архивировать категорию"
 msgstr ""
 
-#: products/admin.py:69
+#: products/admin.py:80
 msgid "Разархивировать категорию"
 msgstr ""
 
-#: products/admin.py:102
+#: products/admin.py:113
 msgid "Поиск категории по названию"
 msgstr ""
 
-#: products/admin.py:120
+#: products/admin.py:131
 msgid "Иконка"
 msgstr ""
 
-#: products/admin.py:126
+#: products/admin.py:137
 msgid "Статус категории"
 msgstr ""
 
-#: products/admin.py:129
+#: products/admin.py:140
 msgid "Поле используеться для задания статуса категории"
 msgstr ""
 
-#: products/admin.py:133 products/admin.py:205 products/admin.py:265
+#: products/admin.py:144 products/admin.py:216 products/admin.py:276
 msgid "Дополнительные функции"
 msgstr ""
 
-#: products/admin.py:136 products/admin.py:208 products/admin.py:268
+#: products/admin.py:147 products/admin.py:219 products/admin.py:279
 msgid "Поле 'архивировано' используеться для 'soft delete'"
 msgstr ""
 
-#: products/admin.py:141
+#: products/admin.py:152
 msgid "родительская категория"
 msgstr ""
 
-#: products/admin.py:152
+#: products/admin.py:163
 msgid "Архивировать отзыв"
 msgstr ""
 
-#: products/admin.py:157
+#: products/admin.py:168
 msgid "Разархивировать отзыв"
 msgstr ""
 
-#: products/admin.py:199
+#: products/admin.py:210
 msgid "Статус публикации"
 msgstr ""
 
-#: products/admin.py:213 products/models.py:162 products/models.py:168
+#: products/admin.py:224 products/models.py:162 products/models.py:168
 msgid "отзыв"
 msgstr ""
 
-#: products/admin.py:220
+#: products/admin.py:231
 msgid "Архивировать производителя"
 msgstr ""
 
-#: products/admin.py:225
+#: products/admin.py:236
 msgid "Разархивировать производителя"
 msgstr ""
 
-#: products/admin.py:274
+#: products/admin.py:285
 msgid "Архивировать баннер"
 msgstr ""
 
-#: products/admin.py:279
+#: products/admin.py:290
 msgid "Разархивировать баннер"
+msgstr ""
+
+#: products/admin.py:317
+msgid "Архивировать ограниченное предложениеннер"
+msgstr ""
+
+#: products/admin.py:322
+msgid "Разархивировать ограниченное предложение"
 msgstr ""
 
 #: products/forms.py:11
@@ -310,7 +318,7 @@ msgid "дата последнего изменения"
 msgstr ""
 
 #: products/models.py:125 products/models.py:172 products/models.py:187
-#: products/models.py:219
+#: products/models.py:219 products/models.py:249
 msgid "архивировано"
 msgstr ""
 
@@ -326,16 +334,16 @@ msgstr ""
 msgid "приоритетный"
 msgstr ""
 
-#: products/models.py:131
+#: products/models.py:133
+msgid "иконка"
+msgstr ""
+
+#: products/models.py:138
 msgid "категория"
 msgstr ""
 
-#: products/models.py:132
-msgid "категории"
-msgstr ""
-
 #: products/models.py:139
-msgid "иконка"
+msgid "категории"
 msgstr ""
 
 #: products/models.py:163
@@ -362,6 +370,18 @@ msgstr ""
 msgid "описание"
 msgstr ""
 
+#: products/models.py:244
+msgid "ограниченное предложение"
+msgstr ""
+
+#: products/models.py:245
+msgid "ограниченные предложения"
+msgstr ""
+
+#: products/models.py:248
+msgid "дата окончания"
+msgstr ""
+
 #: profiles/admin.py:15
 msgid "Personal info"
 msgstr "Личная информация"
@@ -374,39 +394,45 @@ msgstr "Права доступа"
 msgid "Important dates"
 msgstr "Важная информация"
 
-#: profiles/forms.py:20 profiles/models.py:17
+#: profiles/forms.py:23 profiles/models.py:20
 msgid "номер некорректный"
 msgstr ""
+
+#: profiles/forms.py:104
+#, fuzzy
+#| msgid "Change password"
+msgid "New password"
+msgstr "Сменить пароль"
 
 #: profiles/models.py:15
 msgid "email address"
 msgstr "Электронная почта"
 
-#: profiles/models.py:16
+#: profiles/models.py:17
 msgid "Номер телефона"
 msgstr ""
 
-#: profiles/models.py:19
+#: profiles/models.py:24
 msgid "Город проживания"
 msgstr ""
 
-#: profiles/models.py:22
+#: profiles/models.py:27
 msgid "Адрес"
 msgstr ""
 
-#: profiles/models.py:23 shops/models.py:38
+#: profiles/models.py:28 shops/models.py:38
 msgid "Аватар"
 msgstr ""
 
-#: profiles/models.py:32
+#: profiles/models.py:37
 msgid "дата и время посещения"
 msgstr ""
 
-#: profiles/models.py:42
+#: profiles/models.py:47
 msgid "история посещения"
 msgstr ""
 
-#: profiles/models.py:43
+#: profiles/models.py:48
 msgid "истории посещения"
 msgstr ""
 
@@ -595,9 +621,6 @@ msgstr "Очистить кэш"
 
 #~ msgid "Login page"
 #~ msgstr "Страница входа"
-
-#~ msgid "Change password"
-#~ msgstr "Сменить пароль"
 
 #~ msgid "Registration page"
 #~ msgstr "Страница регистрации"
