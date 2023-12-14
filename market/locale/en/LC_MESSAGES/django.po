@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-14 11:25+0000\n"
+"POT-Creation-Date: 2023-12-14 11:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,8 @@ msgstr "English"
 msgid "Russian"
 msgstr "Russian"
 
-#: discount/apps.py:9 templates/header.jinja2:78
+#: discount/apps.py:9 templates/discount/base_promo.jinja2:12
+#: templates/discount/discount_list.jinja2:12 templates/header.jinja2:78
 msgid "Скидки"
 msgstr "Discounts"
 
@@ -859,6 +860,12 @@ msgstr "Delete"
 msgid "Очистить список"
 msgstr "Clear the list"
 
+#: templates/discount/base_promo.jinja2:10
+#: templates/discount/discount_list.jinja2:10 templates/footer.jinja2:13
+#: templates/header.jinja2:75
+msgid "Главная"
+msgstr "Home page"
+
 #: templates/discount/discount_card.jinja2:24
 msgid "Dec"
 msgstr ""
@@ -908,23 +915,17 @@ msgid "NOv"
 msgstr ""
 
 #: templates/discount/product_category_set.jinja2:3
-#, fuzzy
-#| msgid "Заказ товара. Шаг 4"
 msgid "Набор товаров"
-msgstr "Making an order. Step 4"
+msgstr "Goods set:"
 
 #: templates/discount/product_promo_cards.jinja2:2
 msgid "Товары участвующие в акции:"
-msgstr ""
+msgstr "Goods in promotion"
 
 #: templates/footer.jinja2:10 templates/profiles/account_base.jinja2:18
 #: templates/shops/shop_3_detail.jinja2:16
 msgid "Навигация"
 msgstr "Navigation"
-
-#: templates/footer.jinja2:13 templates/header.jinja2:75
-msgid "Главная"
-msgstr "Home page"
 
 #: templates/footer.jinja2:16 templates/header.jinja2:79
 msgid "Каталог"

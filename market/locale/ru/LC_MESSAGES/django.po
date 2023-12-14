@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-14 11:10+0000\n"
+"POT-Creation-Date: 2023-12-14 11:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,7 +76,8 @@ msgstr "Английский"
 msgid "Russian"
 msgstr "Русский"
 
-#: discount/apps.py:9 templates/header.jinja2:78
+#: discount/apps.py:9 templates/discount/base_promo.jinja2:12
+#: templates/discount/discount_list.jinja2:12 templates/header.jinja2:78
 msgid "Скидки"
 msgstr ""
 
@@ -807,6 +808,12 @@ msgstr ""
 msgid "Очистить список"
 msgstr ""
 
+#: templates/discount/base_promo.jinja2:10
+#: templates/discount/discount_list.jinja2:10 templates/footer.jinja2:13
+#: templates/header.jinja2:75
+msgid "Главная"
+msgstr ""
+
 #: templates/discount/discount_card.jinja2:24
 msgid "Dec"
 msgstr "Дек"
@@ -866,10 +873,6 @@ msgstr ""
 #: templates/footer.jinja2:10 templates/profiles/account_base.jinja2:18
 #: templates/shops/shop_3_detail.jinja2:16
 msgid "Навигация"
-msgstr ""
-
-#: templates/footer.jinja2:13 templates/header.jinja2:75
-msgid "Главная"
 msgstr ""
 
 #: templates/footer.jinja2:16 templates/header.jinja2:79
