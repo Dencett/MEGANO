@@ -8,8 +8,8 @@
       "weight": 0.5,
       "preview": "",
       "active_from": "2023-12-01",
-      "active_to": "2023-12-31",
-      "is_active": true,
+      "active_to": "2023-12-13",
+      "is_active": false,
       "items_from": null,
       "items_to": null,
       "price_from": "100000.00",
@@ -22,17 +22,17 @@
     "pk": 2,
     "fields": {
       "name": "Все товары в корзине за 1 рубль",
-      "description": "Собери от 2 до 5 товаров на сумму от 70 000 до 120 000 рублей и купи все вместе за 1 рубль",
+      "description": "Собери от 2 до 5 товаров на сумму от 1 000 до 2 000 рублей и купи все вместе за 1 рубль",
       "weight": 0.4,
-      "preview": "",
+      "preview": "img/promos/CartPromo/Cart_1rub.png",
       "active_from": "2023-12-01",
       "active_to": "2023-12-31",
       "is_active": true,
       "items_from": 2,
       "items_to": 5,
-      "price_from": "70000.00",
-      "price_to": "120000.00",
-      "value": "121000.00"
+      "price_from": "1000.00",
+      "price_to": "2000.00",
+      "value": "1.00"
     }
   },
   {
@@ -45,7 +45,7 @@
       "preview": "",
       "active_from": "2023-12-01",
       "active_to": "2023-12-31",
-      "is_active": true,
+      "is_active": false,
       "items_from": null,
       "items_to": null,
       "price_from": "300000.00",
@@ -57,18 +57,18 @@
     "model": "discount.cartpromo",
     "pk": 4,
     "fields": {
-      "name": "Корзина за 9999.99 рублей за 5 товара",
-      "description": "Корзина за 10000 рублей при заказе 5 товаров",
+      "name": "Корзина за 10000 рублей",
+      "description": "Корзина за 10000 рублей при заказе 3 товаров на сумму не более 13 000 рублей",
       "weight": 0.6,
-      "preview": "",
+      "preview": "img/promos/CartPromo/Cart_10000.png",
       "active_from": "2023-12-01",
       "active_to": "2023-12-31",
       "is_active": true,
-      "items_from": 5,
-      "items_to": 5,
+      "items_from": 3,
+      "items_to": 3,
       "price_from": null,
-      "price_to": null,
-      "value": "9999.99"
+      "price_to": "13000.00",
+      "value": "10000.00"
     }
   },
   {
@@ -98,8 +98,8 @@
       "weight": 0.6,
       "preview": "",
       "active_from": "2023-12-01",
-      "active_to": "2023-12-31",
-      "is_active": true,
+      "active_to": "2023-12-12",
+      "is_active": false,
       "value": "40000.00",
       "sets": [
         3,
@@ -116,8 +116,8 @@
       "weight": 0.3,
       "preview": "",
       "active_from": "2023-12-01",
-      "active_to": "2023-12-31",
-      "is_active": true,
+      "active_to": "2023-12-12",
+      "is_active": false,
       "value": "1000.00",
       "sets": [
         5,
@@ -130,13 +130,13 @@
     "pk": 4,
     "fields": {
       "name": "Акция на набор телефон + фотоаппарат",
-      "description": "Купи любой фотоаппарат и телефон -  получи скидку на корзину 150 000 рублей",
-      "weight": 0.9,
-      "preview": "",
+      "description": "Купи любой фотоаппарат и телефон -  получи скидку на корзину 20 000 рублей",
+      "weight": 0.7,
+      "preview": "img/promos/SetPromo/Set_ph_cam.png",
       "active_from": "2023-12-01",
       "active_to": "2023-12-31",
       "is_active": true,
-      "value": "150000.00",
+      "value": "20000.00",
       "sets": [
         8,
         7
@@ -148,13 +148,13 @@
     "pk": 5,
     "fields": {
       "name": "Акция на набор телефон + фотоаппарат + наушники",
-      "description": "Купи любой фотоаппарат, телефон и наушники - получи скидку на корзину 200 000 рублей",
-      "weight": 1.0,
-      "preview": "",
+      "description": "Купи любой фотоаппарат, телефон и наушники - получи скидку на корзину 25 000 рублей",
+      "weight": 0.8,
+      "preview": "img/promos/SetPromo/Set_ph_plug_cam.jpg",
       "active_from": "2023-12-01",
       "active_to": "2023-12-31",
       "is_active": true,
-      "value": "200000.00",
+      "value": "25000.00",
       "sets": [
         8,
         9,
@@ -166,7 +166,7 @@
     "model": "discount.productpromo",
     "pk": 1,
     "fields": {
-      "name": "Распродажа ноутбуков",
+      "name": "Распродажа ноутбуков со скидкой 25%",
       "description": "Успей приобрести ноутбук со скидкой 25%",
       "weight": 0.5,
       "preview": "img/promos/ProductPromo/Laptop25.webp",
@@ -184,14 +184,14 @@
     "model": "discount.productpromo",
     "pk": 2,
     "fields": {
-      "name": "Суперцена на ограниченный ряд моделей ноутбуков",
-      "description": "Дарим скидки 35% на ограниченный ряд моделей",
+      "name": "Cкидки 50% на ограниченный ряд моделей ноутбуков",
+      "description": "Дарим скидки 50% на ограниченный ряд моделей",
       "weight": 0.7,
       "preview": "img/promos/ProductPromo/LimitedLaptopSale35.webp",
       "active_from": "2023-12-01",
       "active_to": "2023-12-31",
       "is_active": true,
-      "value": 35,
+      "value": 50,
       "products": [
         4,
         31
