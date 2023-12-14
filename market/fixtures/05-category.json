@@ -223,5 +223,20 @@
         "foreground": false,
         "icon": "img/icons/categories/accessories/accessories_icon.svg"
     }
+},
+{
+    "model": "products.category",
+    "pk": 16,
+    "fields": {
+        "name": "Без категории",
+        "slug": "none-category-products",
+        "created_at": "2023-09-13T10:32:29.149Z",
+        "modified_at": "2023-09-15T09:06:26.838Z",
+        "archived": false,
+        "is_active": false,
+        "parent": null,
+        "foreground": true,
+        "icon": ""
+    }
 }
 ]
