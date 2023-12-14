@@ -98,7 +98,7 @@ class OrderDetailCreate:
             add_offer.save()
             OrderDetail.objects.create(offer=add_offer, quantity=value, user_order=order)
         # Пересчитываем цену в товарах, которые остались.
-        request_price = order.details.aggregate(total_price=Sum(F("quantity") * F("offer__price")))
+        # request_price = order.details.aggregate(total_price=Sum(F("quantity") * F("offer__price")))
 
         # Передаём в заказ новую сумму заказа с учётом скидки
         # goods_price = request_price["total_price"]  # цена цена товаров исчисляемая
@@ -106,9 +106,9 @@ class OrderDetailCreate:
         # final_price = goods_price - discount
         # order.total_price = final_price
 
-        order.total_price = request_price["total_price"]
+        # order.total_price = request_price["total_price"]
         # Где-то здесь как раз может сработать и скидка на товары
-        order.save()
+        # order.save()
 
 
 def get_order_total_price(order: Order):
