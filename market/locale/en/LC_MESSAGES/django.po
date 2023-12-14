@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-02 19:15+0000\n"
+"POT-Creation-Date: 2023-12-14 11:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,31 +26,31 @@ msgstr "cart's record"
 msgid "записи корзины"
 msgstr "cart's records"
 
-#: cart/views.py:111
+#: cart/views.py:113
 msgid "Удалить корзину"
 msgstr "Delete cart"
 
-#: cart/views.py:112
+#: cart/views.py:114
 msgid "Обновить корзину"
 msgstr "Update cart"
 
-#: cart/views.py:113
+#: cart/views.py:115
 msgid "Оформить заказ"
 msgstr "Place the order"
 
-#: catalog/utils.py:227
+#: catalog/utils.py:232
 msgid "Популярности"
 msgstr "Popularity"
 
-#: catalog/utils.py:228
+#: catalog/utils.py:233
 msgid "Цене"
 msgstr "Price"
 
-#: catalog/utils.py:229
+#: catalog/utils.py:234
 msgid "Отзывам"
 msgstr "Feedback"
 
-#: catalog/utils.py:230
+#: catalog/utils.py:235
 msgid "Новизне"
 msgstr "Novelty"
 
@@ -66,15 +66,16 @@ msgstr "There is not enough data to compare."
 msgid "Невозможно сравнить то, что не сравнивается."
 msgstr "It is impossible to compare what is not compared."
 
-#: config/settings.py:200
+#: config/settings.py:201
 msgid "English"
 msgstr "English"
 
-#: config/settings.py:201
+#: config/settings.py:202
 msgid "Russian"
 msgstr "Russian"
 
-#: discount/apps.py:9 templates/header.jinja2:78
+#: discount/apps.py:9 templates/discount/base_promo.jinja2:12
+#: templates/discount/discount_list.jinja2:12 templates/header.jinja2:78
 msgid "Скидки"
 msgstr "Discounts"
 
@@ -142,7 +143,7 @@ msgstr "Price:"
 msgid "общая стоимость корзины до"
 msgstr "Price:"
 
-#: discount/models.py:70 discount/models.py:104
+#: discount/models.py:70 discount/models.py:99
 msgid "размер скидки в рублях"
 msgstr ""
 
@@ -158,131 +159,153 @@ msgstr "Delete cart"
 msgid "скидки на корзину"
 msgstr "Add to the cart"
 
-#: discount/models.py:96
-#, fuzzy
-#| msgid "Заказ товара. Шаг 4"
-msgid "набор товаров"
-msgstr "Making an order. Step 4"
-
-#: discount/models.py:99
-#, fuzzy
-#| msgid "Все категории"
-msgid "набор категорий"
-msgstr "All categories"
-
-#: discount/models.py:109
-msgid "скидка на наборы продуктов и/или категорий"
+#: discount/models.py:95 discount/models.py:143
+msgid "наборы"
 msgstr ""
 
-#: discount/models.py:110
+#: discount/models.py:104
 #, fuzzy
-#| msgid "Максимальное количество избранных категорий"
-msgid "скидки на наборы продуктов и/или категорий"
-msgstr "Maximum number of favorite categories"
+#| msgid "Удалить корзину"
+msgid "скидка на наборы"
+msgstr "Delete cart"
 
-#: discount/models.py:126
+#: discount/models.py:105
+#, fuzzy
+#| msgid "Добавить в корзину"
+msgid "скидки на наборы"
+msgstr "Add to the cart"
+
+#: discount/models.py:119
 msgid "товары"
 msgstr ""
 
-#: discount/models.py:129 products/models.py:139
+#: discount/models.py:122 products/models.py:139
 msgid "категории"
 msgstr "categories"
 
-#: discount/models.py:132
+#: discount/models.py:125
 msgid "размер скидки в процентах"
 msgstr ""
 
-#: discount/models.py:136
+#: discount/models.py:129
 #, fuzzy
 #| msgid "Разархивировать категорию"
 msgid "скидка на продукт(ы) и/или категорию(ии)"
 msgstr "recover the category"
 
-#: discount/models.py:137
+#: discount/models.py:130
 #, fuzzy
 #| msgid "Разархивировать категорию"
 msgid "скидки на продукт(ы) и/или категорию(ии)"
 msgstr "recover the category"
 
-#: orders/models.py:28
+#: discount/models.py:137
+#, fuzzy
+#| msgid "наименование"
+msgid "наименование набора"
+msgstr "name"
+
+#: discount/models.py:138
+#, fuzzy
+#| msgid "Заказ товара. Шаг 4"
+msgid "набор товаров"
+msgstr "Making an order. Step 4"
+
+#: discount/models.py:139
+#, fuzzy
+#| msgid "Все категории"
+msgid "набор категорий"
+msgstr "All categories"
+
+#: discount/models.py:142
+msgid "набор"
+msgstr ""
+
+#: orders/models.py:29
 msgid "создан"
 msgstr "created"
 
-#: orders/models.py:29
+#: orders/models.py:30
 msgid "выполнен"
 msgstr "done"
 
-#: orders/models.py:30
+#: orders/models.py:31
 msgid "доставляется"
 msgstr "delivered"
 
-#: orders/models.py:31
+#: orders/models.py:32
 msgid "оплачен"
 msgstr "paid"
 
-#: orders/models.py:32
+#: orders/models.py:33
 msgid "не оплачен"
 msgstr "not paid"
 
-#: orders/models.py:49
+#: orders/models.py:50
 msgid "дата создания заказа"
 msgstr "created date"
 
-#: orders/models.py:53
+#: orders/models.py:54
 msgid "Город доставки"
 msgstr "Destination city"
 
-#: orders/models.py:56
+#: orders/models.py:57
 msgid "адрес доставки"
 msgstr "destination address"
 
-#: orders/models.py:62
+#: orders/models.py:63
 msgid "метод доставки"
 msgstr "delivery method"
 
-#: orders/models.py:69 shops/models.py:82
+#: orders/models.py:70 shops/models.py:82
 msgid "способ оплаты"
 msgstr "payment method"
 
-#: orders/models.py:71
+#: orders/models.py:72
 msgid "номер заказа"
 msgstr "order's number"
 
-#: orders/models.py:76
+#: orders/models.py:77
 #, fuzzy
 #| msgid "Стоимость:"
 msgid "общая стоимость"
 msgstr "Price:"
 
-#: orders/models.py:81 payapp/models.py:9
+#: orders/models.py:80
+#, fuzzy
+#| msgid "Скидки"
+msgid "Размер скидки"
+msgstr "Discounts"
+
+#: orders/models.py:85 payapp/models.py:9
 msgid "заказ"
 msgstr "order"
 
-#: orders/models.py:82
+#: orders/models.py:86
 msgid "заказы"
 msgstr "orders"
 
-#: orders/models.py:116
+#: orders/models.py:121
 msgid "Предложение"
 msgstr "Offer"
 
-#: orders/models.py:117
+#: orders/models.py:122
 msgid "Выбрать желаемый товар по специальной цене от магазина"
 msgstr "Choose the desired product at a special price from the store"
 
-#: orders/models.py:119
+#: orders/models.py:124
 msgid "Количество товара"
 msgstr "number of goods"
 
-#: orders/models.py:121
+#: orders/models.py:126
 msgid "Номер заказа пользователя"
 msgstr "order's number by user"
 
-#: orders/models.py:125
+#: orders/models.py:130
 msgid "заказ пользователя"
 msgstr "user's order"
 
-#: orders/models.py:126
+#: orders/models.py:131
 msgid "заказы пользователя"
 msgstr "user's orders"
 
@@ -733,7 +756,7 @@ msgstr "Your cart"
 msgid "Цена без скидки:"
 msgstr ""
 
-#: templates/cart/cart.jinja2:28
+#: templates/cart/cart.jinja2:28 templates/orders/order_step_four.jinja2:118
 #, fuzzy
 #| msgid "Скидки"
 msgid "Скидка:"
@@ -762,7 +785,7 @@ msgstr "Price:"
 
 #: templates/catalog/filter.jinja2:32 templates/comparison/content.jinja2:104
 msgid "Название"
-msgstr "name"
+msgstr "Name"
 
 #: templates/catalog/filter.jinja2:42
 msgid "Только товары в наличии"
@@ -780,6 +803,22 @@ msgstr "Sort by:"
 msgid "Популярные тэги"
 msgstr "Popular tags"
 
+#: templates/comparison/add_comparison.jinja2:5
+msgid "Поздравляем!"
+msgstr "Congratulate!"
+
+#: templates/comparison/add_comparison.jinja2:9
+msgid "Товар успешно добавлен в список сравнение!"
+msgstr "The good has been successfully added to the comparison list!"
+
+#: templates/comparison/add_comparison.jinja2:19
+msgid "Добаление невозможно!"
+msgstr "Failed to add good!"
+
+#: templates/comparison/add_comparison.jinja2:23
+msgid "Товар уже был добавлен в список сравнения!"
+msgstr "The good has been already added to the comparison list!"
+
 #: templates/comparison/comparison.jinja2:4
 msgid "Products comparison"
 msgstr ""
@@ -791,11 +830,11 @@ msgstr "Only differing characteristics"
 #: templates/comparison/content.jinja2:31
 #: templates/products/product_details.jinja2:107
 msgid "Характеристика"
-msgstr "characteristics"
+msgstr "Characteristics"
 
 #: templates/comparison/content.jinja2:32
 msgid "Значение"
-msgstr "value"
+msgstr "Value"
 
 #: templates/comparison/content.jinja2:35
 msgid "Тип"
@@ -806,10 +845,8 @@ msgid "Общ.параметры"
 msgstr "Com.params"
 
 #: templates/comparison/content.jinja2:54
-#, fuzzy
-#| msgid "Общ.параметры"
 msgid "Отл. параметры"
-msgstr "Com.params"
+msgstr "Dif.params"
 
 #: templates/comparison/content.jinja2:83
 msgid "Удалить из списка"
@@ -823,18 +860,72 @@ msgstr "Delete"
 msgid "Очистить список"
 msgstr "Clear the list"
 
-#: templates/discount/discount_card.jinja2:25
+#: templates/discount/base_promo.jinja2:10
+#: templates/discount/discount_list.jinja2:10 templates/footer.jinja2:13
+#: templates/header.jinja2:75
+msgid "Главная"
+msgstr "Home page"
+
+#: templates/discount/discount_card.jinja2:24
 msgid "Dec"
 msgstr ""
+
+#: templates/discount/discount_card.jinja2:25
+msgid "Jan"
+msgstr ""
+
+#: templates/discount/discount_card.jinja2:26
+msgid "Feb"
+msgstr ""
+
+#: templates/discount/discount_card.jinja2:27
+msgid "Mar"
+msgstr ""
+
+#: templates/discount/discount_card.jinja2:28
+msgid "Apr"
+msgstr ""
+
+#: templates/discount/discount_card.jinja2:29
+msgid "May"
+msgstr ""
+
+#: templates/discount/discount_card.jinja2:30
+msgid "Jun"
+msgstr ""
+
+#: templates/discount/discount_card.jinja2:31
+msgid "Jul"
+msgstr ""
+
+#: templates/discount/discount_card.jinja2:32
+msgid "Aug"
+msgstr ""
+
+#: templates/discount/discount_card.jinja2:33
+msgid "Sep"
+msgstr ""
+
+#: templates/discount/discount_card.jinja2:34
+msgid "Oct"
+msgstr ""
+
+#: templates/discount/discount_card.jinja2:35
+msgid "NOv"
+msgstr ""
+
+#: templates/discount/product_category_set.jinja2:3
+msgid "Набор товаров"
+msgstr "Goods set:"
+
+#: templates/discount/product_promo_cards.jinja2:2
+msgid "Товары участвующие в акции:"
+msgstr "Goods in promotion"
 
 #: templates/footer.jinja2:10 templates/profiles/account_base.jinja2:18
 #: templates/shops/shop_3_detail.jinja2:16
 msgid "Навигация"
 msgstr "Navigation"
-
-#: templates/footer.jinja2:13 templates/header.jinja2:75
-msgid "Главная"
-msgstr "Home page"
 
 #: templates/footer.jinja2:16 templates/header.jinja2:79
 msgid "Каталог"
@@ -879,6 +970,36 @@ msgstr "Administrative section"
 #: templates/header.jinja2:128
 msgid "Показать навигацию"
 msgstr "Show navigation"
+
+#: templates/importdata/import.jinja2:4
+msgid "Страница импорта данных"
+msgstr "Detailed information page"
+
+#: templates/importdata/import_form.jinja2:3
+msgid "Предыдущий импорт ещё не выполнен. Пожалуйста, дождитесь его окончания."
+msgstr ""
+"The previous import has not been finished yet. Please wait for its "
+"completion."
+
+#: templates/importdata/import_form.jinja2:7
+msgid ""
+"Выбирете файл(ы) для импорта. *Если ни один файл не выбран, импорт будет "
+"инициирован для всех файлов из списка."
+msgstr ""
+"Choose file(s) to import. *If no file is selected, the import will be "
+"initiated for all files in the list."
+
+#: templates/importdata/import_form.jinja2:21
+msgid "Адрес для отправки отчета:"
+msgstr "Address to mail report:"
+
+#: templates/importdata/import_form.jinja2:25
+msgid "Импортировать"
+msgstr "Import"
+
+#: templates/importdata/import_form.jinja2:27
+msgid "Нет файлов для импорта. Пожалуйста, обратитесь к администратору."
+msgstr "There is no files to import. Please, contact our support team."
 
 #: templates/menu.jinja2:17 templates/menu.jinja2:30
 msgid "Все категории"
@@ -944,11 +1065,11 @@ msgstr "Address"
 msgid "Оплата:"
 msgstr "Payment:"
 
-#: templates/orders/order_step_four.jinja2:118
+#: templates/orders/order_step_four.jinja2:122
 msgid "Итого:"
 msgstr "Total:"
 
-#: templates/orders/order_step_four.jinja2:122
+#: templates/orders/order_step_four.jinja2:126
 msgid "Оплатить"
 msgstr "To pay:"
 
@@ -1419,3 +1540,8 @@ msgstr "Store's goods"
 #: templates/shops/shop_products.jinja2:25
 msgid "Изображение товара отсутствует"
 msgstr "The good image is missing"
+
+#, fuzzy
+#~| msgid "Максимальное количество избранных категорий"
+#~ msgid "скидки на наборы продуктов и/или категорий"
+#~ msgstr "Maximum number of favorite categories"

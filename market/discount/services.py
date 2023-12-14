@@ -1,8 +1,6 @@
 import datetime
 from decimal import Decimal
 
-# from django.db.models import Q, F
-
 from cart.services.cart_service import AnonimCartService
 from shops.models import Offer
 from products.models import Product

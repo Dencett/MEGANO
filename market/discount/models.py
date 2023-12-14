@@ -144,35 +144,3 @@ class ProductCategorySet(models.Model):
 
     def __str__(self) -> str:
         return f"Набор (pk={self.pk}, name={self.name!r}%)"
-
-
-# class SetPromo(BasePromo):
-#     """
-#     Модель скиди на наборы.
-#     Cкидки могут быть установлены на группу товаров,
-#     если они вместе находятся в корзине.
-#     Указывается группа товаров 1 и группа товаров 2
-#     (таким же образом, что и в скидке на товар, то есть раздел и/или конкретный товар).
-#     """
-#
-#     products = models.ManyToManyField(
-#         Product, blank=True, related_name="products_setpromos", verbose_name=_("набор товаров")
-#     )
-#     categories = models.ManyToManyField(
-#         Category, blank=True, related_name="categories_setpromos", verbose_name=_("набор категорий")
-#     )
-#     value = models.DecimalField(
-#         max_digits=10,
-#         decimal_places=2,
-#         verbose_name=_("размер скидки в рублях"),
-#         validators=[MinValueValidator(Decimal("0.01"))],
-#     )
-#
-#     class Meta(BasePromo.Meta):
-#         verbose_name = _("скидка на наборы продуктов и/или категорий")
-#         verbose_name_plural = _("скидки на наборы продуктов и/или категорий")
-#
-#     def __str__(self) -> str:
-#         return (
-#             f"Cкидка на наборы продуктов и/или категорий (pk={self.pk}, name={self.name!r}, value={self.value!r}руб)"
-#         )
