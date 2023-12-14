@@ -233,7 +233,7 @@
         "created_at": "2023-09-13T10:32:29.149Z",
         "modified_at": "2023-09-15T09:06:26.838Z",
         "archived": false,
-        "is_active": true,
+        "is_active": false,
         "parent": null,
         "foreground": true,
         "icon": ""
