@@ -235,3 +235,18 @@ class Banner(models.Model):
         path = f"{settings.MEDIA_ROOT}/{self.image}"
         if os.path.isfile(path):
             os.remove(path)
+
+
+class LimitedOffer(models.Model):
+    """Ограниченные предложения"""
+
+    class Meta:
+        verbose_name = _("ограниченное предложение")
+        verbose_name_plural = _("ограниченные предложения")
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    end_date = models.DateTimeField(null=False, verbose_name=_("дата окончания"))
+    archived = models.BooleanField(default=False, verbose_name=_("архивировано"))
+
+    def __str__(self) -> str:
+        return f"Ограниченное предложение (pk={self.pk}, product_id={self.product.id})"
