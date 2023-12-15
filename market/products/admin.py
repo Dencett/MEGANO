@@ -5,7 +5,18 @@ from django.http import HttpRequest
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from .models import Category, Detail, Product, ProductDetail, ProductImage, Tag, Review, Banner, Manufacturer
+from .models import (
+    Category,
+    Detail,
+    Product,
+    ProductDetail,
+    ProductImage,
+    Tag,
+    Review,
+    Banner,
+    Manufacturer,
+    LimitedOffer,
+)
 
 
 class DetailInline(admin.StackedInline):
@@ -300,4 +311,32 @@ class BannerAdmin(admin.ModelAdmin):
         "pk",
         "name",
     )
+    ordering = ("pk",)
+
+
+@admin.action(description=_("Архивировать ограниченное предложениеннер"))
+def mark_archived_limited_offer(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
+    queryset.update(archived=True, modified_at=timezone.now())
+
+
+@admin.action(description=_("Разархивировать ограниченное предложение"))
+def mark_unarchived_limited_offer(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset: QuerySet):
+    queryset.update(archived=False, modified_at=timezone.now())
+
+
+@admin.register(LimitedOffer)
+class LimitedOfferAdmin(admin.ModelAdmin):
+    """Админ Ограниченное предложение"""
+
+    actions = [
+        mark_archived_limited_offer,
+        mark_unarchived_limited_offer,
+    ]
+    list_display = (
+        "pk",
+        "product_id",
+        "end_date",
+        "archived",
+    )
+    list_display_links = ("pk",)
     ordering = ("pk",)

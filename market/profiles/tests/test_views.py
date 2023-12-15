@@ -6,6 +6,7 @@ from profiles.models import UserProductHistory
 
 FIXTURES = [
     "fixtures/01-users.json",
+    "fixtures/02-groups.json",
     "fixtures/04-shops.json",
     "fixtures/05-category.json",
     "fixtures/06-manufacturer.json",
@@ -17,6 +18,8 @@ FIXTURES = [
     "fixtures/12-productdetails.json",
     "fixtures/13-reviews.json",
     "fixtures/14-banners.json",
+    "fixtures/15-site_settings.json",
+    "fixtures/16-limited_offer.json",
 ]
 
 

@@ -23,6 +23,8 @@ FIXTURES = [
     "fixtures/12-productdetails.json",
     "fixtures/13-reviews.json",
     "fixtures/14-banners.json",
+    "fixtures/15-site_settings.json",
+    "fixtures/16-limited_offer.json",
 ]
 
 User = get_user_model()
@@ -42,7 +44,7 @@ class HomeViewTest(TestCase, OffersMixin):
                 "min_price_product": self.get_min_price_product(),
                 "limited_products": self.get_limited_products(),
                 "banners": self.get_banners(),
-                "min_offers": self.get_min_offers(),
+                "limit_offer": self.get_limited_offer(),
             }
         )
         response = render(request, template, context)

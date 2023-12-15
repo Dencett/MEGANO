@@ -2,7 +2,7 @@ from typing import Dict, Any
 
 from django.db.models import QuerySet
 
-from products.models import Banner, Category
+from products.models import Banner, Category, LimitedOffer
 from shops.models import Offer
 from site_settings.models import SiteSettings
 
@@ -85,3 +85,6 @@ class OffersMixin:
                 min_offers.append(offer)
 
         return min_offers
+
+    def get_limited_offer(self) -> QuerySet:
+        return LimitedOffer.objects.filter(archived=False).order_by("?").first()

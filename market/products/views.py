@@ -28,6 +28,7 @@ class HomeView(TemplateView, OffersMixin):
                 "limited_products": self.get_limited_products(),
                 "banners": self.get_banners(),
                 "min_offers": self.get_min_offers(),
+                "limit_offer": self.get_limited_offer(),
             }
         )
         return context
