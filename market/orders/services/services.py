@@ -36,8 +36,6 @@ class OrderDetailCreate:
 
     def create_order(self):
         """Метод создания заказа после прохождения форм опроса пользователя"""
-        # multiselect = self.session.keys()
-        # products = Offer.objects.filter(pk__in=multiselect)
 
         user = User.objects.filter(pk=self.request.user.pk).first()
         delivery_type = self.request.session["delivery_type"]
@@ -97,18 +95,6 @@ class OrderDetailCreate:
             add_offer.remains -= int(value)
             add_offer.save()
             OrderDetail.objects.create(offer=add_offer, quantity=value, user_order=order)
-        # Пересчитываем цену в товарах, которые остались.
-        # request_price = order.details.aggregate(total_price=Sum(F("quantity") * F("offer__price")))
-
-        # Передаём в заказ новую сумму заказа с учётом скидки
-        # goods_price = request_price["total_price"]  # цена цена товаров исчисляемая
-        # discount = Decimal("50.00")  # Применение скидки
-        # final_price = goods_price - discount
-        # order.total_price = final_price
-
-        # order.total_price = request_price["total_price"]
-        # Где-то здесь как раз может сработать и скидка на товары
-        # order.save()
 
 
 def get_order_total_price(order: Order):
