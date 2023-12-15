@@ -46,8 +46,8 @@ class OrderDetailCreate:
         payment_type = self.request.session["payment_type"]
 
         discount_service = CartDiscount(self.cart_service)
-        discount_amount = discount_service.get_sum()
-        total_price = round((Decimal(self.cart_service.get_upd_price()) - Decimal(discount_amount)), 2)
+        discount = discount_service.get_discount()
+        total_price = round((Decimal(self.cart_service.get_upd_price()) - Decimal(discount["sale"])), 2)
 
         order = Order.objects.create(
             city=city,
@@ -58,7 +58,7 @@ class OrderDetailCreate:
             payment_type=payment_type,
             status=Order.STATUS_CREATED,
             total_price=total_price,
-            discount_amount=discount_amount,
+            discount_amount=discount["sale"],
         )
         return order
 
