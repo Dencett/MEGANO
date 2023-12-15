@@ -24,7 +24,7 @@ class CartListView(TemplateView):
         self.cart_service = get_cart_service(request)
         self.cart = self.cart_service.get_cart_as_dict()
         self.discount_service = CartDiscount(self.cart_service)
-        self.discount_amount = self.discount_service.get_sum()
+        self.discount = self.discount_service.get_discount()
         response = super().get(request, *args, **kwargs)
         return response
 
@@ -49,8 +49,11 @@ class CartListView(TemplateView):
         context = {
             "offer_list": self.get_queryset(),
             "cart": self.cart,
-            "discount_amount": self.discount_amount,
-            "total_price": round((Decimal(self.cart_service.get_upd_price()) - Decimal(self.discount_amount)), 2),
+            "discount_amount": self.discount["sale"],
+            "total_price": round((Decimal(self.cart_service.get_upd_price()) - Decimal(self.discount["sale"])), 2),
+            "discount_name": self.discount["name"],
+            "discount_value": self.discount["value"],
+            "discount_weight": self.discount["weight"],
         }
         context.update(kwargs)
         return super().get_context_data(object_list=None, **context)
