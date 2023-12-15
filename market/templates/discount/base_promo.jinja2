@@ -50,7 +50,9 @@
                             <div class="ProductCard-info">
                                 <div class="ProductCard-cost">
                                     <div class="ProductCard-price">
+                                        {% block product_card_price %}
                                             {{object.value}} ₽
+                                        {% endblock %}
                                     </div>
                                 </div>
                             </div>

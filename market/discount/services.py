@@ -8,6 +8,8 @@ from discount.models import ProductPromo, CartPromo, SetPromo, ProductCategorySe
 
 
 class CartDiscount:
+    """Сервис скидок"""
+
     def __init__(self, cart_service: "AnonimCartService"):
         self.cart_service = cart_service
         self.cart = self.cart_service.get_cart_as_dict()
@@ -18,27 +20,33 @@ class CartDiscount:
         """Кол-во товаров в корзине"""
         return sum([int(quantity) for quantity in self.cart.values()])
 
-    def get_sum(self):
+    def get_discount(self):
         """
-        Метод определения размера скидки.
+        Метод получения скидки и параметров скидки.
         Одновременно может быть применена только одна скидка на корзину или на один набор в корзине.
         Если к корзине не применена скидка ни на корзину, ни на набор,
         то тогда на каждый товар по отдельности ищется скидка на товар,
         при этом на каждый товар может быть применена только одна приоритетная скидка также по весу.
         """
 
-        cart_sale, cart_weight = self._get_cart_promo_discount()
-        set_sale, set_weight = self._get_set_promos_discount()
+        cart_result = self._get_cart_promo_discount()
+        set_result = self._get_set_promos_discount()
 
-        if cart_weight > set_weight:
-            return cart_sale
-        elif cart_weight < set_weight:
-            return set_sale
-        elif cart_weight == set_weight and cart_weight != 0:
-            return max(cart_sale, set_sale)
+        if cart_result["weight"] > set_result["weight"]:
+            return cart_result
+
+        elif cart_result["weight"] < set_result["weight"]:
+            return set_result
+
+        elif cart_result["weight"] == set_result["weight"] and cart_result["weight"] != 0:
+            if cart_result["sale"] > set_result["sale"]:
+                return cart_result
+            else:
+                return set_result
+
         else:
-            products_sale = self._get_product_promos_discount()
-            return products_sale
+            products_result = self._get_product_promos_discount()
+            return products_result
 
     def _get_product_promos_discount(self):
         """
@@ -46,20 +54,20 @@ class CartDiscount:
         и/или на указанные категории товаров.
         """
         promos_query = self._get_product_promo_active_discount()
-        total_sale = Decimal(0.00)
+        best_discount = {"sale": 0, "weight": None, "value": None, "name": None}
 
         for item_id, item_quantity in self.cart.items():
             offer = Offer.objects.get(pk=item_id)
-            best_discount = {"weight": 0, "value": 0}
+            discount = {"sale": 0, "weight": 0, "value": 0}
 
             for promo in promos_query:
                 products_list = self._get_products_in_promo(promo=promo)
-                if offer.product in products_list and promo.weight > best_discount["weight"]:
-                    best_discount["weight"], best_discount["value"] = promo.weight, promo.value
+                if offer.product in products_list and promo.weight > discount["weight"]:
+                    discount["weight"], discount["value"] = promo.weight, promo.value
 
-            total_sale += self._get_product_discount(offer.price, item_quantity, best_discount["value"])
+            best_discount["sale"] += self._get_product_discount(offer.price, item_quantity, discount["value"])
 
-        return total_sale
+        return best_discount
 
     @classmethod
     def _get_product_discount(cls, price, quantity, value):
@@ -67,11 +75,12 @@ class CartDiscount:
         Метод расчета скидки на продукт с учeтом кол-ва.
         :param price: Decimal - стоимость продукта
         :param quantity: int - кол-во товара в корзине
-        :param value: int - процент скидки
+        :param value: str - процент скидки
         :return: Decimal - вычисленное значение скидки
         """
-        total = price * quantity * value / 100
-        return total
+        total = price * quantity * Decimal(value) / 100
+
+        return Decimal(total)
 
     def _get_product_promo_active_discount(self):
         """
@@ -104,14 +113,19 @@ class CartDiscount:
         Метод определения размера скидки на корзину.
         """
         promos_query = self._get_cart_promo_active_discount()
-        best_discount = {"weight": 0, "value": 0}
+        best_discount = {"sale": 0, "weight": 0, "value": 0, "name": None}
 
         for promo in promos_query:
             if self._is_cart_discount_applicable(promo) and promo.weight > best_discount["weight"]:
-                best_discount["weight"], best_discount["value"] = promo.weight, promo.value
+                best_discount["weight"], best_discount["value"], best_discount["name"] = (
+                    promo.weight,
+                    promo.value,
+                    promo.name,
+                )
 
-        total_sale = self._get_cart_discount(best_discount["value"])
-        return total_sale, best_discount["weight"]
+        best_discount["sale"] = self._get_cart_discount(best_discount["value"])
+
+        return best_discount
 
     def _get_cart_promo_active_discount(self):
         """
@@ -227,7 +241,7 @@ class CartDiscount:
         Метод определения размера скидки на наборы.
         """
         promos_query = self._get_set_promo_active_discount()
-        best_discount = {"weight": 0, "value": 0}
+        best_discount = {"sale": 0, "weight": 0, "value": 0, "name": None}
         cart_products = [Offer.objects.get(pk=offer_id).product for offer_id in self.cart.keys()]
 
         for promo in promos_query:
@@ -237,11 +251,15 @@ class CartDiscount:
                 self._is_set_discount_applicable(products_dict, cart_products)
                 and promo.weight > best_discount["weight"]
             ):
-                best_discount["weight"], best_discount["value"] = promo.weight, promo.value
+                best_discount["weight"], best_discount["value"], best_discount["name"] = (
+                    promo.weight,
+                    promo.value,
+                    promo.name,
+                )
 
-        total_sale = self._get_set_discount(best_discount["value"])
+        best_discount["sale"] = self._get_set_discount(best_discount["value"])
 
-        return total_sale, best_discount["weight"]
+        return best_discount
 
     def _get_set_discount(self, value):
         """

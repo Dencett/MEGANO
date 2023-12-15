@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-14 11:36+0000\n"
+"POT-Creation-Date: 2023-12-15 08:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,15 +26,15 @@ msgstr "cart's record"
 msgid "записи корзины"
 msgstr "cart's records"
 
-#: cart/views.py:113
+#: cart/views.py:116
 msgid "Удалить корзину"
 msgstr "Delete cart"
 
-#: cart/views.py:114
+#: cart/views.py:117
 msgid "Обновить корзину"
 msgstr "Update cart"
 
-#: cart/views.py:115
+#: cart/views.py:118
 msgid "Оформить заказ"
 msgstr "Place the order"
 
@@ -754,19 +754,21 @@ msgstr "Your cart"
 
 #: templates/cart/cart.jinja2:24
 msgid "Цена без скидки:"
-msgstr ""
+msgstr "Total price:"
 
 #: templates/cart/cart.jinja2:28 templates/orders/order_step_four.jinja2:118
-#, fuzzy
-#| msgid "Скидки"
 msgid "Скидка:"
-msgstr "Discounts"
+msgstr "Discount:"
 
 #: templates/cart/cart.jinja2:32
-msgid "ИТОГО:"
-msgstr ""
+msgid "Тип скидка:"
+msgstr "Discount type:"
 
-#: templates/cart/cart.jinja2:43
+#: templates/cart/cart.jinja2:36
+msgid "ИТОГО:"
+msgstr "TO PAY:"
+
+#: templates/cart/cart.jinja2:47
 msgid "Корзина пуста."
 msgstr "Your cart is empty."
 

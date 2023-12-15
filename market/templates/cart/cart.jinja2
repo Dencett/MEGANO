@@ -29,6 +29,10 @@
                                 <td><span class="Cart-price">{{ discount_amount}} р </span></td>
                             </tr>
                             <tr>
+                                <td><p class="Cart-desc" style="margin-top: 0"> {{_("Тип скидка:")}} {% if discount_name %} {{ discount_name }}
+                                {% elif discount_amount | int == 0 %} отсутствует {% else %} скидка на отдельные виды товаров {% endif %} </p></td>
+                            </tr>
+                            <tr>
                                 <td><strong class="Cart-title">{{_("ИТОГО:")}}</strong></td>
                                 <td><span class="Cart-price">{{ total_price }} р</span></td>
                             </tr>

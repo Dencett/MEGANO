@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-14 11:36+0000\n"
+"POT-Creation-Date: 2023-12-15 08:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,15 +28,15 @@ msgstr ""
 msgid "записи корзины"
 msgstr ""
 
-#: cart/views.py:113
+#: cart/views.py:116
 msgid "Удалить корзину"
 msgstr ""
 
-#: cart/views.py:114
+#: cart/views.py:117
 msgid "Обновить корзину"
 msgstr ""
 
-#: cart/views.py:115
+#: cart/views.py:118
 msgid "Оформить заказ"
 msgstr ""
 
@@ -711,10 +711,14 @@ msgid "Скидка:"
 msgstr ""
 
 #: templates/cart/cart.jinja2:32
+msgid "Тип скидка:"
+msgstr ""
+
+#: templates/cart/cart.jinja2:36
 msgid "ИТОГО:"
 msgstr ""
 
-#: templates/cart/cart.jinja2:43
+#: templates/cart/cart.jinja2:47
 msgid "Корзина пуста."
 msgstr ""
 
