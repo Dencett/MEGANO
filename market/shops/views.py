@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, ListView, UpdateView
+from django.views.generic import DetailView, UpdateView
 
 
 from shops.models import Shop
@@ -32,19 +32,6 @@ class ShopDetailsView(UserPassesTestMixin, DetailView):
         return self.get_object().user == self.request.user or self.request.user.is_superuser
 
 
-class ShopProductListView(ListView):
-    """Представление списка продуктов магазина."""
-
-    model = Shop
-    template_name = "shops/products_list.jinja2"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        shop = Shop.objects.select_related("user").prefetch_related("products").filter(user__id=self.request.user.pk)
-        context["shop_offer"] = shop
-        return context
-
-
 class ShopProductsDetail(DetailView):
     """Представление детальной информации продуктов магазина."""
 
@@ -53,7 +40,7 @@ class ShopProductsDetail(DetailView):
     context_object_name = "shop"
 
 
-class ShopUpdateView(UpdateView):
+class ShopUpdateView(UserPassesTestMixin, UpdateView):
     """Представление: Обновление информации о магазине."""
 
     model = Shop
@@ -66,3 +53,6 @@ class ShopUpdateView(UpdateView):
             "shops:shop_detail",
             kwargs={"pk": self.object.pk},
         )
+
+    def test_func(self):
+        return self.get_object().user == self.request.user or self.request.user.is_superuser
