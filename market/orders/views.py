@@ -56,7 +56,6 @@ class OrderStepTwoView(FormView):
         self.request.session["delivery_type"] = form.cleaned_data.get("delivery_type")
         self.request.session["city"] = form.cleaned_data.get("city")
         self.request.session["address"] = form.cleaned_data.get("address")
-
         return super().form_valid(form)
 
     def get_initial(self):
@@ -109,22 +108,14 @@ class OrderStepFourView(ListView):
     context_object_name = "products"
 
     def get_queryset(self):
-        order = Order.objects.filter(user__pk=self.request.user.pk).first()
+        order = (
+            Order.objects.prefetch_related("details")
+            .select_related("user")
+            .filter(user__pk=self.request.user.pk)
+            .first()
+        )
         queryset = order.details.all()
         return queryset
-
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     context = super().get_context_data()
-    #     context["total"] = self.get_total_price()
-    #     return context
-    #
-    # def get_total_price(self):
-    #     """Метод получения общей цены заказа"""
-    #     price = 0
-    #     for product in self.get_queryset():
-    #         product_price = product.offer.price * product.quantity
-    #         price += product_price
-    #     return price
 
 
 class OrderHistoryListView(ListView):
@@ -141,8 +132,6 @@ class OrderHistoryListView(ListView):
             .select_related("user")
             .prefetch_related(
                 "details",
-                "details__offer",
-                "details__offer__product",
             )
         )
         return queryset

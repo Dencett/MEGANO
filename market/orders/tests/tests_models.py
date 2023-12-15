@@ -84,12 +84,12 @@ class OrderModelTest(TestCase):
     def test_default_delivery_type(self):
         order = OrderModelTest.order
         default = order._meta.get_field("delivery_type").default
-        self.assertEqual(default, ("usually", "обычная доставка"))
+        self.assertEqual(default, "usually")
 
     def test_default_payment_type(self):
         order = OrderModelTest.order
         default = order._meta.get_field("payment_type").default
-        self.assertEqual(default, ("card", "онлайн картой"))
+        self.assertEqual(default, "card")
 
     def test_default_order_number(self):
         order = OrderModelTest.order

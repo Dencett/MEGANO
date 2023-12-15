@@ -28,7 +28,7 @@ class OrderDetailCreate:
         self.cart_service = AnonimCartService(request)
 
     def get_products_in_cart(self):
-        """Показать продукты, которые находятся в корзине в ссесиях"""
+        """Показать продукты, которые находятся в корзине в сессиях"""
 
         multiselect = self.session.keys()
         products = Offer.objects.filter(pk__in=multiselect)
@@ -36,8 +36,6 @@ class OrderDetailCreate:
 
     def create_order(self):
         """Метод создания заказа после прохождения форм опроса пользователя"""
-        # multiselect = self.session.keys()
-        # products = Offer.objects.filter(pk__in=multiselect)
 
         user = User.objects.filter(pk=self.request.user.pk).first()
         delivery_type = self.request.session["delivery_type"]
@@ -79,13 +77,20 @@ class OrderDetailCreate:
 
     @transaction.atomic
     def created_order_details_product(self):
-        """Метод добавления продуктов из корзины"""
-        # multiselect = self.session.keys()
-        # products = Offer.objects.filter(pk__in=multiselect)
+        """
+        Метод добавления продуктов из корзины.
+        Переменная order - создаёт новый заказ и привязывает предложения к этому заказу.
+        """
+
+        # Заказ создаётся здесь
         order = self.create_order()
 
         for offer, value in self.session.items():
+            if value == 0:
+                continue
             add_offer = Offer.objects.get(pk=offer)
+            add_offer.remains -= int(value)
+            add_offer.save()
             OrderDetail.objects.create(offer=add_offer, quantity=value, user_order=order)
 
 

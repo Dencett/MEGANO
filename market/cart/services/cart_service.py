@@ -114,9 +114,17 @@ class AnonimCartService:
                 new_data[str(k)] = str(v)
                 cart_size += v
         self.session_cart = self.session[settings.CART_SESSION_KEY] = new_data
+        self.contains_remaining_offers()
         self.session[settings.CART_SIZE_SESSION_KEY] = str(cart_size)
         self._update_price()
         self._save_cart()
+
+    def contains_remaining_offers(self):
+        self.session_cart = self.session[settings.CART_SESSION_KEY]
+        for offer_pk, values in self.session_cart.items():
+            offer = Offer.objects.get(pk=offer_pk)
+            if int(values) > offer.remains:
+                self.session_cart[f"{offer_pk}"] = offer.remains
 
     def _update_price(self):
         sum_price = 0

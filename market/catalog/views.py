@@ -53,7 +53,7 @@ class CatalogListView(ListView):
             "shop",
         ]
 
-        queryset = Offer.objects.select_related(*select_related_fields)
+        queryset = Offer.objects.select_related(*select_related_fields).filter(remains__gt=0)
         params = Params(**self.request.GET.dict())
         context_proc = CatalogContextProcessor(self.request, {}, params, self.site_settings)
 

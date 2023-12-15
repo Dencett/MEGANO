@@ -5,27 +5,23 @@ from profiles.models import User
 from django.db.models import Q
 
 
+class DeliveryType(models.TextChoices):
+    """Модель выбора способа доставки."""
+
+    USUALLY = "usually", _("обычная доставка")
+    EXPRESS = "express", _("экспресс доставка")
+
+
+class PaymentType(models.TextChoices):
+    """Модель выбора способа оплаты."""
+
+    CARD = "card", _("онлайн картой")
+    RANDOM = "random", _("Онлайн со случайного чужого счета")
+
+
 class Order(models.Model):
     """Класс модели таблицы заказов"""
 
-    DELIVERY_TYPE_DICT = {
-        "usually": "обычная доставка",
-        "express": "экспресс-доставка",
-    }
-
-    DELIVERY_TYPE = [
-        ("usually", "обычная доставка"),
-        ("express", "экспресс-доставка"),
-    ]
-
-    PAYMENT_TYPES = [
-        ("card", "онлайн картой"),
-        ("random", "Онлайн со случайного чужого счета"),
-    ]
-    PAYMENT_TYPES_DICT = {
-        "card": "онлайн картой",
-        "random": "Онлайн со случайного чужого счета",
-    }
     STATUS_CREATED = _("создан")
     STATUS_OK = _("выполнен")
     STATUS_DELIVERED = _("доставляется")
@@ -58,19 +54,26 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
     delivery_type = models.CharField(
         max_length=50,
-        choices=DELIVERY_TYPE,
-        default=DELIVERY_TYPE[0],
+        choices=DeliveryType.choices,
+        default=DeliveryType.USUALLY,
         verbose_name=_("метод доставки"),
     )
     payment_type = models.CharField(
         max_length=50,
-        choices=PAYMENT_TYPES,
-        blank=False,
-        default=PAYMENT_TYPES[0],
+        choices=PaymentType.choices,
+        # blank=False,
+        default=PaymentType.CARD,
         verbose_name=_("способ оплаты"),
     )
     order_number = models.PositiveIntegerField(default=1, verbose_name=_("номер заказа"))
-    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=STATUS_CREATED, verbose_name="status")
+    # fmt: off
+    status = models.CharField(
+        max_length=15,
+        choices=STATUS_CHOICES,
+        default=STATUS_CREATED,
+        verbose_name="status"
+    )
+    # fmt: on
     total_price = models.DecimalField(
         max_digits=12,
         decimal_places=2,
@@ -89,24 +92,10 @@ class Order(models.Model):
     def __str__(self):
         return f"Заказ#{self.pk}:{self.user.username}"
 
-    # def get_total_price(self, obj: "OrderDetail"):
-    #     get_product = obj.objects.filter(user_order=self.pk)
-    #     products_sum = sum(
-    #         [product.offer.price * product.quantity
-    #             for product in get_product
-    #         ]
-    #     )
-    #     return products_sum
-
     def get_order_number(self, user: User):
         all_examples = self.objects.filter(user=user).first().order_number
         self.order_number = all_examples + 1
         return self.order_number
-
-    # def products_summ_price(self):
-    #     total_price = self.carts.aggregate(total_price=Sum("offer__price"))
-    #     convert_value = total_price["total_price"]
-    #     return convert_value
 
 
 class OrderDetail(models.Model):

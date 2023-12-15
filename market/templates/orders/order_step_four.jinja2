@@ -57,7 +57,7 @@
                             <div class="Order-infoType">{{_('Тип доставки:')}}
                             </div>
 <!--============================ тип доставки ================================-->
-                            <div class="Order-infoContent">{{ order_info.DELIVERY_TYPE_DICT[order_info.delivery_type].title() }}
+                            <div class="Order-infoContent">{{ order_info.get_delivery_type_display() }} {# {{ order_info.DELIVERY_TYPE_DICT[order_info.delivery_type].title() }} #}
                             </div>
                         </div>
                         <div class="Order-info">
@@ -75,7 +75,7 @@
                         <div class="Order-info Order-info_pay">
                             <div class="Order-infoType">{{_('Оплата:')}}
                             </div>
-                            <div class="Order-infoContent"> {{ order_info.PAYMENT_TYPES_DICT[order_info.payment_type].title() }}
+                            <div class="Order-infoContent"> {{ order_info.get_payment_type_display() }}{# {{ order_info.PAYMENT_TYPES_DICT[order_info.payment_type].title() }} #}
                             </div>
                         </div>
                     </div>

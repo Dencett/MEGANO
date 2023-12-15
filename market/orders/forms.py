@@ -14,7 +14,7 @@ class OrderStepTwoForm(forms.ModelForm):
             "delivery_type",
             "city",
             "address",
-        )  # 'delivery_type'
+        )
         widgets = {
             "city": TextInput(attrs={"class": "form-input"}),
             "address": Textarea(attrs={"class": "form-textarea"}),
@@ -43,18 +43,6 @@ class OrderFastRegistrationAnonymousUser(UserRegisterForm):
             "email",
             "phone",
         ]
-
-
-class OrderCreateForm(forms.Form):
-    city = forms.CharField(max_length=30)
-    address = forms.CharField(max_length=30)
-    delivery_type = forms.ChoiceField(choices=(Order.DELIVERY_TYPE))
-    payment_type = forms.ChoiceField(choices=(Order.PAYMENT_TYPES))
-    status = forms.ChoiceField(choices=(Order.STATUS_CHOICES))
-    total_price = forms.CharField(max_length=30)
-
-    class Meta:
-        model = Order
 
 
 class OrderStepFourForm(forms.ModelForm):

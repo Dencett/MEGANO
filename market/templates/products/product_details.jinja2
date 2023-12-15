@@ -128,7 +128,7 @@
                             <div class="Tabs-block" id="sellers">
                                 <div class="Section-content">
                                     <div class="Orders">
-                                        {% for offer in product.offers.all() %}
+                                        {% for offer in product.offers.all().filter(remains__gt=0) %}
                                         {% include "products/offer-block.jinja2" %}
                                         {% endfor %}
                                     </div>
