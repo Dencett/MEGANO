@@ -386,6 +386,19 @@ files = [
 ]
 
 [[package]]
+name = "cron-descriptor"
+version = "1.4.0"
+description = "A Python library that converts cron expressions into human readable strings."
+optional = false
+python-versions = "*"
+files = [
+    {file = "cron_descriptor-1.4.0.tar.gz", hash = "sha256:b6ff4e3a988d7ca04a4ab150248e9f166fb7a5c828a85090e75bcc25aa93b4dd"},
+]
+
+[package.extras]
+dev = ["polib"]
+
+[[package]]
 name = "decorator"
 version = "5.1.1"
 description = "Decorators for Humans"
@@ -441,6 +454,25 @@ tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 [package.extras]
 argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
+
+[[package]]
+name = "django-celery-beat"
+version = "2.5.0"
+description = "Database-backed Periodic Tasks."
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-celery-beat-2.5.0.tar.gz", hash = "sha256:cd0a47f5958402f51ac0c715bc942ae33d7b50b4e48cba91bc3f2712be505df1"},
+    {file = "django_celery_beat-2.5.0-py3-none-any.whl", hash = "sha256:ae460faa5ea142fba0875409095d22f6bd7bcc7377889b85e8cab5c0dfb781fe"},
+]
+
+[package.dependencies]
+celery = ">=5.2.3,<6.0"
+cron-descriptor = ">=1.2.32"
+Django = ">=2.2,<5.0"
+django-timezone-field = ">=5.0"
+python-crontab = ">=2.3.4"
+tzdata = "*"
 
 [[package]]
 name = "django-debug-toolbar"
@@ -503,6 +535,20 @@ redis = ">=3,<4.0.0 || >4.0.0,<4.0.1 || >4.0.1"
 
 [package.extras]
 hiredis = ["redis[hiredis] (>=3,!=4.0.0,!=4.0.1)"]
+
+[[package]]
+name = "django-timezone-field"
+version = "6.1.0"
+description = "A Django app providing DB, form, and REST framework fields for zoneinfo and pytz timezone objects."
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "django_timezone_field-6.1.0-py3-none-any.whl", hash = "sha256:0095f43da716552fcc606783cfb42cb025892514f1ec660ebfa96186eb83b74c"},
+    {file = "django_timezone_field-6.1.0.tar.gz", hash = "sha256:d40f7059d7bae4075725d04a9dae601af9fe3c7f0119a69b0e2c6194a782f797"},
+]
+
+[package.dependencies]
+Django = ">=3.2,<6.0"
 
 [[package]]
 name = "djangorestframework"
@@ -1341,6 +1387,24 @@ files = [
 plugins = ["importlib-metadata"]
 
 [[package]]
+name = "python-crontab"
+version = "3.0.0"
+description = "Python Crontab API"
+optional = false
+python-versions = "*"
+files = [
+    {file = "python-crontab-3.0.0.tar.gz", hash = "sha256:79fb7465039ddfd4fb93d072d6ee0d45c1ac8bf1597f0686ea14fd4361dba379"},
+    {file = "python_crontab-3.0.0-py3-none-any.whl", hash = "sha256:6d5ba3c190ec76e4d252989a1644fcb233dbf53fbc8fceeb9febe1657b9fb1d4"},
+]
+
+[package.dependencies]
+python-dateutil = "*"
+
+[package.extras]
+cron-description = ["cron-descriptor"]
+cron-schedule = ["croniter"]
+
+[[package]]
 name = "python-dateutil"
 version = "2.8.2"
 description = "Extensions to the standard Python datetime module"
@@ -1658,4 +1722,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "bff53ea3903a24b2ccf9571dfb2b6243d0fa627b39d44791d8d5eaa716752541"
+content-hash = "f118b1a96f99c86b50587aeede421b4bb9dce4c55fe0df99a810506ac02148be"

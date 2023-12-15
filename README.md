@@ -35,11 +35,14 @@ poetry install  ; установка пакетов
 poetry shell  ; активация виртуального окружения
 pre-commit install  ; установка pre-commit для проверки форматирования кода, см. .pre-commit-config.yaml
 ```
-Запуск менеджера задач Celery и плагина Flower для мониторинга задач в режиме реального времени
+Запуск менеджера задач Celery, планировщика задач Celery-beat и плагина Flower для мониторинга задач в режиме реального времени
 ```shell
 celery -A config worker --loglevel=INFO
+
 # ОС Windows
 celery -A config worker --loglevel=INFO --pool=solo
+
+celery -A config beat -l INFO
 
 celery -A config flower --loglevel=INFO
 ```

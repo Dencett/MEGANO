@@ -91,12 +91,12 @@ class UserHistoryOrdersListViewTest(TestCase):
     def test_order_contains_delivery_type(self):
         response = self.client.get(reverse("orders:history"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "обычная доставка".title())
+        self.assertContains(response, "обычная доставка")
 
     def test_contains_payment_type(self):
         response = self.client.get(reverse("orders:history"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Картой")
+        self.assertContains(response, "онлайн картой")
 
     def test_contains_order_number(self):
         response = self.client.get(reverse("orders:history"))

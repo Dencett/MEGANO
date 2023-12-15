@@ -25,6 +25,7 @@ requests = "^2.31.0"
 celery = "^5.3.4"
 flower = "^2.0.1"
 pydantic = "^2.4.2"
+django-celery-beat = "^2.5.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"

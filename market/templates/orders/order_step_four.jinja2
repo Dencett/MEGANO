@@ -57,7 +57,7 @@
                             <div class="Order-infoType">{{_('Тип доставки:')}}
                             </div>
 <!--============================ тип доставки ================================-->
-                            <div class="Order-infoContent">{{ order_info.DELIVERY_TYPE_DICT[order_info.delivery_type].title() }}
+                            <div class="Order-infoContent">{{ order_info.get_delivery_type_display() }} {# {{ order_info.DELIVERY_TYPE_DICT[order_info.delivery_type].title() }} #}
                             </div>
                         </div>
                         <div class="Order-info">
@@ -75,7 +75,7 @@
                         <div class="Order-info Order-info_pay">
                             <div class="Order-infoType">{{_('Оплата:')}}
                             </div>
-                            <div class="Order-infoContent"> {{ order_info.PAYMENT_TYPES_DICT[order_info.payment_type].title() }}
+                            <div class="Order-infoContent"> {{ order_info.get_payment_type_display() }}{# {{ order_info.PAYMENT_TYPES_DICT[order_info.payment_type].title() }} #}
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                         <div class="Cart-block Cart-block_price">
-                            <div class="Cart-price">{{ prod.offer.price }}$
+                            <div class="Cart-price">{{ prod.offer.price }}&#160;р
                             </div>
                         </div>
                     </div>
@@ -115,8 +115,12 @@
 <!--=================== Итоговая цена товаров ==============================-->
                 <div class="Cart-total">
                     <div class="Cart-block Cart-block_total">
+                        <strong class="Cart-title">{{_('Скидка:')}}
+                        </strong><span class="Cart-price"> {{ order_info.discount_amount }} р</span>
+                    </div>
+                    <div class="Cart-block Cart-block_total">
                         <strong class="Cart-title">{{_('Итого:')}}
-                        </strong><span class="Cart-price"> {{ order_info.total_price }} $</span>
+                        </strong><span class="Cart-price"> {{ order_info.total_price }} р</span>
                     </div>
                     <div class="Cart-block">
                         <button class="btn btn_primary btn_lg" type="submit">{{_('Оплатить')}}

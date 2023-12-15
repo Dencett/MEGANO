@@ -21,18 +21,8 @@ from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
-    # path("admin/", admin.site.urls),
     path("settings/", include("site_settings.urls")),
-    # path("", include("products.urls")),
-    # path("profiles/", include("profiles.urls")),
-    # path("shops/", include("shops.urls")),
-    # path("catalog/", include("catalog.urls")),
-    # path("cart/", include("cart.urls")),
-    # path("comparison/", include("comparison.urls")),
     path("api/", include("api_payments.urls")),
-    # path("pay/", include("payapp.urls")),
-    # path("orders/", include("orders.urls")),
-    # path("importdata/", include("importdata.urls")),
 ]
 
 urlpatterns += i18n_patterns(
@@ -46,6 +36,7 @@ urlpatterns += i18n_patterns(
     path("pay/", include("payapp.urls")),
     path("orders/", include("orders.urls")),
     path("importdata/", include("importdata.urls")),
+    path("discounts/", include("discount.urls")),
 )
 
 if settings.DEBUG:

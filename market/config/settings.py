@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_jinja",
     "django_extensions",
+    "django_celery_beat",
     "site_settings",
     "products",
     "shops",
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
     "api_payments",
     "payapp",
     "importdata",
+    "discount",
 ]
 
 MIDDLEWARE = [
@@ -242,6 +244,7 @@ CELERY_RESULT_BACKEND = config["REDIS_URL"]
 # CELERYD_LOG_FILE = "/logs/celery.log"
 # CELERYD_LOG_LEVEL = "ERROR"
 CELERY_CREATE_DIRS = 1
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 
 # Django Email
