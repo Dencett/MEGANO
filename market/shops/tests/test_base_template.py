@@ -4,8 +4,9 @@ from django.http.request import HttpRequest
 
 
 class BaseTemplateTest(TestCase):
-    fixtures = [
+    FIXTURES = [
         "fixtures/01-users.json",
+        "fixtures/02-groups.json",
         "fixtures/04-shops.json",
         "fixtures/05-category.json",
         "fixtures/06-manufacturer.json",
@@ -17,6 +18,8 @@ class BaseTemplateTest(TestCase):
         "fixtures/12-productdetails.json",
         "fixtures/13-reviews.json",
         "fixtures/14-banners.json",
+        "fixtures/15-site_settings.json",
+        "fixtures/16-limited_offer.json",
     ]
 
     def test_template_render(self):
