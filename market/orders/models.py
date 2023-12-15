@@ -22,24 +22,6 @@ class PaymentType(models.TextChoices):
 class Order(models.Model):
     """Класс модели таблицы заказов"""
 
-    # DELIVERY_TYPE_DICT = {
-    #     "usually": "обычная доставка",
-    #     "express": "экспресс-доставка",
-    # }
-    #
-    # DELIVERY_TYPE = [
-    #     ("usually", "обычная доставка"),
-    #     ("express", "экспресс-доставка"),
-    # ]
-    #
-    # PAYMENT_TYPES = [
-    #     ("card", "онлайн картой"),
-    #     ("random", "Онлайн со случайного чужого счета"),
-    # ]
-    # PAYMENT_TYPES_DICT = {
-    #     "card": "онлайн картой",
-    #     "random": "Онлайн со случайного чужого счета",
-    # }
     STATUS_CREATED = _("создан")
     STATUS_OK = _("выполнен")
     STATUS_DELIVERED = _("доставляется")

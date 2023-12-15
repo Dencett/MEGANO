@@ -80,10 +80,7 @@ class OrderDetailCreate:
         """
         Метод добавления продуктов из корзины.
         Переменная order - создаёт новый заказ и привязывает предложения к этому заказу.
-
         """
-        # multiselect = self.session.keys()
-        # products = Offer.objects.filter(pk__in=multiselect)
 
         # Заказ создаётся здесь
         order = self.create_order()
