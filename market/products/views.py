@@ -111,9 +111,5 @@ class ProductView(View):
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        # if "amount" in request.POST:
-        #     view = ProductAddCart.as_view()
-        #     # view = ProductDetailView.as_view()
-        #     return view(request, *args, **kwargs)
         view = ProductReviewFormView.as_view()
         return view(request, *args, **kwargs)

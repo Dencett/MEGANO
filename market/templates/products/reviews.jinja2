@@ -23,7 +23,9 @@
                     <header class="Comment-header">
                         <div>
                             <strong class="Comment-title"> {{ review.user.username }}
-                            </strong><span class="Comment-date"> {{ review.created_at.strftime('%B %d / %Y / %H:%M') }}</span>
+                            </strong><span class="Comment-date">
+                            {{ _(review.created_at.strftime('%a')) }} / {{ review.created_at.strftime('%d / %Y / %H:%M') }}
+                        </span>
                         </div>
                     </header>
                     <div class="Comment-content"> {{ review.review_content }}</div>
@@ -72,7 +74,7 @@
                 {% csrf_token %}
                 {{ form.as_p() }}
                 <div class="form-group">
-                    <button class="btn btn_muted" type="submit">{{_("Отправить отзыв")}}
+                    <button class="btn btn_primary" type="submit">{{_("Отправить отзыв")}}
                     </button>
                 </div>
             </form>
