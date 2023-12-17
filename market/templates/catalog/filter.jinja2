@@ -35,13 +35,13 @@
             <div class="form-group">
                 <!-- - var options = setOptions(items, ['value', 'selected', 'disabled']);-->
             </div>
-            <div class="form-group">
-                <label class="toggle">
-                    <input type="checkbox" name="remains"{% if remains %} checked="checked"{% endif %}/>
-                    <span class="toggle-box"></span>
-                    <span class="toggle-text">{{_("Только товары в наличии")}}</span>
-                </label>
-            </div>
+{#            <div class="form-group">#}
+{#                <label class="toggle">#}
+{#                    <input type="checkbox" name="remains"{% if remains %} checked="checked"{% endif %}/>#}
+{#                    <span class="toggle-box"></span>#}
+{#                    <span class="toggle-text">{{_("Только товары в наличии")}}</span>#}
+{#                </label>#}
+{#            </div>#}
             <div class="form-group">
                 <label class="toggle">
                     <input type="checkbox" name="free_delivery"{% if free_delivery %} checked="checked"{% endif %}/>
@@ -51,7 +51,7 @@
             </div>
             <div class="form-group">
                 <div class="buttons">
-                    <button class="btn btn_square btn_dark btn_narrow" type="submit" >{{_("Фильтр")}}</a>
+                    <button class="btn btn_square btn_dark btn_narrow" type="submit" >{{_("Фильтр")}}</button>
                 </div>
             </div>
         </form>

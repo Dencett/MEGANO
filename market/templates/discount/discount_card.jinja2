@@ -15,7 +15,7 @@
     </div>
     {% endif %}
     <div class="Card-content">
-        <strong class="Card-title"><a href="#">{{promo.name}}</a>
+        <strong class="Card-title"><a href="{{url('discount:' + promo.disc_type, promo.pk)}}">{{promo.name}}</a>
         </strong>
         <div class="Card-description">{{promo.description}}
         </div>
