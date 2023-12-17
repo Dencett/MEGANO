@@ -57,18 +57,18 @@
     "model": "discount.cartpromo",
     "pk": 4,
     "fields": {
-      "name": "Корзина за 10000 рублей",
-      "description": "Корзина за 10000 рублей при заказе 3 товаров на сумму от 11 000 до 13 000 рублей",
-      "weight": 0.6,
+      "name": "Корзина за 100000 рублей",
+      "description": "Корзина за 100000 рублей при заказе 3 товаров на сумму от 110 000 до 130 000 рублей",
+      "weight": 0.71,
       "preview": "img/promos/CartPromo/Cart_10000.png",
       "active_from": "2023-12-01",
       "active_to": "2023-12-31",
       "is_active": true,
       "items_from": 3,
       "items_to": 3,
-      "price_from": "11000.00",
-      "price_to": "13000.00",
-      "value": "10000.00"
+      "price_from": "110000.00",
+      "price_to": "130000.00",
+      "value": "100000.00"
     }
   },
   {
@@ -131,7 +131,7 @@
     "fields": {
       "name": "Акция на набор телефон + фотоаппарат",
       "description": "Купи любой фотоаппарат и телефон -  получи скидку на корзину 20 000 рублей",
-      "weight": 0.7,
+      "weight": 0.65,
       "preview": "img/promos/SetPromo/Set_ph_cam.png",
       "active_from": "2023-12-01",
       "active_to": "2023-12-31",
