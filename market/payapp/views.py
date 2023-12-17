@@ -49,6 +49,8 @@ class BankAccountValidate(View):
         form = BancAccountForm(request.POST)
         order_pk = kwargs.get("order_pk")
         order = Order.objects.get(pk=order_pk)
+        if order.status != Order.STATUS_CREATED and order.status != Order.STATUS_NOT_PAID:
+            return redirect("payapp:status", pk=order_pk)
         if form.is_valid():
             data = form.cleaned_data
             banc_account = int("".join(data["banc_account"].split(" ")))
