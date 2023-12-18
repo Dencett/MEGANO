@@ -224,7 +224,7 @@ LOGIN_REDIRECT_URL = reverse_lazy("products:home-page")
 LOGIN_URL = reverse_lazy("profiles:login")
 
 COMPARISON_SESSION_ID = "comparison"
-COMPARISON_MAX_PRODUCTS = 3
+COMPARISON_MAX_PRODUCTS = 2
 
 CART_SESSION_KEY = "cart"
 CART_SIZE_SESSION_KEY = "cart_size"

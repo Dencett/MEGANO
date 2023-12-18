@@ -767,8 +767,6 @@ msgid "Скидка:"
 msgstr "Discount:"
 
 #: templates/cart/cart.jinja2:32
-#, fuzzy
-#| msgid "Тип скидка:"
 msgid "Тип скидки:"
 msgstr "Discount type:"
 
