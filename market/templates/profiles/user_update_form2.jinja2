@@ -21,7 +21,7 @@
         <div class="row">
 <!--============ Изменение информации о пользователе!  НАЧАЛО ============-->
             <div class="row-block">
-               <form method="post">
+               <form method="post" enctype="multipart/form-data">
                    {% csrf_token %}
                    {{ form.as_p() }}
                <button type="submit">{{_("Обновить информацию")}}</button>
