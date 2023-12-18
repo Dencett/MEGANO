@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-17 16:14+0300\n"
+"POT-Creation-Date: 2023-12-18 18:38+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -723,12 +723,16 @@ msgid ""
 msgstr ""
 
 #: templates/cart/cart.jinja2:4
+#, fuzzy
+#| msgid "Email магазина"
 msgid "Корзина"
-msgstr ""
+msgstr "Эл. почта магазина"
 
 #: templates/cart/cart.jinja2:14
+#, fuzzy
+#| msgid "Email магазина"
 msgid "Ваша корзина:"
-msgstr ""
+msgstr "Эл. почта магазина"
 
 #: templates/cart/cart.jinja2:24
 msgid "Цена без скидки:"
@@ -1339,8 +1343,10 @@ msgstr ""
 #: templates/profiles/account_base.jinja2:43
 #: templates/shops/shop_3_detail.jinja2:22 templates/shops/shop_detail.jinja2:4
 #: templates/shops/shop_form.jinja2:4
+#, fuzzy
+#| msgid "Email магазина"
 msgid "Информация о магазине"
-msgstr ""
+msgstr "Эл. почта магазина"
 
 #: templates/profiles/account_base.jinja2:67
 #, python-format
@@ -1445,8 +1451,10 @@ msgstr "Эл. почта магазина"
 
 #: templates/shops/shop_3_detail.jinja2:43
 #: templates/shops/shop_detail.jinja2:18
+#, fuzzy
+#| msgid "Email магазина"
 msgid "У магазина нет аватара"
-msgstr ""
+msgstr "Эл. почта магазина"
 
 #: templates/shops/shop_3_detail.jinja2:52
 #: templates/shops/shop_detail.jinja2:27
@@ -1488,8 +1496,10 @@ msgid "О магазине"
 msgstr "Эл. почта магазина"
 
 #: templates/shops/shop_form.jinja2:21
+#, fuzzy
+#| msgid "Email магазина"
 msgid "У магазина нет авата"
-msgstr ""
+msgstr "Эл. почта магазина"
 
 #: templates/shops/shop_form.jinja2:25
 msgid "Обновить"

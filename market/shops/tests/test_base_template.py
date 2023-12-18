@@ -19,7 +19,7 @@ class BaseTemplateTest(TestCase):
         "fixtures/13-reviews.json",
         "fixtures/14-banners.json",
         "fixtures/15-site_settings.json",
-        "fixtures/16-limited_offer.json",
+        "fixtures/18-limited_offer.json",
     ]
 
     def test_template_render(self):
