@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-17 16:14+0300\n"
+"POT-Creation-Date: 2023-12-18 18:38+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -500,13 +500,13 @@ msgstr "description"
 #, fuzzy
 #| msgid "Максимальное количество предложений"
 msgid "ограниченное предложение"
-msgstr "Maximum number of offers"
+msgstr "limited offer"
 
 #: products/models.py:245
 #, fuzzy
 #| msgid "Ограниченный тираж"
 msgid "ограниченные предложения"
-msgstr "Limited edition"
+msgstr "limited offer"
 
 #: products/models.py:248
 #, fuzzy
@@ -917,8 +917,10 @@ msgid "Oct"
 msgstr ""
 
 #: templates/discount/discount_card.jinja2:35
+#, fuzzy
+#| msgid "NOV"
 msgid "NOv"
-msgstr ""
+msgstr "ДЕК"
 
 #: templates/discount/product_category_set.jinja2:3
 msgid "Набор товаров"
@@ -1586,9 +1588,6 @@ msgstr "The good image is missing"
 
 #~ msgid "OCT"
 #~ msgstr "ОКТ"
-
-#~ msgid "NOV"
-#~ msgstr "ДЕК"
 
 #~ msgid "Только товары в наличии"
 #~ msgstr "Only products in stock"
