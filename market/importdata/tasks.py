@@ -405,8 +405,13 @@ def mail_report(
         recipient_list = [email_to]
         msg = EmailMessage(subject, html_content, email_from, recipient_list)
         msg.content_subtype = "html"
-        msg.send()
-        logger.info("Отчет отправлен на слeдующий адреc: %s" % email_to)
+        try:
+            msg.send()
+        except ValueError as e:
+            logger.error("Отчет не отправлен на адреc: %s. Ошибка: %s" % (email_to, e))
+        else:
+            logger.info("Отчет отправлен на слeдующий адреc: %s" % email_to)
+
     else:
         logger.info("Отчет не отправлен. Адрес для отправки отчета не указан")
 
