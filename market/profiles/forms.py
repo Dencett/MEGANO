@@ -41,7 +41,6 @@ class UserRegisterForm(BaseUserCreationForm):
         label="Пароль",
         strip=False,
         widget=forms.PasswordInput(attrs={"autocomplete": "новый пароль"}),
-        # help_text=password_validation.password_validators_help_text_html(),
         help_text="<ul><li>Ваш пароль не должен быть слишком похож на другую "
         "вашу личную информацию.</li>"
         "<li>Ваш пароль должен содержать не менее 8 символов.</li>"
