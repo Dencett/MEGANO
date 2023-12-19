@@ -24,7 +24,7 @@
                                         {% elif banner.product %}
                                             <a class="btn btn_primary" href="{{ url ('catalog:index') }}?sort=famous&desc=on&search={{ banner.product.name }}">{{start_str}}</a>
                                         {% elif banner.offer %}
-                                            <a class="btn btn_primary" href="{{ url('products:product-detail', pk=offer.product.pk ) }}">{{start_str}}</a>
+                                            <a class="btn btn_primary" href="{{ url('products:product-detail', pk=banner.offer.product.pk ) }}">{{start_str}}</a>
                                         {% else %}
                                             <a class="btn btn_primary" href="#">{{start_str}}</a>
                                         {% endif %}
